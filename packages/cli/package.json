@@ -1,0 +1,22 @@
+{
+  "name": "@apiwatch/cli",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "bin": { "apiwatch": "./dist/index.js" },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup",
+    "lint": "eslint src --ext .ts",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@apiwatch/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "rimraf": "^5.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0"
+  }
+}
