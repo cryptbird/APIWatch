@@ -1,0 +1,5 @@
+/* Base styles; Tailwind added in step 1.15 */
+body {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+}
