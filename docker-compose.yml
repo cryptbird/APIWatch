@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: apiwatch-postgres
+    environment:
+      POSTGRES_USER: apiwatch
+      POSTGRES_PASSWORD: apiwatch_secret
+      POSTGRES_DB: apiwatch
+    ports:
+      - '5432:5432'
+    volumes:
+      - apiwatch_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U apiwatch -d apiwatch']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: apiwatch-redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - apiwatch_redis_data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  apiwatch_pgdata: {}
+  apiwatch_redis_data: {}
