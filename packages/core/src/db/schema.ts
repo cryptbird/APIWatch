@@ -139,6 +139,39 @@ export const teams = pgTable('teams', {
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
+export const teamMembers = pgTable(
+  'team_members',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    teamId: uuid('team_id')
+      .notNull()
+      .references(() => teams.id, { onDelete: 'cascade' }),
+    userId: varchar('user_id', { length: 255 }).notNull(),
+    role: varchar('role', { length: 64 }).notNull(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+  },
+  (t) => [index('team_members_team_id_idx').on(t.teamId)]
+);
+
+export const apiOwnership = pgTable(
+  'api_ownership',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    apiId: uuid('api_id')
+      .notNull()
+      .references(() => apis.id, { onDelete: 'cascade' }),
+    teamId: uuid('team_id')
+      .notNull()
+      .references(() => teams.id, { onDelete: 'cascade' }),
+    squadId: varchar('squad_id', { length: 255 }).notNull(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+  },
+  (t) => [
+    index('api_ownership_api_id_idx').on(t.apiId),
+    index('api_ownership_team_id_idx').on(t.teamId),
+  ]
+);
+
 export const subscribers = pgTable('subscribers', {
   id: uuid('id').primaryKey().defaultRandom(),
   teamId: uuid('team_id')
