@@ -1,5 +1,10 @@
-/* Base styles; Tailwind added in step 1.15 */
-body {
-  margin: 0;
-  font-family: Inter, system-ui, sans-serif;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-white font-sans antialiased;
+    margin: 0;
+  }
 }
