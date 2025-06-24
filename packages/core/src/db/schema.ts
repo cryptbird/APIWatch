@@ -45,7 +45,7 @@ export const apis = pgTable(
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
   },
-  (t) => [index('apis_repo_id_idx').on(t.repoId), index('apis_path_method_idx').on(t.path, t.method)]
+  (t) => ({ indexes: [index('apis_repo_id_idx').on(t.repoId), index('apis_path_method_idx').on(t.path, t.method)] })
 );
 
 export const apiParams = pgTable(
@@ -61,7 +61,7 @@ export const apiParams = pgTable(
     schema: jsonb('schema').notNull(),
     description: text('description'),
   },
-  (t) => [index('api_params_api_id_idx').on(t.apiId)]
+  (t) => ({ indexes: [index('api_params_api_id_idx').on(t.apiId)] })
 );
 
 export const dependencyEdges = pgTable(
@@ -82,11 +82,13 @@ export const dependencyEdges = pgTable(
     errorCount: integer('error_count').default(0),
     firstSeenAt: timestamp('first_seen_at').defaultNow().notNull(),
   },
-  (t) => [
-    index('dependency_edges_source_target_idx').on(t.sourceApiId, t.targetApiId),
-    index('dependency_edges_source_idx').on(t.sourceApiId),
-    index('dependency_edges_target_idx').on(t.targetApiId),
-  ]
+  (t) => ({
+    indexes: [
+      index('dependency_edges_source_target_idx').on(t.sourceApiId, t.targetApiId),
+      index('dependency_edges_source_idx').on(t.sourceApiId),
+      index('dependency_edges_target_idx').on(t.targetApiId),
+    ],
+  })
 );
 
 export const apiSnapshots = pgTable(
@@ -101,7 +103,7 @@ export const apiSnapshots = pgTable(
     capturedAt: timestamp('captured_at').defaultNow().notNull(),
     capturedBy: varchar('captured_by', { length: 255 }).notNull(),
   },
-  (t) => [index('api_snapshots_api_id_idx').on(t.apiEndpointId)]
+  (t) => ({ indexes: [index('api_snapshots_api_id_idx').on(t.apiEndpointId)] })
 );
 
 export const changeEvents = pgTable(
@@ -117,7 +119,7 @@ export const changeEvents = pgTable(
     threatLevel: varchar('threat_level', { length: 32 }).notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
   },
-  (t) => [index('change_events_api_id_idx').on(t.apiEndpointId)]
+  (t) => ({ indexes: [index('change_events_api_id_idx').on(t.apiEndpointId)] })
 );
 
 export const notifications = pgTable('notifications', {
@@ -150,7 +152,7 @@ export const teamMembers = pgTable(
     role: varchar('role', { length: 64 }).notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
   },
-  (t) => [index('team_members_team_id_idx').on(t.teamId)]
+  (t) => ({ indexes: [index('team_members_team_id_idx').on(t.teamId)] })
 );
 
 export const apiOwnership = pgTable(
@@ -166,10 +168,12 @@ export const apiOwnership = pgTable(
     squadId: varchar('squad_id', { length: 255 }).notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
   },
-  (t) => [
-    index('api_ownership_api_id_idx').on(t.apiId),
-    index('api_ownership_team_id_idx').on(t.teamId),
-  ]
+  (t) => ({
+    indexes: [
+      index('api_ownership_api_id_idx').on(t.apiId),
+      index('api_ownership_team_id_idx').on(t.teamId),
+    ],
+  })
 );
 
 export const subscribers = pgTable('subscribers', {
@@ -199,8 +203,10 @@ export const usageEvents = pgTable(
     latencyMs: integer('latency_ms'),
     timestamp: timestamp('timestamp').defaultNow().notNull(),
   },
-  (t) => [
-    index('usage_events_source_idx').on(t.sourceApiId),
-    index('usage_events_timestamp_idx').on(t.timestamp),
-  ]
+  (t) => ({
+    indexes: [
+      index('usage_events_source_idx').on(t.sourceApiId),
+      index('usage_events_timestamp_idx').on(t.timestamp),
+    ],
+  })
 );

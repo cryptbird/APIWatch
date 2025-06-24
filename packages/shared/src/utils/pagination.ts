@@ -26,12 +26,15 @@ export function createPaginated<T>(
   cursor?: string
 ): Paginated<T> {
   const hasMore = page * pageSize < total;
-  return {
+  const result: Paginated<T> = {
     items,
     total,
     page,
     pageSize,
     hasMore,
-    cursor,
   };
+  if (cursor !== undefined) {
+    result.cursor = cursor;
+  }
+  return result;
 }
