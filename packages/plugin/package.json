@@ -12,7 +12,8 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@apiwatch/shared": "workspace:*"
+    "@apiwatch/shared": "workspace:*",
+    "zod": "^3.23.0"
   },
   "devDependencies": {
     "rimraf": "^5.0.0",
