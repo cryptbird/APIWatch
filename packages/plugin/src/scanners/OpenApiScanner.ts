@@ -11,12 +11,14 @@ export class OpenApiScanner {
     const endpoints: ApiEndpoint[] = [];
     try {
       const api = await SwaggerParser.bundle(specPath) as {
-        paths?: Record<string, Record<string, { parameters?: unknown[]; requestBody?: unknown; responses?: Record<string, unknown> }>>;
+        paths?: Record<string, Record<string, { parameters?: unknown[]; requestBody?: unknown; responses?: Record<string, unknown>; consumes?: string[] }>>;
         basePath?: string;
         swagger?: string;
         openapi?: string;
+        host?: string;
+        definitions?: Record<string, JsonSchema>;
       };
-      const basePath = api.basePath ?? '';
+      const basePath = (api.basePath ?? '').replace(/\/$/, '');
       const paths = api.paths ?? {};
       const now = new Date();
       for (const [path, methods] of Object.entries(paths)) {
@@ -24,15 +26,19 @@ export class OpenApiScanner {
         for (const [method, op] of Object.entries(methods)) {
           if (method === 'parameters' || typeof op !== 'object' || op === null) continue;
           const httpMethod = method.toUpperCase() as HttpMethod;
-          const params = this.normalizeParams(op.parameters);
+          const pathParams = (methods as { parameters?: unknown[] }).parameters;
+          const opParams = op.parameters ?? pathParams;
+          const params = this.normalizeParams(opParams);
           const requestBody = op.requestBody && typeof op.requestBody === 'object'
             ? (op.requestBody as { content?: { 'application/json'?: { schema?: JsonSchema } } }).content?.['application/json']?.schema
             : undefined;
           const responses: Record<string, JsonSchema> = {};
           if (op.responses && typeof op.responses === 'object') {
             for (const [code, res] of Object.entries(op.responses)) {
-              if (res && typeof res === 'object' && 'schema' in res)
-                responses[code] = (res as { schema?: JsonSchema }).schema ?? { type: 'object' };
+              if (res && typeof res === 'object') {
+                const r = res as { schema?: JsonSchema };
+                responses[code] = r.schema ?? { type: 'object' };
+              }
             }
           }
           endpoints.push({
