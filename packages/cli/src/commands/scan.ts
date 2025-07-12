@@ -29,6 +29,7 @@ export async function runScan(options: ScanOptions = {}): Promise<void> {
       process.stdout.write(`... and ${endpoints.length - 20} more\n`);
     process.stdout.write(`Total: ${endpoints.length} endpoints\n`);
     if (dryRun) process.stdout.write('(dry-run: no sync)\n');
+    else process.stdout.write('Run with --yes to sync to server.\n');
   } catch (err) {
     spinner.fail(err instanceof Error ? err.message : String(err));
     throw err;
