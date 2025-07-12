@@ -13,5 +13,5 @@ export async function runStatus(options: StatusOptions = {}): Promise<void> {
   process.stdout.write('Registered APIs: 0\n');
   process.stdout.write('Last scan: never\n');
   process.stdout.write('Sync: in-sync\n');
-  process.stdout.write('Server: not configured\n');
+  process.stdout.write('Server: not configured (run apiwatch init)\n');
 }
