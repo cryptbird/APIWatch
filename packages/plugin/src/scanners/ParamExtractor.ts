@@ -37,7 +37,19 @@ export class ParamExtractor {
     return {};
   }
 
-  isRequired(_param: { name: string; schema?: JsonSchema }): boolean {
+  isRequired(param: { name: string; schema?: JsonSchema; optional?: boolean; default?: unknown }): boolean {
+    if (param.optional === true) return false;
+    if (param.default !== undefined) return false;
+    const schema = param.schema;
+    if (schema && typeof schema === 'object' && 'required' in schema && Array.isArray((schema as { required?: string[] }).required))
+      return ((schema as { required: string[] }).required).includes(param.name);
     return true;
+  }
+
+  classifyOptional(params: ApiParam[], sourceText: string): ApiParam[] {
+    return params.map((p) => {
+      const optional = /[?]|@IsOptional|optional\s*:\s*true/.test(sourceText) || p.name.includes('?');
+      return { ...p, required: !optional && this.isRequired(p) };
+    });
   }
 }
