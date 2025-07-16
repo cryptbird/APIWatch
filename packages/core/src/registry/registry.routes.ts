@@ -25,6 +25,6 @@ export async function registryRoutes(app: FastifyInstance): Promise<void> {
       return reply.status(400).send({ error: parsed.error.message });
     }
     const result = await repoService.register(parsed.data);
-    return reply.send(result);
+    return reply.send({ ...result, message: 'Save apiKey securely; it is not stored in plaintext.' });
   });
 }
