@@ -6,6 +6,8 @@ import Fastify from 'fastify';
 import { getEnv } from './env.js';
 import { getRedisClient, closeRedis } from './cache/redis.js';
 import { healthRoutes } from './routes/health.js';
+import { authRoutes } from './routes/auth.js';
+import { registryRoutes } from './registry/registry.routes.js';
 
 const env = getEnv();
 
@@ -19,6 +21,8 @@ export async function start(): Promise<void> {
   });
 
   await app.register(healthRoutes);
+  await app.register(authRoutes);
+  await app.register(registryRoutes);
 
   app.get('/', async (_req, reply) => {
     return reply.send({ name: 'APIWatch', version: '1.0.0' });
