@@ -37,7 +37,8 @@ export class DirectoryScanner {
   constructor(config: ApiWatchConfig) {
     this.config = config;
     this.ignorePatterns = [...DEFAULT_IGNORE, ...(config.ignorePaths ?? [])];
-    this.loadApiwatchignore(config.scanPaths[0] ?? '.');
+    const root = typeof config.scanPaths[0] === 'string' ? join(process.cwd(), config.scanPaths[0]) : process.cwd();
+    this.loadApiwatchignore(root);
   }
 
   private loadApiwatchignore(root: string): void {
