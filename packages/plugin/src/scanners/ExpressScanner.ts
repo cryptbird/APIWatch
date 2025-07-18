@@ -37,7 +37,9 @@ export class ExpressScanner {
       for (const r of rawRoutes) {
         const method = r.method.toUpperCase() as HttpMethod;
         if (!HTTP_METHODS.includes(r.method.toLowerCase() as (typeof HTTP_METHODS)[number])) continue;
-        endpoints.push({
+        const raw = sourceFile.getText();
+          const deprecated = /@deprecated/i.test(raw);
+          endpoints.push({
           id: `express-${r.path}-${method}-${now.getTime()}`,
           repoId: '',
           path: r.path,
@@ -45,7 +47,7 @@ export class ExpressScanner {
           params: [],
           responses: {},
           tags: [],
-          deprecated: false,
+          deprecated,
           teamId: '',
           squadId: '',
           locationId: '',
