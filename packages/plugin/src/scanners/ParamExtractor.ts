@@ -33,6 +33,10 @@ export class ParamExtractor {
     return undefined;
   }
 
+  isDeprecated(sourceText: string): boolean {
+    return /@deprecated|@ApiDeprecated|deprecated\s*:\s*true/i.test(sourceText);
+  }
+
   extractResponseSchema(sourceFile: SourceFile, _handlerName?: string): Record<string, JsonSchema> {
     const text = sourceFile.getText();
     const out: Record<string, JsonSchema> = {};
