@@ -27,4 +27,10 @@ describe('OpenApiScanner', () => {
       expect(Array.isArray(ep.params)).toBe(true);
     }
   });
+
+  it('parses crud-api and returns at least one endpoint', async () => {
+    const scanner = new OpenApiScanner();
+    const results = await scanner.scan(__dirname + '/__fixtures__/crud-api.json');
+    expect(results.length).toBeGreaterThanOrEqual(1);
+  });
 });

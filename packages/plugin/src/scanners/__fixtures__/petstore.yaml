@@ -1,0 +1,25 @@
+swagger: "2.0"
+info:
+  title: Petstore
+  version: "1.0.0"
+basePath: /v1
+paths:
+  /pets:
+    get:
+      parameters:
+        - name: limit
+          in: query
+          type: integer
+      responses:
+        200:
+          description: list of pets
+    post:
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+      responses:
+        201:
+          description: created
