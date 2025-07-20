@@ -11,10 +11,12 @@ const DEFAULT_IGNORE = [
   'node_modules',
   'dist',
   '.git',
-  '*.spec.ts',
-  '*.spec.js',
-  '*.test.ts',
-  '*.test.js',
+  '**/*.spec.ts',
+  '**/*.spec.js',
+  '**/*.test.ts',
+  '**/*.test.js',
+  '**/*.d.ts',
+  '**/*.generated.ts',
   '**/migrations/**',
 ];
 
@@ -95,7 +97,7 @@ export class DirectoryScanner {
       if (e.isDirectory()) {
         if (e.name === 'node_modules' || e.name === '.git' || e.name === 'dist') continue;
         this.walk(join(dir, e.name), rel, out);
-      } else if (e.isFile() && /\.(ts|js)$/.test(e.name)) {
+      } else if (e.isFile() && /\.(ts|js)$/.test(e.name) && !/\.(spec|test)\.(ts|js)$/i.test(e.name)) {
         if (this.shouldSkip(rel)) continue;
         const content = readFileSync(join(dir, e.name), 'utf-8');
         out.push({ path: join(dir, e.name), framework: this.detectFramework(content) });
