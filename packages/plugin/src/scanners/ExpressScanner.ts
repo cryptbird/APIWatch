@@ -5,6 +5,7 @@
 
 import { Project, type SourceFile, SyntaxKind } from 'ts-morph';
 import type { ApiEndpoint, ApiParam, HttpMethod } from '@apiwatch/shared';
+import { normalizePath } from './pathNormalizer.js';
 
 const HTTP_METHODS = ['get', 'post', 'put', 'patch', 'delete', 'options'] as const;
 
@@ -73,7 +74,8 @@ export class ExpressScanner {
       const args = call.getArguments();
       if (args.length === 0) continue;
       const firstArg = args[0];
-      const path = firstArg.getText().replace(/^['`"]|['`"]$/g, '');
+      const rawPath = firstArg.getText().replace(/^['`"]|['`"]$/g, '');
+      const path = normalizePath(rawPath);
       if (method === 'use') {
         routes.push({ path: path || '/', method: 'use', handlerName: undefined });
       } else if (method === 'route') {
