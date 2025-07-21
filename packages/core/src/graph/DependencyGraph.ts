@@ -1,0 +1,87 @@
+/**
+ * Dependency graph: adjacency list, addNode/addEdge/removeNode/removeEdge.
+ * O(1) neighbor lookup via Map<string, Set<string>>.
+ */
+
+import type { GraphNode, GraphEdge } from '@apiwatch/shared';
+
+export class DependencyGraph {
+  private nodes: Map<string, GraphNode> = new Map();
+  private edges: Map<string, GraphEdge> = new Map();
+  private outNeighbors: Map<string, Set<string>> = new Map();
+  private inNeighbors: Map<string, Set<string>> = new Map();
+
+  addNode(node: GraphNode): void {
+    this.nodes.set(node.id, { ...node });
+    if (!this.outNeighbors.has(node.id)) this.outNeighbors.set(node.id, new Set());
+    if (!this.inNeighbors.has(node.id)) this.inNeighbors.set(node.id, new Set());
+  }
+
+  addEdge(edge: GraphEdge): void {
+    this.edges.set(edge.id, { ...edge });
+    const out = this.outNeighbors.get(edge.sourceApiId);
+    if (out) out.add(edge.targetApiId);
+    else this.outNeighbors.set(edge.sourceApiId, new Set([edge.targetApiId]));
+    const inSet = this.inNeighbors.get(edge.targetApiId);
+    if (inSet) inSet.add(edge.sourceApiId);
+    else this.inNeighbors.set(edge.targetApiId, new Set([edge.sourceApiId]));
+  }
+
+  removeNode(id: string): void {
+    this.nodes.delete(id);
+    this.outNeighbors.delete(id);
+    this.inNeighbors.delete(id);
+    for (const [eid, e] of this.edges.entries()) {
+      if (e.sourceApiId === id || e.targetApiId === id) this.edges.delete(eid);
+    }
+    for (const set of this.outNeighbors.values()) set.delete(id);
+    for (const set of this.inNeighbors.values()) set.delete(id);
+  }
+
+  removeEdge(id: string): void {
+    const edge = this.edges.get(id);
+    if (edge) {
+      this.outNeighbors.get(edge.sourceApiId)?.delete(edge.targetApiId);
+      this.inNeighbors.get(edge.targetApiId)?.delete(edge.sourceApiId);
+      this.edges.delete(id);
+    }
+  }
+
+  getNode(id: string): GraphNode | undefined {
+    return this.nodes.get(id);
+  }
+
+  getEdge(id: string): GraphEdge | undefined {
+    return this.edges.get(id);
+  }
+
+  getAllNodes(): GraphNode[] {
+    return Array.from(this.nodes.values());
+  }
+
+  getAllEdges(): GraphEdge[] {
+    return Array.from(this.edges.values());
+  }
+
+  getDependents(apiId: string): string[] {
+    return Array.from(this.outNeighbors.get(apiId) ?? []);
+  }
+
+  getDependencies(apiId: string): string[] {
+    return Array.from(this.inNeighbors.get(apiId) ?? []);
+  }
+
+  getNeighbors(apiId: string): string[] {
+    const out = this.outNeighbors.get(apiId) ?? new Set();
+    const inSet = this.inNeighbors.get(apiId) ?? new Set();
+    return Array.from(new Set([...out, ...inSet]));
+  }
+
+  getSubgraph(apiIds: Set<string>): { nodes: GraphNode[]; edges: GraphEdge[] } {
+    const nodes = this.getAllNodes().filter((n) => apiIds.has(n.id));
+    const edges = this.getAllEdges().filter(
+      (e) => apiIds.has(e.sourceApiId) && apiIds.has(e.targetApiId)
+    );
+    return { nodes, edges };
+  }
+}
