@@ -63,12 +63,110 @@ export class DependencyGraph {
     return Array.from(this.edges.values());
   }
 
+  /** Immediate dependents (callers of this API) = in-neighbors. */
   getDependents(apiId: string): string[] {
+    return Array.from(this.inNeighbors.get(apiId) ?? []);
+  }
+
+  /** Immediate dependencies (APIs this one calls) = out-neighbors. */
+  getDependencies(apiId: string): string[] {
     return Array.from(this.outNeighbors.get(apiId) ?? []);
   }
 
-  getDependencies(apiId: string): string[] {
-    return Array.from(this.inNeighbors.get(apiId) ?? []);
+  /** Find edge from source to target. */
+  private getEdgeBetween(sourceId: string, targetId: string): GraphEdge | undefined {
+    for (const e of this.edges.values()) {
+      if (e.sourceApiId === sourceId && e.targetApiId === targetId) return e;
+    }
+    return undefined;
+  }
+
+  /** BFS: all upstream callers up to maxDepth. */
+  getDependentsBfs(apiId: string, maxDepth: number = 3): Array<{ nodeId: string; depth: number; callCount: number; avgLatencyMs: number; errorRate: number }> {
+    const visited = new Set<string>();
+    const result: Array<{ nodeId: string; depth: number; callCount: number; avgLatencyMs: number; errorRate: number }> = [];
+    const queue: Array<{ id: string; depth: number }> = [{ id: apiId, depth: 0 }];
+    visited.add(apiId);
+    while (queue.length > 0) {
+      const { id, depth } = queue.shift()!;
+      if (depth >= maxDepth) continue;
+      const inSet = this.inNeighbors.get(id) ?? new Set();
+      for (const callerId of inSet) {
+        if (visited.has(callerId)) continue;
+        visited.add(callerId);
+        const edge = this.getEdgeBetween(callerId, id);
+        result.push({
+          nodeId: callerId,
+          depth: depth + 1,
+          callCount: edge?.callCount ?? 0,
+          avgLatencyMs: edge?.avgLatencyMs ?? 0,
+          errorRate: edge?.errorRate ?? 0,
+        });
+        queue.push({ id: callerId, depth: depth + 1 });
+      }
+    }
+    return result;
+  }
+
+  /** BFS: all downstream dependencies up to maxDepth. */
+  getDependenciesBfs(apiId: string, maxDepth: number = 3): Array<{ nodeId: string; depth: number; callCount: number; avgLatencyMs: number; errorRate: number }> {
+    const visited = new Set<string>();
+    const result: Array<{ nodeId: string; depth: number; callCount: number; avgLatencyMs: number; errorRate: number }> = [];
+    const queue: Array<{ id: string; depth: number }> = [{ id: apiId, depth: 0 }];
+    visited.add(apiId);
+    while (queue.length > 0) {
+      const { id, depth } = queue.shift()!;
+      if (depth >= maxDepth) continue;
+      const outSet = this.outNeighbors.get(id) ?? new Set();
+      for (const calleeId of outSet) {
+        if (visited.has(calleeId)) continue;
+        visited.add(calleeId);
+        const edge = this.getEdgeBetween(id, calleeId);
+        result.push({
+          nodeId: calleeId,
+          depth: depth + 1,
+          callCount: edge?.callCount ?? 0,
+          avgLatencyMs: edge?.avgLatencyMs ?? 0,
+          errorRate: edge?.errorRate ?? 0,
+        });
+        queue.push({ id: calleeId, depth: depth + 1 });
+      }
+    }
+    return result;
+  }
+
+  /** Complete upstream and downstream tree (no depth limit). */
+  getFullChain(apiId: string): { upstream: string[]; downstream: string[] } {
+    const visitedUp = new Set<string>();
+    const queueUp = [apiId];
+    visitedUp.add(apiId);
+    while (queueUp.length > 0) {
+      const id = queueUp.shift()!;
+      for (const c of this.inNeighbors.get(id) ?? []) {
+        if (!visitedUp.has(c)) {
+          visitedUp.add(c);
+          queueUp.push(c);
+        }
+      }
+    }
+    visitedUp.delete(apiId);
+    const visitedDown = new Set<string>();
+    const queueDown = [apiId];
+    visitedDown.add(apiId);
+    while (queueDown.length > 0) {
+      const id = queueDown.shift()!;
+      for (const c of this.outNeighbors.get(id) ?? []) {
+        if (!visitedDown.has(c)) {
+          visitedDown.add(c);
+          queueDown.push(c);
+        }
+      }
+    }
+    visitedDown.delete(apiId);
+    return {
+      upstream: Array.from(visitedUp),
+      downstream: Array.from(visitedDown),
+    };
   }
 
   getNeighbors(apiId: string): string[] {
