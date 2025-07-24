@@ -61,24 +61,24 @@ describe('DependencyGraph', () => {
     expect(g.getEdge('e1')).toBeUndefined();
   });
 
-  it('getDependents returns targets of outgoing edges', () => {
+  it('getDependents returns callers (in-neighbors)', () => {
     const g = new DependencyGraph();
     g.addNode(node('a'));
     g.addNode(node('b'));
     g.addNode(node('c'));
     g.addEdge(edge('e1', 'a', 'b'));
-    g.addEdge(edge('e2', 'a', 'c'));
-    expect(g.getDependents('a')).toHaveLength(2);
-    expect(g.getDependents('a')).toContain('b');
-    expect(g.getDependents('a')).toContain('c');
+    g.addEdge(edge('e2', 'c', 'b'));
+    expect(g.getDependents('b')).toHaveLength(2);
+    expect(g.getDependents('b')).toContain('a');
+    expect(g.getDependents('b')).toContain('c');
   });
 
-  it('getDependencies returns sources of incoming edges', () => {
+  it('getDependencies returns callees (out-neighbors)', () => {
     const g = new DependencyGraph();
     g.addNode(node('a'));
     g.addNode(node('b'));
     g.addEdge(edge('e1', 'a', 'b'));
-    expect(g.getDependencies('b')).toEqual(['a']);
+    expect(g.getDependencies('a')).toEqual(['b']);
   });
 
   it('getNeighbors returns both in and out', () => {
@@ -102,5 +102,28 @@ describe('DependencyGraph', () => {
     expect(sub.nodes).toHaveLength(2);
     expect(sub.edges).toHaveLength(1);
     expect(sub.edges[0]?.id).toBe('e1');
+  });
+
+  it('getDependentsBfs returns callers up to maxDepth', () => {
+    const g = new DependencyGraph();
+    g.addNode(node('a'));
+    g.addNode(node('b'));
+    g.addNode(node('c'));
+    g.addEdge(edge('e1', 'a', 'b'));
+    g.addEdge(edge('e2', 'c', 'b'));
+    const list = g.getDependentsBfs('b', 2);
+    expect(list.map((x) => x.nodeId).sort()).toEqual(['a', 'c']);
+  });
+
+  it('getFullChain returns upstream and downstream', () => {
+    const g = new DependencyGraph();
+    g.addNode(node('a'));
+    g.addNode(node('b'));
+    g.addNode(node('c'));
+    g.addEdge(edge('e1', 'a', 'b'));
+    g.addEdge(edge('e2', 'b', 'c'));
+    const chain = g.getFullChain('b');
+    expect(chain.upstream).toContain('a');
+    expect(chain.downstream).toContain('c');
   });
 });
