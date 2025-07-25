@@ -4,6 +4,7 @@
  */
 
 import type { GraphNode, GraphEdge } from '@apiwatch/shared';
+import { findSCCs, sccsToCycles } from './algorithms/tarjan.js';
 
 export class DependencyGraph {
   private nodes: Map<string, GraphNode> = new Map();
@@ -181,5 +182,17 @@ export class DependencyGraph {
       (e) => apiIds.has(e.sourceApiId) && apiIds.has(e.targetApiId)
     );
     return { nodes, edges };
+  }
+
+  /** Run Tarjan SCC and return cycles (each cycle = array of node IDs). */
+  detectCycles(): string[][] {
+    const nodeIds = this.getAllNodes().map((n) => n.id);
+    const getOut = (id: string) => Array.from(this.outNeighbors.get(id) ?? []);
+    const sccs = findSCCs(nodeIds, getOut);
+    const cycles = sccsToCycles(sccs, getOut);
+    if (cycles.length > 0) {
+      console.warn(`[DependencyGraph] ${cycles.length} cycle(s) detected`);
+    }
+    return cycles;
   }
 }
