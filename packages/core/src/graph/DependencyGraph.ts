@@ -3,8 +3,9 @@
  * O(1) neighbor lookup via Map<string, Set<string>>.
  */
 
-import type { GraphNode, GraphEdge } from '@apiwatch/shared';
+import type { GraphNode, GraphEdge, SerializedGraph } from '@apiwatch/shared';
 import { findSCCs, sccsToCycles } from './algorithms/tarjan.js';
+import { toSerializedGraph } from './graph.serializer.js';
 
 export class DependencyGraph {
   private nodes: Map<string, GraphNode> = new Map();
@@ -194,5 +195,13 @@ export class DependencyGraph {
       console.warn(`[DependencyGraph] ${cycles.length} cycle(s) detected`);
     }
     return cycles;
+  }
+
+  /** Serialize to JSON-friendly form for frontend. */
+  serialize(): SerializedGraph {
+    const nodes = this.getAllNodes();
+    const edges = this.getAllEdges();
+    const cycleCount = this.detectCycles().length;
+    return toSerializedGraph(nodes, edges, cycleCount);
   }
 }
