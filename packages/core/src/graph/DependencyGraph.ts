@@ -6,6 +6,8 @@
 import type { GraphNode, GraphEdge, SerializedGraph } from '@apiwatch/shared';
 import { findSCCs, sccsToCycles } from './algorithms/tarjan.js';
 import { toSerializedGraph } from './graph.serializer.js';
+import { computeCentrality as computeCentralityAlgo } from './algorithms/centrality.js';
+import { getDependencyDepth as getDependencyDepthAlgo, getCriticalPath as getCriticalPathAlgo } from './algorithms/criticalPath.js';
 
 export class DependencyGraph {
   private nodes: Map<string, GraphNode> = new Map();
@@ -203,5 +205,26 @@ export class DependencyGraph {
     const edges = this.getAllEdges();
     const cycleCount = this.detectCycles().length;
     return toSerializedGraph(nodes, edges, cycleCount);
+  }
+
+  /** Update inDegree, outDegree, centralityScore on all nodes. */
+  computeCentrality(): void {
+    const nodes = this.getAllNodes();
+    const edges = this.getAllEdges();
+    const getOut = (id: string) => Array.from(this.outNeighbors.get(id) ?? []);
+    const getIn = (id: string) => Array.from(this.inNeighbors.get(id) ?? []);
+    const updated = computeCentralityAlgo({ nodes, edges, getOutNeighbors: getOut, getInNeighbors: getIn });
+    for (const n of updated) this.nodes.set(n.id, n);
+  }
+
+  getDependencyDepth(apiId: string): number {
+    const getIn = (id: string) => Array.from(this.inNeighbors.get(id) ?? []);
+    return getDependencyDepthAlgo(apiId, getIn);
+  }
+
+  getCriticalPath(): string[] {
+    const nodes = this.getAllNodes();
+    const getOut = (id: string) => Array.from(this.outNeighbors.get(id) ?? []);
+    return getCriticalPathAlgo(nodes, getOut);
   }
 }
