@@ -9,6 +9,8 @@ import type { Env } from '../env.js';
 import { createDbPool } from '../db/index.js';
 import { createDrizzle } from '../db/index.js';
 import { apis, usageEvents, dependencyEdges } from '../db/schema.js';
+import { invalidateGraphCache } from '../cache/graphCache.js';
+import { emitGraphUpdated } from '../websocket/graphEvents.js';
 
 const usageEventSchema = z.object({
   sourceApiId: z.string().uuid(),
@@ -72,6 +74,7 @@ export class UsageTracker {
   async recordBatch(input: RecordBatchInput): Promise<{ recorded: number }> {
     const database = this.getDb();
     let recorded = 0;
+    const addedEdges: Array<{ source: string; target: string }> = [];
     for (const ev of input.events) {
       let targetApiId = ev.targetApiId;
       if (targetApiId === undefined) {
@@ -116,9 +119,19 @@ export class UsageTracker {
               avgLatencyMs: ev.latencyMs,
               errorCount: isError ? 1 : 0,
             });
+            addedEdges.push({ source: ev.sourceApiId, target: targetApiId });
           }
         }
       }
+    }
+    await invalidateGraphCache();
+    if (addedEdges.length > 0) {
+      await emitGraphUpdated(this._env.REDIS_URL, {
+        addedNodes: [],
+        removedNodes: [],
+        addedEdges,
+        removedEdges: [],
+      });
     }
     return { recorded };
   }
