@@ -55,6 +55,13 @@ export async function redisExpire(key: string, ttlSeconds: number): Promise<void
   await client.expire(key, ttlSeconds);
 }
 
+export async function redisKeys(pattern: string): Promise<string[]> {
+  if (client === null) {
+    throw new Error('Redis not initialized');
+  }
+  return client.keys(pattern);
+}
+
 export async function redisHealth(): Promise<boolean> {
   if (client === null) {
     return false;
