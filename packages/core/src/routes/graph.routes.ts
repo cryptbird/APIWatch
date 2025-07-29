@@ -1,11 +1,13 @@
 /**
  * Graph REST API: dependents, dependencies, critical-path, full, team, stats, export.
+ * Responses cached in Redis (5 min TTL) via graphCache.
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { getEnv } from '../env.js';
 import { GraphService } from '../graph/GraphService.js';
+import { getCachedGraph, setCachedGraph } from '../cache/graphCache.js';
 
 const depthSchema = z.coerce.number().int().min(1).max(10).default(3);
 const cursorSchema = z.string().optional();
@@ -20,8 +22,13 @@ export async function graphRoutes(app: FastifyInstance): Promise<void> {
     '/api/graph/:apiId/dependents',
     async (req, reply) => {
       const depth = depthSchema.parse(req.query?.depth ?? 3);
+      const params = { apiId: req.params.apiId, depth: String(depth) };
+      const cached = await getCachedGraph<{ dependents: unknown }>('/api/graph/:apiId/dependents', params);
+      if (cached !== null) return reply.send(cached);
       const list = await graphService.getDependents(req.params.apiId, depth);
-      return reply.send({ dependents: list });
+      const out = { dependents: list };
+      await setCachedGraph('/api/graph/:apiId/dependents', params, out);
+      return reply.send(out);
     }
   );
 
@@ -73,8 +80,12 @@ export async function graphRoutes(app: FastifyInstance): Promise<void> {
     }
   );
 
-  app.get('/api/graph/stats', async (_req, reply) => {
+  app.get('/api/graph/stats', async (req, reply) => {
+    const params = { q: 'stats' };
+    const cached = await getCachedGraph<{ nodeCount: number; edgeCount: number; cycleCount: number }>('/api/graph/stats', params);
+    if (cached !== null) return reply.send(cached);
     const stats = await graphService.getStats();
+    await setCachedGraph('/api/graph/stats', params, stats);
     return reply.send(stats);
   });
 
