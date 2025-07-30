@@ -8,6 +8,8 @@ import { z } from 'zod';
 import { getEnv } from '../env.js';
 import { GraphService } from '../graph/GraphService.js';
 import { getCachedGraph, setCachedGraph } from '../cache/graphCache.js';
+import { exportToDot } from '../graph/exporters/DotExporter.js';
+import { exportEdgesCsv, exportNodesCsv } from '../graph/exporters/CsvExporter.js';
 
 const depthSchema = z.coerce.number().int().min(1).max(10).default(3);
 const cursorSchema = z.string().optional();
@@ -95,21 +97,11 @@ export async function graphRoutes(app: FastifyInstance): Promise<void> {
       const format = formatSchema.parse(req.query?.format ?? 'dot');
       const serialized = await graphService.serialize();
       if (format === 'dot') {
-        const lines = ['digraph G {'];
-        for (const n of serialized.nodes) {
-          lines.push(`  "${n.id}" [label="${n.label.replace(/"/g, '\\"')}"];`);
-        }
-        for (const e of serialized.edges) {
-          lines.push(`  "${e.sourceApiId}" -> "${e.targetApiId}";`);
-        }
-        lines.push('}');
-        return reply.type('text/vnd.graphviz').send(lines.join('\n'));
+        return reply.type('text/vnd.graphviz').send(exportToDot(serialized));
       }
-      const csvLines = ['source,target,callCount,avgLatencyMs,errorRate'];
-      for (const e of serialized.edges) {
-        csvLines.push(`${e.sourceApiId},${e.targetApiId},${e.callCount},${e.avgLatencyMs},${e.errorRate}`);
-      }
-      return reply.type('text/csv').send(csvLines.join('\n'));
+      const nodesCsv = exportNodesCsv(serialized);
+      const edgesCsv = exportEdgesCsv(serialized);
+      return reply.type('text/csv').send(`nodes:\n${nodesCsv}\n\nedges:\n${edgesCsv}`);
     }
   );
 }
