@@ -3,7 +3,7 @@
  * O(1) neighbor lookup via Map<string, Set<string>>.
  */
 
-import type { GraphNode, GraphEdge, SerializedGraph } from '@apiwatch/shared';
+import type { GraphNode, GraphEdge, SerializedGraph, GraphDiff } from '@apiwatch/shared';
 import { findSCCs, sccsToCycles } from './algorithms/tarjan.js';
 import { toSerializedGraph } from './graph.serializer.js';
 import { computeCentrality as computeCentralityAlgo } from './algorithms/centrality.js';
@@ -226,5 +226,30 @@ export class DependencyGraph {
     const nodes = this.getAllNodes();
     const getOut = (id: string) => Array.from(this.outNeighbors.get(id) ?? []);
     return getCriticalPathAlgo(nodes, getOut);
+  }
+
+  /** Compare with another graph; return added/removed nodes and edges. */
+  diff(other: DependencyGraph): GraphDiff {
+    const thisNodes = new Set(this.getAllNodes().map((n) => n.id));
+    const otherNodes = new Set(other.getAllNodes().map((n) => n.id));
+    const nodesAdded = [...otherNodes].filter((id) => !thisNodes.has(id));
+    const nodesRemoved = [...thisNodes].filter((id) => !otherNodes.has(id));
+    const thisEdges = new Set(this.getAllEdges().map((e) => `${e.sourceApiId}:${e.targetApiId}`));
+    const otherEdges = new Set(other.getAllEdges().map((e) => `${e.sourceApiId}:${e.targetApiId}`));
+    const edgesAdded: Array<{ source: string; target: string }> = [];
+    const edgesRemoved: Array<{ source: string; target: string }> = [];
+    for (const k of otherEdges) {
+      if (!thisEdges.has(k)) {
+        const [source, target] = k.split(':');
+        if (source && target) edgesAdded.push({ source, target });
+      }
+    }
+    for (const k of thisEdges) {
+      if (!otherEdges.has(k)) {
+        const [source, target] = k.split(':');
+        if (source && target) edgesRemoved.push({ source, target });
+      }
+    }
+    return { nodesAdded, nodesRemoved, edgesAdded, edgesRemoved };
   }
 }
