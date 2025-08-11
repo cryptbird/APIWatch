@@ -102,6 +102,7 @@ export const apiSnapshots = pgTable(
     schema: jsonb('schema').notNull(),
     capturedAt: timestamp('captured_at').defaultNow().notNull(),
     capturedBy: varchar('captured_by', { length: 255 }).notNull(),
+    fingerprintHash: varchar('fingerprint_hash', { length: 64 }),
   },
   (t) => ({ indexes: [index('api_snapshots_api_id_idx').on(t.apiEndpointId)] })
 );
@@ -117,9 +118,12 @@ export const changeEvents = pgTable(
     toVersion: integer('to_version').notNull(),
     diffPayload: jsonb('diff_payload').notNull(),
     threatLevel: varchar('threat_level', { length: 32 }).notNull(),
+    riskScore: integer('risk_score'),
     createdAt: timestamp('created_at').defaultNow().notNull(),
+    acknowledgedAt: timestamp('acknowledged_at'),
+    acknowledgedBy: varchar('acknowledged_by', { length: 255 }),
   },
-  (t) => ({ indexes: [index('change_events_api_id_idx').on(t.apiEndpointId)] })
+  (t) => ({ indexes: [index('change_events_api_id_idx').on(t.apiEndpointId), index('change_events_created_idx').on(t.createdAt)] })
 );
 
 export const notifications = pgTable('notifications', {

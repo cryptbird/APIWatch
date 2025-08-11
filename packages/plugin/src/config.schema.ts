@@ -14,6 +14,20 @@ export const apiWatchConfigSchema = z.object({
   trackOutbound: z.boolean().optional().default(true),
   teamId: z.string().optional().default(''),
   orgId: z.string().optional().default(''),
+  threatRules: z
+    .object({
+      overrides: z
+        .array(
+          z.object({
+            changeType: z.string(),
+            threatLevel: z.enum(['LOW', 'NEUTRAL', 'CRITICAL']),
+          })
+        )
+        .optional()
+        .default([]),
+    })
+    .optional()
+    .default({}),
 });
 
 export type ApiWatchConfig = z.infer<typeof apiWatchConfigSchema>;
