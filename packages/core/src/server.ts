@@ -10,6 +10,8 @@ import { authRoutes } from './routes/auth.js';
 import { registryRoutes } from './registry/registry.routes.js';
 import { usageRoutes } from './routes/usage.routes.js';
 import { graphRoutes } from './routes/graph.routes.js';
+import { snapshotsRoutes } from './routes/snapshots.routes.js';
+import { changesRoutes } from './routes/changes.routes.js';
 
 const env = getEnv();
 
@@ -27,6 +29,8 @@ export async function start(): Promise<void> {
   await app.register(registryRoutes);
   await app.register(usageRoutes);
   await app.register(graphRoutes);
+  await app.register(snapshotsRoutes);
+  await app.register(changesRoutes);
 
   app.get('/', async (_req, reply) => {
     return reply.send({ name: 'APIWatch', version: '1.0.0' });
