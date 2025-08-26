@@ -16,9 +16,9 @@ function diff(breaking: Array<{ type: SchemaDiff['breakingChanges'][0]['type']; 
 
 describe('migrationGuide', () => {
   it('generates markdown with PARAM_REQUIRED_ADDED hint', () => {
-    const md = generateMigrationGuide(
-      diff([{ type: 'PARAM_REQUIRED_ADDED', description: 'Required param orgId added.' }])
-    );
+    const d = diff([{ type: 'PARAM_REQUIRED_ADDED', description: 'Required param orgId added.' }]);
+    d.breakingChanges[0] = { ...d.breakingChanges[0]!, after: {} };
+    const md = generateMigrationGuide(d);
     expect(md).toContain('Migration Guide');
     expect(md).toContain('PARAM_REQUIRED_ADDED');
     expect(md).toContain('Add the new required parameter');

@@ -1,0 +1,10 @@
+<mjml>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-text font-size="18px">Daily API Change Digest</mj-text>
+        <mj-text>{{#each items}}{{this.summary}}{{/each}}</mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

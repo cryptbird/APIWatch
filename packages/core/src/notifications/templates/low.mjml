@@ -1,0 +1,14 @@
+<mjml>
+  <mj-body>
+    <mj-section background-color="#22c55e">
+      <mj-column>
+        <mj-text color="#fff">LOW: API Update</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text>{{changeSummary}}</mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
