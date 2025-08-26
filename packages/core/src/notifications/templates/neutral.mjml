@@ -1,0 +1,14 @@
+<mjml>
+  <mj-body>
+    <mj-section background-color="#f59e0b">
+      <mj-column>
+        <mj-text color="#fff">NEUTRAL: API Change</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text>{{changeSummary}}</mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -136,6 +136,29 @@ export const notifications = pgTable('notifications', {
   payload: jsonb('payload').default({}),
 });
 
+export const inAppNotifications = pgTable(
+  'in_app_notifications',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    userId: varchar('user_id', { length: 255 }).notNull(),
+    changeEventId: uuid('change_event_id').notNull(),
+    channelType: varchar('channel_type', { length: 32 }).notNull(),
+    subject: varchar('subject', { length: 512 }).notNull(),
+    body: text('body'),
+    threatLevel: varchar('threat_level', { length: 32 }).notNull(),
+    read: boolean('read').default(false),
+    acknowledged: boolean('acknowledged').default(false),
+    readAt: timestamp('read_at'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+  },
+  (t) => ({
+    indexes: [
+      index('in_app_notifications_user_id_idx').on(t.userId),
+      index('in_app_notifications_read_idx').on(t.read),
+    ],
+  })
+);
+
 export const teams = pgTable('teams', {
   id: uuid('id').primaryKey().defaultRandom(),
   name: varchar('name', { length: 255 }).notNull(),
