@@ -7,6 +7,7 @@ import { getEnv } from './env.js';
 import { getRedisClient, closeRedis } from './cache/redis.js';
 import { healthRoutes } from './routes/health.js';
 import { authRoutes } from './routes/auth.js';
+import { apisRoutes } from './routes/apis.routes.js';
 import { registryRoutes } from './registry/registry.routes.js';
 import { usageRoutes } from './routes/usage.routes.js';
 import { graphRoutes } from './routes/graph.routes.js';
@@ -32,6 +33,7 @@ export async function start(): Promise<void> {
 
   await app.register(healthRoutes);
   await app.register(authRoutes);
+  await app.register(apisRoutes);
   await app.register(registryRoutes);
   await app.register(usageRoutes);
   await app.register(graphRoutes);
