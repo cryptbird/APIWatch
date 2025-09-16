@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { OrgSelector } from './OrgSelector';
+import { useNotificationStore } from '../store/notificationStore';
 
 const navItems: { to: string; label: string; badge?: 'notifications' }[] = [
   { to: '/dashboard', label: 'Dashboard' },
@@ -20,6 +21,7 @@ interface SidebarProps {
  */
 export function Sidebar({ collapsed = false }: SidebarProps): React.ReactElement {
   const location = useLocation();
+  const unreadCount = useNotificationStore((s) => s.unreadCount);
 
   return (
     <aside
@@ -57,7 +59,7 @@ export function Sidebar({ collapsed = false }: SidebarProps): React.ReactElement
               {badge === 'notifications' ? (
                 <span className="relative">
                   <BellIcon />
-                  <UnreadBadge />
+                  <UnreadBadge count={unreadCount} />
                 </span>
               ) : (
                 <NavIcon to={to} />
@@ -79,8 +81,7 @@ function BellIcon(): React.ReactElement {
   );
 }
 
-function UnreadBadge(): React.ReactElement {
-  const count = 0; // 6.16: notificationStore unread count
+function UnreadBadge({ count }: { count: number }): React.ReactElement {
   if (count === 0) return <></>;
   return (
     <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 flex items-center justify-center rounded-full bg-danger text-white text-xs font-mono">
