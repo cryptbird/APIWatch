@@ -234,6 +234,52 @@ export const usageEvents = pgTable(
     indexes: [
       index('usage_events_source_idx').on(t.sourceApiId),
       index('usage_events_timestamp_idx').on(t.timestamp),
+      index('usage_events_target_idx').on(t.targetApiId),
+    ],
+  })
+);
+
+export const apiHourlyStats = pgTable(
+  'api_hourly_stats',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    apiId: uuid('api_id')
+      .notNull()
+      .references(() => apis.id, { onDelete: 'cascade' }),
+    hour: timestamp('hour', { withTimezone: true }).notNull(),
+    callCount: integer('call_count').notNull().default(0),
+    errorCount: integer('error_count').notNull().default(0),
+    p50LatencyMs: integer('p50_latency_ms'),
+    p95LatencyMs: integer('p95_latency_ms'),
+    p99LatencyMs: integer('p99_latency_ms'),
+    uniqueCallerCount: integer('unique_caller_count').notNull().default(0),
+  },
+  (t) => ({
+    indexes: [
+      index('api_hourly_stats_api_id_idx').on(t.apiId),
+      index('api_hourly_stats_hour_idx').on(t.hour),
+    ],
+  })
+);
+
+export const apiHealthScores = pgTable(
+  'api_health_scores',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    apiId: uuid('api_id')
+      .notNull()
+      .references(() => apis.id, { onDelete: 'cascade' }),
+    score: integer('score').notNull(),
+    threatLevelPenalty: integer('threat_level_penalty').notNull().default(0),
+    errorRatePenalty: integer('error_rate_penalty').notNull().default(0),
+    latencyPenalty: integer('latency_penalty').notNull().default(0),
+    unacknowledgedPenalty: integer('unacknowledged_penalty').notNull().default(0),
+    computedAt: timestamp('computed_at', { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => ({
+    indexes: [
+      index('api_health_scores_api_id_idx').on(t.apiId),
+      index('api_health_scores_score_idx').on(t.score),
     ],
   })
 );
