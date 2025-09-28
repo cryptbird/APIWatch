@@ -1,0 +1,11 @@
+apiVersion: v2
+name: apiwatch
+description: APIWatch - API Dependency Management Framework
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - apiwatch
+  - api
+  - dependencies
+maintainers:
+  - name: APIWatch
