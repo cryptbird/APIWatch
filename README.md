@@ -1,7 +1,7 @@
 # APIWatch
-01001000 01100101 01101100 01101100 01101111 00100000 01010100 01100001 01101110 01101101 01100001 01111001 00100001 00100000 01000100 01010101 01000100 01010101 00100000 01000001 01010011 01010011 01000101 01001101 01000010 01001100 01000101 01000100
 
-# APIWatch
+[![Build](https://github.com/your-org/apiwatch/actions/workflows/ci.yml/badge.svg)](https://github.com/your-org/apiwatch/actions)
+[![License](https://img.shields.io/badge/license-Proprietary-blue.svg)](./LICENSE)
 
 Enterprise-grade API Dependency Management Framework.
 
