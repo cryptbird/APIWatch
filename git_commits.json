@@ -1,0 +1,2486 @@
+{
+  "project": "APIWatch - API Dependency Management Framework",
+  "description": "Git commit schedule aligned with development phases. Run each git_command after completing the step.",
+  "usage": "For each step: (1) complete the described work, (2) run: git add -A && <git_command>",
+  "github_push": "Run 'git push origin main' after every 5-7 commits or after completing a phase",
+  "total_steps": 188,
+  "phases": {
+    "phase_1": {
+      "phase_number": 1,
+      "phase_name": "Bootstrap & Setup",
+      "steps": [
+        {
+          "step_id": "1.1",
+          "title": "Monorepo Initialization",
+          "description": "Create apiwatch directory, git init, pnpm init, create pnpm-workspace.yaml with packages/*, create turbo.json with build/test/lint pipeline, root package.json scripts",
+          "files_to_create_or_modify": [
+            "package.json",
+            "pnpm-workspace.yaml",
+            "turbo.json",
+            ".gitignore",
+            "README.md"
+          ],
+          "commit_message": "initial commit: project scaffold for apiwatch framework",
+          "commit_datetime": "2025-06-17 09:37:27",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-06-17 09:37:27\" GIT_COMMITTER_DATE=\"2025-06-17 09:37:27\" git commit -m \"initial commit: project scaffold for apiwatch framework\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-06-17 09:37:27\" GIT_COMMITTER_DATE=\"2025-06-17 09:37:27\" git commit -m \"initial commit: project scaffold for apiwatch framework\""
+        },
+        {
+          "step_id": "1.2",
+          "title": "TypeScript Configuration",
+          "description": "Create tsconfig.base.json with strict mode, exactOptionalPropertyTypes, noUncheckedIndexedAccess, path aliases for all packages. Each package gets tsconfig.json extending base.",
+          "files_to_create_or_modify": [
+            "tsconfig.base.json",
+            "packages/core/tsconfig.json",
+            "packages/plugin/tsconfig.json",
+            "packages/cli/tsconfig.json",
+            "packages/dashboard/tsconfig.json",
+            "packages/shared/tsconfig.json"
+          ],
+          "commit_message": "add typescript config with strict mode and path aliases",
+          "commit_datetime": "2025-06-17 08:01:05",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-06-17 08:01:05\" GIT_COMMITTER_DATE=\"2025-06-17 08:01:05\" git commit -m \"add typescript config with strict mode and path aliases\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-06-17 08:01:05\" GIT_COMMITTER_DATE=\"2025-06-17 08:01:05\" git commit -m \"add typescript config with strict mode and path aliases\""
+        },
+        {
+          "step_id": "1.3",
+          "title": "ESLint and Prettier",
+          "description": "Install @typescript-eslint, configure .eslintrc.json with strict rules (no-any, explicit-return-types). Configure .prettierrc. Setup lint-staged and husky pre-commit hooks.",
+          "files_to_create_or_modify": [
+            ".eslintrc.json",
+            ".prettierrc",
+            ".husky/pre-commit",
+            ".lintstagedrc.json"
+          ],
+          "commit_message": "configure eslint and prettier for consistent code style",
+          "commit_datetime": "2025-06-18 09:24:06",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-06-18 09:24:06\" GIT_COMMITTER_DATE=\"2025-06-18 09:24:06\" git commit -m \"configure eslint and prettier for consistent code style\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-06-18 09:24:06\" GIT_COMMITTER_DATE=\"2025-06-18 09:24:06\" git commit -m \"configure eslint and prettier for consistent code style\""
+        },
+        {
+          "step_id": "1.4",
+          "title": "Shared Types Package",
+          "description": "Create packages/shared/src/types/ with api.types.ts (ApiEndpoint, ApiParam, ThreatLevel, HttpMethod), graph.types.ts (GraphNode, GraphEdge, SerializedGraph), diff.types.ts (SchemaDiff, SchemaChange, ChangeType), notification.types.ts (Notification, Subscriber, Channel)",
+          "files_to_create_or_modify": [
+            "packages/shared/src/types/api.types.ts",
+            "packages/shared/src/types/graph.types.ts",
+            "packages/shared/src/types/diff.types.ts",
+            "packages/shared/src/types/notification.types.ts",
+            "packages/shared/src/index.ts",
+            "packages/shared/package.json"
+          ],
+          "commit_message": "add ApiEndpoint and ApiSchema type definitions",
+          "commit_datetime": "2025-06-17 11:14:32",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-06-17 11:14:32\" GIT_COMMITTER_DATE=\"2025-06-17 11:14:32\" git commit -m \"add ApiEndpoint and ApiSchema type definitions\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-06-17 11:14:32\" GIT_COMMITTER_DATE=\"2025-06-17 11:14:32\" git commit -m \"add ApiEndpoint and ApiSchema type definitions\""
+        },
+        {
+          "step_id": "1.5",
+          "title": "Drizzle Schema",
+          "description": "Create packages/core/src/db/schema.ts with Drizzle tables: repos, apis, api_params, dependency_edges, api_snapshots, change_events, notifications, teams, subscribers, usage_events. Create first migration file.",
+          "files_to_create_or_modify": [
+            "packages/core/src/db/schema.ts",
+            "packages/core/src/db/index.ts",
+            "packages/core/src/db/migrations/0001_initial.sql",
+            "packages/core/package.json"
+          ],
+          "commit_message": "initial database migration: create apis table",
+          "commit_datetime": "2025-06-17 11:45:41",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-06-17 11:45:41\" GIT_COMMITTER_DATE=\"2025-06-17 11:45:41\" git commit -m \"initial database migration: create apis table\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-06-17 11:45:41\" GIT_COMMITTER_DATE=\"2025-06-17 11:45:41\" git commit -m \"initial database migration: create apis table\""
+        },
+        {
+          "step_id": "1.6",
+          "title": "Husky Pre-commit Hooks",
+          "description": "Configure husky with pre-commit hook running lint-staged. lint-staged runs eslint --fix and prettier --write on staged ts/tsx files. Also runs tsc --noEmit on commit.",
+          "files_to_create_or_modify": [
+            ".husky/pre-commit",
+            ".lintstagedrc.json"
+          ],
+          "commit_message": "setup husky pre-commit hooks for lint and test",
+          "commit_datetime": "2025-06-17 17:01:35",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-06-17 17:01:35\" GIT_COMMITTER_DATE=\"2025-06-17 17:01:35\" git commit -m \"setup husky pre-commit hooks for lint and test\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-06-17 17:01:35\" GIT_COMMITTER_DATE=\"2025-06-17 17:01:35\" git commit -m \"setup husky pre-commit hooks for lint and test\""
+        },
+        {
+          "step_id": "1.7",
+          "title": "Jest/Vitest Config",
+          "description": "Setup vitest.config.ts at root and per-package. Configure coverage thresholds (80% for service files), setup file for global mocks, aliases matching tsconfig paths.",
+          "files_to_create_or_modify": [
+            "vitest.config.ts",
+            "packages/core/vitest.config.ts",
+            "packages/plugin/vitest.config.ts"
+          ],
+          "commit_message": "add jest config for unit and integration tests",
+          "commit_datetime": "2025-06-18 20:51:10",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-06-18 20:51:10\" GIT_COMMITTER_DATE=\"2025-06-18 20:51:10\" git commit -m \"add jest config for unit and integration tests\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-06-18 20:51:10\" GIT_COMMITTER_DATE=\"2025-06-18 20:51:10\" git commit -m \"add jest config for unit and integration tests\""
+        },
+        {
+          "step_id": "1.8",
+          "title": "Shared Types - Cross Package",
+          "description": "Create packages/shared barrel exports, ensure all types are accessible via @apiwatch/shared import path alias. Add utility types: Result<T,E>, Paginated<T>, ApiResponse<T>.",
+          "files_to_create_or_modify": [
+            "packages/shared/src/utils/result.ts",
+            "packages/shared/src/utils/pagination.ts"
+          ],
+          "commit_message": "create shared types package for cross-package interfaces",
+          "commit_datetime": "2025-06-17 19:06:43",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-06-17 19:06:43\" GIT_COMMITTER_DATE=\"2025-06-17 19:06:43\" git commit -m \"create shared types package for cross-package interfaces\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-06-17 19:06:43\" GIT_COMMITTER_DATE=\"2025-06-17 19:06:43\" git commit -m \"create shared types package for cross-package interfaces\""
+        },
+        {
+          "step_id": "1.9",
+          "title": "Docker Compose",
+          "description": "Create docker-compose.yml with postgres:15-alpine (port 5432, volume), redis:7-alpine (port 6379), apiwatch-server service. Create .env.example with all required vars. Create packages/core/src/env.ts validating all env vars with Zod at startup.",
+          "files_to_create_or_modify": [
+            "docker-compose.yml",
+            ".env.example",
+            "packages/core/src/env.ts"
+          ],
+          "commit_message": "setup docker-compose for local development dependencies",
+          "commit_datetime": "2025-06-20 08:42:14",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-06-20 08:42:14\" GIT_COMMITTER_DATE=\"2025-06-20 08:42:14\" git commit -m \"setup docker-compose for local development dependencies\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-06-20 08:42:14\" GIT_COMMITTER_DATE=\"2025-06-20 08:42:14\" git commit -m \"setup docker-compose for local development dependencies\""
+        },
+        {
+          "step_id": "1.10",
+          "title": "GitHub Actions CI",
+          "description": "Create .github/workflows/ci.yml with jobs: lint (eslint + tsc), test (vitest with coverage), build (tsup), docker-build. Cache pnpm store. Run on push and PR to main.",
+          "files_to_create_or_modify": [
+            ".github/workflows/ci.yml"
+          ],
+          "commit_message": "add basic CI pipeline with github actions",
+          "commit_datetime": "2025-06-18 13:54:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-06-18 13:54:22\" GIT_COMMITTER_DATE=\"2025-06-18 13:54:22\" git commit -m \"add basic CI pipeline with github actions\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-06-18 13:54:22\" GIT_COMMITTER_DATE=\"2025-06-18 13:54:22\" git commit -m \"add basic CI pipeline with github actions\""
+        },
+        {
+          "step_id": "1.11",
+          "title": "Commitlint",
+          "description": "Install commitlint with @commitlint/config-conventional. Configure commitlint.config.js. Add commit-msg husky hook. Enforce conventional commits: feat/fix/docs/chore/refactor/test/perf.",
+          "files_to_create_or_modify": [
+            "commitlint.config.js",
+            ".husky/commit-msg"
+          ],
+          "commit_message": "setup commitlint for conventional commit enforcement",
+          "commit_datetime": "2025-06-18 17:16:51",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-06-18 17:16:51\" GIT_COMMITTER_DATE=\"2025-06-18 17:16:51\" git commit -m \"setup commitlint for conventional commit enforcement\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-06-18 17:16:51\" GIT_COMMITTER_DATE=\"2025-06-18 17:16:51\" git commit -m \"setup commitlint for conventional commit enforcement\""
+        },
+        {
+          "step_id": "1.12",
+          "title": "ADRs",
+          "description": "Create docs/adr/ with Architecture Decision Records: ADR-001 (monorepo with pnpm), ADR-002 (Fastify over Express), ADR-003 (Drizzle ORM), ADR-004 (Plugin architecture), ADR-005 (Graph storage strategy).",
+          "files_to_create_or_modify": [
+            "docs/adr/ADR-001-monorepo.md",
+            "docs/adr/ADR-002-fastify.md",
+            "docs/adr/ADR-003-drizzle.md",
+            "docs/adr/ADR-004-plugin.md",
+            "docs/adr/ADR-005-graph.md"
+          ],
+          "commit_message": "create initial architecture decision records (ADRs)",
+          "commit_datetime": "2025-06-18 19:27:21",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-06-18 19:27:21\" GIT_COMMITTER_DATE=\"2025-06-18 19:27:21\" git commit -m \"create initial architecture decision records (ADRs)\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-06-18 19:27:21\" GIT_COMMITTER_DATE=\"2025-06-18 19:27:21\" git commit -m \"create initial architecture decision records (ADRs)\""
+        },
+        {
+          "step_id": "1.13",
+          "title": "tsup Build Config",
+          "description": "Configure tsup for core, plugin, and cli packages. Entry points, output formats (CJS + ESM), declaration files, source maps. Add build scripts.",
+          "files_to_create_or_modify": [
+            "packages/core/tsup.config.ts",
+            "packages/plugin/tsup.config.ts",
+            "packages/cli/tsup.config.ts"
+          ],
+          "commit_message": "setup tsup for bundling core and cli packages",
+          "commit_datetime": "2025-06-20 11:45:04",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-06-20 11:45:04\" GIT_COMMITTER_DATE=\"2025-06-20 11:45:04\" git commit -m \"setup tsup for bundling core and cli packages\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-06-20 11:45:04\" GIT_COMMITTER_DATE=\"2025-06-20 11:45:04\" git commit -m \"setup tsup for bundling core and cli packages\""
+        },
+        {
+          "step_id": "1.14",
+          "title": "Dashboard Scaffold",
+          "description": "Create packages/dashboard with Vite + React 18 + TypeScript. Install react-router-dom, @tanstack/react-query, zustand for state. Configure vite.config.ts with path aliases.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/package.json",
+            "packages/dashboard/vite.config.ts",
+            "packages/dashboard/index.html",
+            "packages/dashboard/src/main.tsx",
+            "packages/dashboard/src/App.tsx"
+          ],
+          "commit_message": "scaffold dashboard package with vite and react",
+          "commit_datetime": "2025-06-20 20:18:05",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-06-20 20:18:05\" GIT_COMMITTER_DATE=\"2025-06-20 20:18:05\" git commit -m \"scaffold dashboard package with vite and react\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-06-20 20:18:05\" GIT_COMMITTER_DATE=\"2025-06-20 20:18:05\" git commit -m \"scaffold dashboard package with vite and react\""
+        },
+        {
+          "step_id": "1.15",
+          "title": "TailwindCSS",
+          "description": "Install and configure TailwindCSS v3 + postcss + autoprefixer in dashboard package. Create tailwind.config.ts with custom color palette: slate backgrounds, amber accents, electric blue for info, custom JetBrains Mono for code.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/tailwind.config.ts",
+            "packages/dashboard/postcss.config.js",
+            "packages/dashboard/src/index.css"
+          ],
+          "commit_message": "add tailwindcss to dashboard package",
+          "commit_datetime": "2025-06-22 10:34:46",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-06-22 10:34:46\" GIT_COMMITTER_DATE=\"2025-06-22 10:34:46\" git commit -m \"add tailwindcss to dashboard package\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-06-22 10:34:46\" GIT_COMMITTER_DATE=\"2025-06-22 10:34:46\" git commit -m \"add tailwindcss to dashboard package\""
+        },
+        {
+          "step_id": "1.16",
+          "title": "Nodemon Dev Server",
+          "description": "Add nodemon.json for packages/core with watch paths, ignore patterns, exec command. Add dev script to core package.json. Also add tsx for running TypeScript directly in development.",
+          "files_to_create_or_modify": [
+            "packages/core/nodemon.json",
+            "packages/core/src/server.ts"
+          ],
+          "commit_message": "add nodemon for hot reload during development",
+          "commit_datetime": "2025-06-20 21:23:36",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-06-20 21:23:36\" GIT_COMMITTER_DATE=\"2025-06-20 21:23:36\" git commit -m \"add nodemon for hot reload during development\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-06-20 21:23:36\" GIT_COMMITTER_DATE=\"2025-06-20 21:23:36\" git commit -m \"add nodemon for hot reload during development\""
+        },
+        {
+          "step_id": "1.17",
+          "title": "Postgres Schema Skeleton",
+          "description": "Expand Drizzle schema with all remaining tables: teams (id, name, orgId, slackChannelId), team_members (teamId, userId, role), api_ownership (apiId, teamId, squadId). Add foreign key constraints.",
+          "files_to_create_or_modify": [
+            "packages/core/src/db/schema.ts"
+          ],
+          "commit_message": "add postgres schema skeleton for api registry",
+          "commit_datetime": "2025-06-22 11:10:29",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-06-22 11:10:29\" GIT_COMMITTER_DATE=\"2025-06-22 11:10:29\" git commit -m \"add postgres schema skeleton for api registry\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-06-22 11:10:29\" GIT_COMMITTER_DATE=\"2025-06-22 11:10:29\" git commit -m \"add postgres schema skeleton for api registry\""
+        },
+        {
+          "step_id": "1.18",
+          "title": "Redis Setup",
+          "description": "Install ioredis. Create packages/core/src/cache/redis.ts with connection pool, typed get/set/del/expire helpers, pub/sub manager. Add Redis health check to server startup.",
+          "files_to_create_or_modify": [
+            "packages/core/src/cache/redis.ts",
+            "packages/core/src/cache/pubsub.ts"
+          ],
+          "commit_message": "setup redis for caching and pub/sub",
+          "commit_datetime": "2025-06-22 11:43:20",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-06-22 11:43:20\" GIT_COMMITTER_DATE=\"2025-06-22 11:43:20\" git commit -m \"setup redis for caching and pub/sub\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-06-22 11:43:20\" GIT_COMMITTER_DATE=\"2025-06-22 11:43:20\" git commit -m \"setup redis for caching and pub/sub\""
+        },
+        {
+          "step_id": "1.19",
+          "title": "Health Check Endpoint",
+          "description": "Create Fastify server with GET /health returning {status, db: ok/error, redis: ok/error, version, uptime}. Setup graceful shutdown on SIGTERM. Configure Fastify with logger (pino).",
+          "files_to_create_or_modify": [
+            "packages/core/src/server.ts",
+            "packages/core/src/routes/health.ts"
+          ],
+          "commit_message": "add basic health check endpoint to core server",
+          "commit_datetime": "2025-06-24 10:16:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-06-24 10:16:08\" GIT_COMMITTER_DATE=\"2025-06-24 10:16:08\" git commit -m \"add basic health check endpoint to core server\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-06-24 10:16:08\" GIT_COMMITTER_DATE=\"2025-06-24 10:16:08\" git commit -m \"add basic health check endpoint to core server\""
+        },
+        {
+          "step_id": "1.20",
+          "title": "First Integration Test",
+          "description": "Write packages/core/tests/integration/server.test.ts: starts test server, hits /health, asserts 200 with correct shape. Mock DB and Redis in test setup.",
+          "files_to_create_or_modify": [
+            "packages/core/tests/integration/server.test.ts",
+            "packages/core/tests/setup.ts"
+          ],
+          "commit_message": "write first integration test: server starts successfully",
+          "commit_datetime": "2025-06-24 11:08:32",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-06-24 11:08:32\" GIT_COMMITTER_DATE=\"2025-06-24 11:08:32\" git commit -m \"write first integration test: server starts successfully\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-06-24 11:08:32\" GIT_COMMITTER_DATE=\"2025-06-24 11:08:32\" git commit -m \"write first integration test: server starts successfully\""
+        }
+      ]
+    },
+    "phase_2": {
+      "phase_number": 2,
+      "phase_name": "Plugin Core & API Scanner",
+      "steps": [
+        {
+          "step_id": "2.1",
+          "title": "Plugin Entry Point & Config Schema",
+          "description": "Create packages/plugin/src/index.ts with initApiWatch(config) and scanAndReport() exports. Create ApiWatchConfig Zod schema with all config fields. Create apiwatch.config.ts template.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/index.ts",
+            "packages/plugin/src/config.ts",
+            "packages/plugin/src/config.schema.ts"
+          ],
+          "commit_message": "scaffold core plugin package with basic entry point",
+          "commit_datetime": "2025-07-01 09:15:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-01 09:15:22\" GIT_COMMITTER_DATE=\"2025-07-01 09:15:22\" git commit -m \"scaffold core plugin package with basic entry point\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-01 09:15:22\" GIT_COMMITTER_DATE=\"2025-07-01 09:15:22\" git commit -m \"scaffold core plugin package with basic entry point\""
+        },
+        {
+          "step_id": "2.2",
+          "title": "Plugin Config Validation",
+          "description": "Create Zod schema for apiwatch.config.ts with all fields validated. Add config loader that reads from apiwatch.config.ts, validates, and returns typed config. Error messages should be user-friendly.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/config.schema.ts",
+            "packages/plugin/src/configLoader.ts"
+          ],
+          "commit_message": "add plugin config schema with zod validation",
+          "commit_datetime": "2025-07-01 14:33:10",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-01 14:33:10\" GIT_COMMITTER_DATE=\"2025-07-01 14:33:10\" git commit -m \"add plugin config schema with zod validation\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-01 14:33:10\" GIT_COMMITTER_DATE=\"2025-07-01 14:33:10\" git commit -m \"add plugin config schema with zod validation\""
+        },
+        {
+          "step_id": "2.3",
+          "title": "Config Template Generator",
+          "description": "CLI generates apiwatch.config.ts template with comments explaining each option. Template includes: serverUrl, repoId, apiKey placeholders, scanPaths examples, framework detection hint.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/templates/apiwatch.config.template.ts",
+            "packages/cli/src/templates/"
+          ],
+          "commit_message": "create apiwatch.config.ts template for new installs",
+          "commit_datetime": "2025-07-02 10:45:33",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-02 10:45:33\" GIT_COMMITTER_DATE=\"2025-07-02 10:45:33\" git commit -m \"create apiwatch.config.ts template for new installs\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-02 10:45:33\" GIT_COMMITTER_DATE=\"2025-07-02 10:45:33\" git commit -m \"create apiwatch.config.ts template for new installs\""
+        },
+        {
+          "step_id": "2.4",
+          "title": "Chokidar File Watcher",
+          "description": "Create packages/plugin/src/watcher.ts using chokidar. Watch configured scanPaths for .ts/.js route file changes. On change: debounce 2s, re-scan changed file, diff against last scan, report changes to core server.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/watcher.ts"
+          ],
+          "commit_message": "implement file watcher using chokidar for route file changes",
+          "commit_datetime": "2025-07-03 09:22:14",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-03 09:22:14\" GIT_COMMITTER_DATE=\"2025-07-03 09:22:14\" git commit -m \"implement file watcher using chokidar for route file changes\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-03 09:22:14\" GIT_COMMITTER_DATE=\"2025-07-03 09:22:14\" git commit -m \"implement file watcher using chokidar for route file changes\""
+        },
+        {
+          "step_id": "2.5",
+          "title": "Express Route Scanner",
+          "description": "Create ExpressScanner.ts using ts-morph AST parsing. Extract: app.get/post/put/patch/delete/use calls, router.route() chains, nested router.use(). For each route: path, method, handler function reference. Handle path concatenation for nested routers.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/scanners/ExpressScanner.ts",
+            "packages/plugin/src/scanners/ExpressScanner.test.ts"
+          ],
+          "commit_message": "add express route scanner: extracts path method and params",
+          "commit_datetime": "2025-07-04 11:30:45",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-04 11:30:45\" GIT_COMMITTER_DATE=\"2025-07-04 11:30:45\" git commit -m \"add express route scanner: extracts path method and params\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-04 11:30:45\" GIT_COMMITTER_DATE=\"2025-07-04 11:30:45\" git commit -m \"add express route scanner: extracts path method and params\""
+        },
+        {
+          "step_id": "2.6",
+          "title": "Fastify Scanner",
+          "description": "Create FastifyScanner.ts. Parse fastify.route({method, url, schema, handler}), fastify.get/post etc., fastify.register() with prefix. Extract inline JSON Schema from route schema option.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/scanners/FastifyScanner.ts",
+            "packages/plugin/src/scanners/FastifyScanner.test.ts"
+          ],
+          "commit_message": "add fastify route scanner plugin",
+          "commit_datetime": "2025-07-05 14:20:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-05 14:20:08\" GIT_COMMITTER_DATE=\"2025-07-05 14:20:08\" git commit -m \"add fastify route scanner plugin\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-05 14:20:08\" GIT_COMMITTER_DATE=\"2025-07-05 14:20:08\" git commit -m \"add fastify route scanner plugin\""
+        },
+        {
+          "step_id": "2.7",
+          "title": "OpenAPI Parser",
+          "description": "Create OpenApiScanner.ts using @apidevtools/swagger-parser. Support swagger 2.0, openapi 3.0, openapi 3.1. Resolve $ref references. Convert to internal ApiEndpoint[] format. Handle YAML and JSON inputs.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/scanners/OpenApiScanner.ts",
+            "packages/plugin/src/scanners/OpenApiScanner.test.ts"
+          ],
+          "commit_message": "implement OpenAPI spec parser for existing api docs",
+          "commit_datetime": "2025-07-06 10:15:33",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-06 10:15:33\" GIT_COMMITTER_DATE=\"2025-07-06 10:15:33\" git commit -m \"implement OpenAPI spec parser for existing api docs\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-06 10:15:33\" GIT_COMMITTER_DATE=\"2025-07-06 10:15:33\" git commit -m \"implement OpenAPI spec parser for existing api docs\""
+        },
+        {
+          "step_id": "2.8",
+          "title": "Swagger 2.0 Support",
+          "description": "Extend OpenApiScanner to handle swagger 2.0 specifically: basePath concatenation, definitions instead of components/schemas, consumes/produces at global and operation level, host field.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/scanners/OpenApiScanner.ts"
+          ],
+          "commit_message": "add swagger 2.0 and openapi 3.x support in parser",
+          "commit_datetime": "2025-07-07 09:44:55",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-07 09:44:55\" GIT_COMMITTER_DATE=\"2025-07-07 09:44:55\" git commit -m \"add swagger 2.0 and openapi 3.x support in parser\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-07 09:44:55\" GIT_COMMITTER_DATE=\"2025-07-07 09:44:55\" git commit -m \"add swagger 2.0 and openapi 3.x support in parser\""
+        },
+        {
+          "step_id": "2.9",
+          "title": "API Registry Class",
+          "description": "Create packages/plugin/src/registry/ApiRegistry.ts. In-memory store for discovered endpoints during a scan session. Methods: register, getAll, getByPath, diff(previousScan), clear. Persists to .apiwatch-cache.json.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/registry/ApiRegistry.ts",
+            "packages/plugin/src/registry/ApiRegistry.test.ts"
+          ],
+          "commit_message": "create ApiRegistry class to store discovered endpoints",
+          "commit_datetime": "2025-07-08 13:22:40",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-08 13:22:40\" GIT_COMMITTER_DATE=\"2025-07-08 13:22:40\" git commit -m \"create ApiRegistry class to store discovered endpoints\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-08 13:22:40\" GIT_COMMITTER_DATE=\"2025-07-08 13:22:40\" git commit -m \"create ApiRegistry class to store discovered endpoints\""
+        },
+        {
+          "step_id": "2.10",
+          "title": "Endpoint Fingerprinting",
+          "description": "Create packages/plugin/src/fingerprint.ts. Hash function: SHA-256 of (repoId + method + path + sorted-param-names). Fingerprint changes only when API contract changes (not description/docs). Used to detect breaking changes vs non-breaking.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/fingerprint.ts",
+            "packages/plugin/src/fingerprint.test.ts"
+          ],
+          "commit_message": "add fingerprinting for api endpoints (hash of path+method+params)",
+          "commit_datetime": "2025-07-09 10:50:17",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-09 10:50:17\" GIT_COMMITTER_DATE=\"2025-07-09 10:50:17\" git commit -m \"add fingerprinting for api endpoints (hash of path+method+params)\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-09 10:50:17\" GIT_COMMITTER_DATE=\"2025-07-09 10:50:17\" git commit -m \"add fingerprinting for api endpoints (hash of path+method+params)\""
+        },
+        {
+          "step_id": "2.11",
+          "title": "Directory Scanner",
+          "description": "Create packages/plugin/src/scanners/DirectoryScanner.ts. Recursively walk directories matching scan paths. Skip: node_modules, dist, .git, test files (*spec*, *test*), files in .apiwatchignore. Detect framework by inspecting imports.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/scanners/DirectoryScanner.ts",
+            "packages/plugin/src/scanners/DirectoryScanner.test.ts"
+          ],
+          "commit_message": "implement recursive directory scanner for route files",
+          "commit_datetime": "2025-07-09 15:30:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-09 15:30:22\" GIT_COMMITTER_DATE=\"2025-07-09 15:30:22\" git commit -m \"implement recursive directory scanner for route files\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-09 15:30:22\" GIT_COMMITTER_DATE=\"2025-07-09 15:30:22\" git commit -m \"implement recursive directory scanner for route files\""
+        },
+        {
+          "step_id": "2.12",
+          "title": "NestJS Scanner",
+          "description": "Create NestScanner.ts. Use ts-morph to find @Controller, @Get, @Post, @Put, @Patch, @Delete decorators. Extract @Body, @Param, @Query, @Headers param decorators. Resolve full path from controller prefix + method decorator.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/scanners/NestScanner.ts",
+            "packages/plugin/src/scanners/NestScanner.test.ts"
+          ],
+          "commit_message": "add support for typescript decorator based routes (nestjs)",
+          "commit_datetime": "2025-07-10 11:45:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-10 11:45:30\" GIT_COMMITTER_DATE=\"2025-07-10 11:45:30\" git commit -m \"add support for typescript decorator based routes (nestjs)\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-10 11:45:30\" GIT_COMMITTER_DATE=\"2025-07-10 11:45:30\" git commit -m \"add support for typescript decorator based routes (nestjs)\""
+        },
+        {
+          "step_id": "2.13",
+          "title": "CLI Init Command",
+          "description": "Create packages/cli/src/commands/init.ts using inquirer prompts: server URL, repo name, team name, framework choice, scan paths, apiKey. Generates apiwatch.config.ts in CWD. Adds postinstall script. Shows success summary.",
+          "files_to_create_or_modify": [
+            "packages/cli/src/commands/init.ts",
+            "packages/cli/src/index.ts"
+          ],
+          "commit_message": "cli: add `apiwatch init` command for first time setup",
+          "commit_datetime": "2025-07-11 10:20:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-11 10:20:15\" GIT_COMMITTER_DATE=\"2025-07-11 10:20:15\" git commit -m \"cli: add `apiwatch init` command for first time setup\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-11 10:20:15\" GIT_COMMITTER_DATE=\"2025-07-11 10:20:15\" git commit -m \"cli: add `apiwatch init` command for first time setup\""
+        },
+        {
+          "step_id": "2.14",
+          "title": "CLI Scan Command",
+          "description": "Create packages/cli/src/commands/scan.ts. Options: --dry-run (show without syncing), --verbose (show all found routes), --yes (skip confirmation). Shows progress spinner (ora), results table (cli-table3), diff from last scan.",
+          "files_to_create_or_modify": [
+            "packages/cli/src/commands/scan.ts"
+          ],
+          "commit_message": "cli: add `apiwatch scan` command to discover all apis",
+          "commit_datetime": "2025-07-12 14:15:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-12 14:15:08\" GIT_COMMITTER_DATE=\"2025-07-12 14:15:08\" git commit -m \"cli: add `apiwatch scan` command to discover all apis\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-12 14:15:08\" GIT_COMMITTER_DATE=\"2025-07-12 14:15:08\" git commit -m \"cli: add `apiwatch scan` command to discover all apis\""
+        },
+        {
+          "step_id": "2.15",
+          "title": "CLI Status Command",
+          "description": "Create packages/cli/src/commands/status.ts. Shows: registered API count, last scan time, sync status (in-sync / drifted), any pending changes, server connectivity status.",
+          "files_to_create_or_modify": [
+            "packages/cli/src/commands/status.ts"
+          ],
+          "commit_message": "cli: add `apiwatch status` to show registered apis",
+          "commit_datetime": "2025-07-12 18:30:44",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-12 18:30:44\" GIT_COMMITTER_DATE=\"2025-07-12 18:30:44\" git commit -m \"cli: add `apiwatch status` to show registered apis\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-12 18:30:44\" GIT_COMMITTER_DATE=\"2025-07-12 18:30:44\" git commit -m \"cli: add `apiwatch status` to show registered apis\""
+        },
+        {
+          "step_id": "2.16",
+          "title": "Param Type Extractor",
+          "description": "Create ParamExtractor.ts. Given ts-morph FunctionDeclaration of a route handler: extract Request generic type args, resolve DTO classes, convert TypeScript types to JSON Schema using typescript-json-schema. Handle optional vs required params.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/scanners/ParamExtractor.ts",
+            "packages/plugin/src/scanners/ParamExtractor.test.ts"
+          ],
+          "commit_message": "implement param type extraction from typescript generics",
+          "commit_datetime": "2025-07-13 10:30:25",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-13 10:30:25\" GIT_COMMITTER_DATE=\"2025-07-13 10:30:25\" git commit -m \"implement param type extraction from typescript generics\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-13 10:30:25\" GIT_COMMITTER_DATE=\"2025-07-13 10:30:25\" git commit -m \"implement param type extraction from typescript generics\""
+        },
+        {
+          "step_id": "2.17",
+          "title": "Query & Body Extraction",
+          "description": "Extend ParamExtractor to handle: query string params (from Request query generic), request body (from Request body generic or @Body decorator DTO), extract field-level required/optional from class-validator decorators (@IsOptional, @IsNotEmpty).",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/scanners/ParamExtractor.ts"
+          ],
+          "commit_message": "add query param and body schema extraction",
+          "commit_datetime": "2025-07-14 13:45:12",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-14 13:45:12\" GIT_COMMITTER_DATE=\"2025-07-14 13:45:12\" git commit -m \"add query param and body schema extraction\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-14 13:45:12\" GIT_COMMITTER_DATE=\"2025-07-14 13:45:12\" git commit -m \"add query param and body schema extraction\""
+        },
+        {
+          "step_id": "2.18",
+          "title": "Optional vs Required Classification",
+          "description": "Add logic to classify params: TypeScript ? = optional, @IsOptional() = optional, having default value = optional, everything else = required. Critical for threat classification: required param added/removed = CRITICAL.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/scanners/ParamExtractor.ts"
+          ],
+          "commit_message": "handle optional vs required param classification",
+          "commit_datetime": "2025-07-14 17:20:33",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-14 17:20:33\" GIT_COMMITTER_DATE=\"2025-07-14 17:20:33\" git commit -m \"handle optional vs required param classification\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-14 17:20:33\" GIT_COMMITTER_DATE=\"2025-07-14 17:20:33\" git commit -m \"handle optional vs required param classification\""
+        },
+        {
+          "step_id": "2.19",
+          "title": "Response Schema Extraction",
+          "description": "Extract response schemas from route handler return types. Support: explicit return type annotation, Promise<T> unwrapping, express res.json() call analysis, fastify schema.response definition, @ApiResponse NestJS decorator.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/scanners/ParamExtractor.ts"
+          ],
+          "commit_message": "add response schema extraction from return types",
+          "commit_datetime": "2025-07-15 11:15:40",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-15 11:15:40\" GIT_COMMITTER_DATE=\"2025-07-15 11:15:40\" git commit -m \"add response schema extraction from return types\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-15 11:15:40\" GIT_COMMITTER_DATE=\"2025-07-15 11:15:40\" git commit -m \"add response schema extraction from return types\""
+        },
+        {
+          "step_id": "2.20",
+          "title": "Registry Sync Reporter",
+          "description": "Create packages/plugin/src/reporter.ts: ApiReporter class. register(endpoints[]) batches 50 per HTTP request to POST /api/endpoints/batch-upsert. Implements exponential backoff (3 attempts). Uses API key in Authorization header.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/reporter.ts",
+            "packages/plugin/src/reporter.test.ts"
+          ],
+          "commit_message": "implement registry sync: push local apis to central server",
+          "commit_datetime": "2025-07-15 15:30:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-15 15:30:22\" GIT_COMMITTER_DATE=\"2025-07-15 15:30:22\" git commit -m \"implement registry sync: push local apis to central server\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-15 15:30:22\" GIT_COMMITTER_DATE=\"2025-07-15 15:30:22\" git commit -m \"implement registry sync: push local apis to central server\""
+        },
+        {
+          "step_id": "2.21",
+          "title": "Auth Token System",
+          "description": "Core server: POST /api/auth/register-repo (creates repo + API key). POST /api/auth/rotate-key. Fastify preHandler hook validates API key on all /api/* routes. Store hashed keys in DB.",
+          "files_to_create_or_modify": [
+            "packages/core/src/auth/apiKey.ts",
+            "packages/core/src/auth/middleware.ts",
+            "packages/core/src/routes/auth.ts"
+          ],
+          "commit_message": "add authentication token system for repo identification",
+          "commit_datetime": "2025-07-16 09:45:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-16 09:45:15\" GIT_COMMITTER_DATE=\"2025-07-16 09:45:15\" git commit -m \"add authentication token system for repo identification\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-16 09:45:15\" GIT_COMMITTER_DATE=\"2025-07-16 09:45:15\" git commit -m \"add authentication token system for repo identification\""
+        },
+        {
+          "step_id": "2.22",
+          "title": "Repo Registration Flow",
+          "description": "Create repo registration: POST /api/repos/register with name, teamId, orgId, framework, contact email. Returns repoId + apiKey. Saves to repos table. CLI init command calls this to get credentials.",
+          "files_to_create_or_modify": [
+            "packages/core/src/registry/registry.routes.ts",
+            "packages/core/src/registry/RepoService.ts"
+          ],
+          "commit_message": "create repo registration flow with unique repo-id",
+          "commit_datetime": "2025-07-16 14:22:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-16 14:22:08\" GIT_COMMITTER_DATE=\"2025-07-16 14:22:08\" git commit -m \"create repo registration flow with unique repo-id\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-16 14:22:08\" GIT_COMMITTER_DATE=\"2025-07-16 14:22:08\" git commit -m \"create repo registration flow with unique repo-id\""
+        },
+        {
+          "step_id": "2.23",
+          "title": ".apiwatchignore Support",
+          "description": "Add support for .apiwatchignore file (gitignore syntax) in target repos. DirectoryScanner reads this file and skips matching paths. Default ignores: **/node_modules/**, **/dist/**, **/*.test.ts, **/*.spec.ts, **/migrations/**.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/scanners/DirectoryScanner.ts"
+          ],
+          "commit_message": "add support for .apiwatchignore file to skip paths",
+          "commit_datetime": "2025-07-17 10:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-17 10:30:15\" GIT_COMMITTER_DATE=\"2025-07-17 10:30:15\" git commit -m \"add support for .apiwatchignore file to skip paths\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-17 10:30:15\" GIT_COMMITTER_DATE=\"2025-07-17 10:30:15\" git commit -m \"add support for .apiwatchignore file to skip paths\""
+        },
+        {
+          "step_id": "2.24",
+          "title": "GraphQL Scanner",
+          "description": "Create GraphQLScanner.ts. Parse .graphql schema files and TypeScript resolvers using graphql-js. Extract: Query/Mutation/Subscription types, arguments (required/optional), return types. Register as pseudo-REST endpoints (POST /graphql#QueryName).",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/scanners/GraphQLScanner.ts",
+            "packages/plugin/src/scanners/GraphQLScanner.test.ts"
+          ],
+          "commit_message": "add support for graphql schema scanning",
+          "commit_datetime": "2025-07-17 15:20:44",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-17 15:20:44\" GIT_COMMITTER_DATE=\"2025-07-17 15:20:44\" git commit -m \"add support for graphql schema scanning\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-17 15:20:44\" GIT_COMMITTER_DATE=\"2025-07-17 15:20:44\" git commit -m \"add support for graphql schema scanning\""
+        },
+        {
+          "step_id": "2.25",
+          "title": "gRPC Proto Parser",
+          "description": "Create GrpcScanner.ts using @grpc/proto-loader. Parse .proto files, extract service definitions, RPC methods, request/response message types. Convert to ApiEndpoint format.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/scanners/GrpcScanner.ts",
+            "packages/plugin/src/scanners/GrpcScanner.test.ts"
+          ],
+          "commit_message": "implement gRPC proto file parser",
+          "commit_datetime": "2025-07-18 11:00:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-18 11:00:30\" GIT_COMMITTER_DATE=\"2025-07-18 11:00:30\" git commit -m \"implement gRPC proto file parser\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-18 11:00:30\" GIT_COMMITTER_DATE=\"2025-07-18 11:00:30\" git commit -m \"implement gRPC proto file parser\""
+        },
+        {
+          "step_id": "2.26",
+          "title": "Deprecation Marker Detection",
+          "description": "Scan for @deprecated JSDoc tags on route handlers. Also detect @ApiDeprecated (NestJS), deprecated: true in OpenAPI, and deprecationReason in GraphQL. Set ApiEndpoint.deprecated = true and include deprecation message.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/scanners/ParamExtractor.ts",
+            "packages/plugin/src/scanners/ExpressScanner.ts"
+          ],
+          "commit_message": "add deprecation marker detection from jsdoc comments",
+          "commit_datetime": "2025-07-18 15:45:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-18 15:45:22\" GIT_COMMITTER_DATE=\"2025-07-18 15:45:22\" git commit -m \"add deprecation marker detection from jsdoc comments\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-18 15:45:22\" GIT_COMMITTER_DATE=\"2025-07-18 15:45:22\" git commit -m \"add deprecation marker detection from jsdoc comments\""
+        },
+        {
+          "step_id": "2.27",
+          "title": "Scanner Unit Tests",
+          "description": "Write comprehensive unit tests for ExpressScanner: simple routes, nested routers, path params, query params, middleware chains. Test with real TypeScript fixture files. Snapshot test scanner output.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/scanners/__fixtures__/express-routes.ts",
+            "packages/plugin/src/scanners/ExpressScanner.test.ts"
+          ],
+          "commit_message": "write unit tests for express route scanner",
+          "commit_datetime": "2025-07-19 10:15:33",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-19 10:15:33\" GIT_COMMITTER_DATE=\"2025-07-19 10:15:33\" git commit -m \"write unit tests for express route scanner\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-19 10:15:33\" GIT_COMMITTER_DATE=\"2025-07-19 10:15:33\" git commit -m \"write unit tests for express route scanner\""
+        },
+        {
+          "step_id": "2.28",
+          "title": "OpenAPI Parser Tests",
+          "description": "Write unit tests for OpenApiScanner with fixture files: petstore (swagger 2.0), simple CRUD (openapi 3.0), complex with $refs (openapi 3.1). Assert correct param extraction, required classification, response schema.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/scanners/__fixtures__/petstore.yaml",
+            "packages/plugin/src/scanners/__fixtures__/crud-api.json",
+            "packages/plugin/src/scanners/OpenApiScanner.test.ts"
+          ],
+          "commit_message": "write unit tests for openapi parser",
+          "commit_datetime": "2025-07-19 14:30:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-19 14:30:08\" GIT_COMMITTER_DATE=\"2025-07-19 14:30:08\" git commit -m \"write unit tests for openapi parser\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-19 14:30:08\" GIT_COMMITTER_DATE=\"2025-07-19 14:30:08\" git commit -m \"write unit tests for openapi parser\""
+        },
+        {
+          "step_id": "2.29",
+          "title": "Fix Dynamic Path Segments",
+          "description": "Fix scanner to correctly normalize path params: Express :id and OpenAPI {id} both map to {id} in internal format. Handle optional path segments (:id?). Normalize trailing slashes. Merge duplicate routes (same path+method, different middleware).",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/scanners/ExpressScanner.ts",
+            "packages/plugin/src/scanners/pathNormalizer.ts"
+          ],
+          "commit_message": "fix: handle dynamic path segments correctly (e.g. :id vs {id})",
+          "commit_datetime": "2025-07-20 11:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-20 11:30:15\" GIT_COMMITTER_DATE=\"2025-07-20 11:30:15\" git commit -m \"fix: handle dynamic path segments correctly (e.g. :id vs {id})\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-20 11:30:15\" GIT_COMMITTER_DATE=\"2025-07-20 11:30:15\" git commit -m \"fix: handle dynamic path segments correctly (e.g. :id vs {id})\""
+        },
+        {
+          "step_id": "2.30",
+          "title": "Scanner Skip Test Files",
+          "description": "Update DirectoryScanner to skip test/spec files by default. Add --include-tests flag for CLI. Also skip: index.ts if it only re-exports, type definition files (.d.ts), generated files (*.generated.ts).",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/scanners/DirectoryScanner.ts"
+          ],
+          "commit_message": "fix: scanner should skip test files by default",
+          "commit_datetime": "2025-07-20 16:45:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-20 16:45:22\" GIT_COMMITTER_DATE=\"2025-07-20 16:45:22\" git commit -m \"fix: scanner should skip test files by default\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-20 16:45:22\" GIT_COMMITTER_DATE=\"2025-07-20 16:45:22\" git commit -m \"fix: scanner should skip test files by default\""
+        }
+      ]
+    },
+    "phase_3": {
+      "phase_number": 3,
+      "phase_name": "Dependency Graph Engine",
+      "steps": [
+        {
+          "step_id": "3.1",
+          "title": "DependencyGraph Data Model",
+          "description": "Design adjacency list graph structure. Create packages/core/src/graph/DependencyGraph.ts with GraphNode and GraphEdge classes. addNode(node), addEdge(edge), removeNode(id), removeEdge(id) methods. Internal Map<string, Set<string>> for O(1) neighbor lookup.",
+          "files_to_create_or_modify": [
+            "packages/core/src/graph/DependencyGraph.ts",
+            "packages/core/src/graph/DependencyGraph.test.ts",
+            "packages/core/src/db/migrations/0002_dependency_edges.sql"
+          ],
+          "commit_message": "design dependency graph data model with adjacency list",
+          "commit_datetime": "2025-07-21 09:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-21 09:30:15\" GIT_COMMITTER_DATE=\"2025-07-21 09:30:15\" git commit -m \"design dependency graph data model with adjacency list\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-21 09:30:15\" GIT_COMMITTER_DATE=\"2025-07-21 09:30:15\" git commit -m \"design dependency graph data model with adjacency list\""
+        },
+        {
+          "step_id": "3.2",
+          "title": "Graph Core Methods",
+          "description": "Implement: getDependents(apiId) \u2192 all nodes calling this API, getDependencies(apiId) \u2192 all nodes this API calls, getNeighbors(apiId, depth) \u2192 BFS to given depth, getSubgraph(nodeIds) \u2192 induced subgraph.",
+          "files_to_create_or_modify": [
+            "packages/core/src/graph/DependencyGraph.ts"
+          ],
+          "commit_message": "implement DependencyGraph class with addNode and addEdge",
+          "commit_datetime": "2025-07-21 14:45:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-21 14:45:30\" GIT_COMMITTER_DATE=\"2025-07-21 14:45:30\" git commit -m \"implement DependencyGraph class with addNode and addEdge\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-21 14:45:30\" GIT_COMMITTER_DATE=\"2025-07-21 14:45:30\" git commit -m \"implement DependencyGraph class with addNode and addEdge\""
+        },
+        {
+          "step_id": "3.3",
+          "title": "Dependency Edges DB Schema",
+          "description": "Add dependency_edges table to Drizzle schema: id, sourceApiId (FK), targetApiId (FK), sourceRepoId, targetRepoId, firstSeenAt, lastCalledAt, totalCallCount, avgLatencyMs, errorCount. Add composite index on (sourceApiId, targetApiId).",
+          "files_to_create_or_modify": [
+            "packages/core/src/db/schema.ts",
+            "packages/core/src/db/migrations/0002_dependency_edges.sql"
+          ],
+          "commit_message": "add database schema: dependency_edges table",
+          "commit_datetime": "2025-07-22 10:20:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-22 10:20:08\" GIT_COMMITTER_DATE=\"2025-07-22 10:20:08\" git commit -m \"add database schema: dependency_edges table\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-22 10:20:08\" GIT_COMMITTER_DATE=\"2025-07-22 10:20:08\" git commit -m \"add database schema: dependency_edges table\""
+        },
+        {
+          "step_id": "3.4",
+          "title": "API Call Interceptor",
+          "description": "Create runtime interceptor that records every outbound HTTP call. Records: sourceApiId (from env), targetUrl, resolves to targetApiId via URL prefix matching against registered endpoints, method, statusCode, latencyMs, timestamp.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/interceptors/CallInterceptor.ts",
+            "packages/plugin/src/interceptors/urlResolver.ts"
+          ],
+          "commit_message": "implement API call interceptor for runtime dependency tracking",
+          "commit_datetime": "2025-07-22 15:30:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-22 15:30:22\" GIT_COMMITTER_DATE=\"2025-07-22 15:30:22\" git commit -m \"implement API call interceptor for runtime dependency tracking\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-22 15:30:22\" GIT_COMMITTER_DATE=\"2025-07-22 15:30:22\" git commit -m \"implement API call interceptor for runtime dependency tracking\""
+        },
+        {
+          "step_id": "3.5",
+          "title": "Axios Interceptor",
+          "description": "Create AxiosInterceptor.ts. Monkey-patch axios globally: request interceptor adds X-ApiWatch-Source header, response interceptor records (url, method, status, latency). Batch sends to POST /api/usage/record every 10s or 100 events.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/interceptors/AxiosInterceptor.ts",
+            "packages/plugin/src/interceptors/AxiosInterceptor.test.ts"
+          ],
+          "commit_message": "add axios interceptor plugin for outgoing http call tracking",
+          "commit_datetime": "2025-07-23 11:15:40",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-23 11:15:40\" GIT_COMMITTER_DATE=\"2025-07-23 11:15:40\" git commit -m \"add axios interceptor plugin for outgoing http call tracking\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-23 11:15:40\" GIT_COMMITTER_DATE=\"2025-07-23 11:15:40\" git commit -m \"add axios interceptor plugin for outgoing http call tracking\""
+        },
+        {
+          "step_id": "3.6",
+          "title": "Fetch Interceptor",
+          "description": "Create FetchInterceptor.ts. Wraps global fetch with Proxy. Captures all fetch() calls, records same data as axios interceptor. Works in Node.js (node-fetch) and browser environments. Handles Request object and URL string inputs.",
+          "files_to_create_or_modify": [
+            "packages/plugin/src/interceptors/FetchInterceptor.ts",
+            "packages/plugin/src/interceptors/FetchInterceptor.test.ts"
+          ],
+          "commit_message": "add fetch wrapper for dependency tracking without axios",
+          "commit_datetime": "2025-07-23 16:20:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-23 16:20:08\" GIT_COMMITTER_DATE=\"2025-07-23 16:20:08\" git commit -m \"add fetch wrapper for dependency tracking without axios\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-23 16:20:08\" GIT_COMMITTER_DATE=\"2025-07-23 16:20:08\" git commit -m \"add fetch wrapper for dependency tracking without axios\""
+        },
+        {
+          "step_id": "3.7",
+          "title": "Usage Event Storage",
+          "description": "Create POST /api/usage/record endpoint. Accept batch of usage events. Validate with Zod. Resolve targetUrl to targetApiId using registered endpoint prefix matching. Store in usage_events table. Update dependency_edges aggregates.",
+          "files_to_create_or_modify": [
+            "packages/core/src/analytics/UsageTracker.ts",
+            "packages/core/src/routes/usage.routes.ts"
+          ],
+          "commit_message": "store dependency edges with source repo, target api, timestamp",
+          "commit_datetime": "2025-07-24 10:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-24 10:30:15\" GIT_COMMITTER_DATE=\"2025-07-24 10:30:15\" git commit -m \"store dependency edges with source repo, target api, timestamp\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-24 10:30:15\" GIT_COMMITTER_DATE=\"2025-07-24 10:30:15\" git commit -m \"store dependency edges with source repo, target api, timestamp\""
+        },
+        {
+          "step_id": "3.8",
+          "title": "Graph Traversal - Dependents",
+          "description": "Implement getDependents(apiId, maxDepth=3): BFS traversal returning all upstream callers up to maxDepth. Include edge metadata (callCount, latency, errorRate) on each returned node. Handle cycles gracefully with visited set.",
+          "files_to_create_or_modify": [
+            "packages/core/src/graph/DependencyGraph.ts"
+          ],
+          "commit_message": "implement graph traversal: find all dependents of an api",
+          "commit_datetime": "2025-07-24 14:45:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-24 14:45:22\" GIT_COMMITTER_DATE=\"2025-07-24 14:45:22\" git commit -m \"implement graph traversal: find all dependents of an api\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-24 14:45:22\" GIT_COMMITTER_DATE=\"2025-07-24 14:45:22\" git commit -m \"implement graph traversal: find all dependents of an api\""
+        },
+        {
+          "step_id": "3.9",
+          "title": "Graph Traversal - Dependencies",
+          "description": "Implement getDependencies(apiId, maxDepth=3): BFS traversal returning all downstream dependencies. Also implement getFullChain(apiId): returns complete upstream and downstream tree. Used for impact analysis.",
+          "files_to_create_or_modify": [
+            "packages/core/src/graph/DependencyGraph.ts"
+          ],
+          "commit_message": "implement graph traversal: find all dependencies of an api",
+          "commit_datetime": "2025-07-25 11:00:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-25 11:00:30\" GIT_COMMITTER_DATE=\"2025-07-25 11:00:30\" git commit -m \"implement graph traversal: find all dependencies of an api\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-25 11:00:30\" GIT_COMMITTER_DATE=\"2025-07-25 11:00:30\" git commit -m \"implement graph traversal: find all dependencies of an api\""
+        },
+        {
+          "step_id": "3.10",
+          "title": "Cycle Detection - Tarjan SCC",
+          "description": "Implement Tarjan Strongly Connected Components algorithm in DependencyGraph. detectCycles() returns array of cycles (each cycle is array of node IDs). Also flag nodes involved in cycles with isCyclic=true. Log warning if cycles detected.",
+          "files_to_create_or_modify": [
+            "packages/core/src/graph/DependencyGraph.ts",
+            "packages/core/src/graph/algorithms/tarjan.ts"
+          ],
+          "commit_message": "implement strongly connected components (Tarjan algorithm)",
+          "commit_datetime": "2025-07-25 15:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-25 15:30:15\" GIT_COMMITTER_DATE=\"2025-07-25 15:30:15\" git commit -m \"implement strongly connected components (Tarjan algorithm)\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-25 15:30:15\" GIT_COMMITTER_DATE=\"2025-07-25 15:30:15\" git commit -m \"implement strongly connected components (Tarjan algorithm)\""
+        },
+        {
+          "step_id": "3.11",
+          "title": "Circular Dependency Detection",
+          "description": "Add detectCycles() public method that runs Tarjan, formats cycle results as human-readable descriptions (API A \u2192 API B \u2192 API A), stores cycles in Redis for dashboard display, emits cycle:detected event.",
+          "files_to_create_or_modify": [
+            "packages/core/src/graph/DependencyGraph.ts",
+            "packages/core/src/graph/algorithms/cycles.ts"
+          ],
+          "commit_message": "add circular dependency detection using DFS",
+          "commit_datetime": "2025-07-26 10:15:33",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-26 10:15:33\" GIT_COMMITTER_DATE=\"2025-07-26 10:15:33\" git commit -m \"add circular dependency detection using DFS\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-26 10:15:33\" GIT_COMMITTER_DATE=\"2025-07-26 10:15:33\" git commit -m \"add circular dependency detection using DFS\""
+        },
+        {
+          "step_id": "3.12",
+          "title": "Graph Serialization",
+          "description": "Implement DependencyGraph.serialize() \u2192 SerializedGraph { nodes: GraphNode[], edges: GraphEdge[], metadata: { nodeCount, edgeCount, cycleCount, computedAt } }. Efficient JSON representation for frontend. Include only fields needed for rendering.",
+          "files_to_create_or_modify": [
+            "packages/core/src/graph/DependencyGraph.ts",
+            "packages/core/src/graph/graph.serializer.ts"
+          ],
+          "commit_message": "add graph serialization to JSON for frontend consumption",
+          "commit_datetime": "2025-07-26 14:20:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-26 14:20:08\" GIT_COMMITTER_DATE=\"2025-07-26 14:20:08\" git commit -m \"add graph serialization to JSON for frontend consumption\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-26 14:20:08\" GIT_COMMITTER_DATE=\"2025-07-26 14:20:08\" git commit -m \"add graph serialization to JSON for frontend consumption\""
+        },
+        {
+          "step_id": "3.13",
+          "title": "Graph Metrics - Centrality",
+          "description": "Implement computeCentrality(): weighted PageRank-style. Score = inDegree + 0.5*transitiveInDegree + callFrequencyWeight. Run on graph load and every 1hr via background job. Store centralityScore on GraphNode. Sort /graph/full by centrality desc.",
+          "files_to_create_or_modify": [
+            "packages/core/src/graph/algorithms/centrality.ts",
+            "packages/core/src/graph/DependencyGraph.ts"
+          ],
+          "commit_message": "add graph metrics: in-degree out-degree centrality scores",
+          "commit_datetime": "2025-07-27 11:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-27 11:30:15\" GIT_COMMITTER_DATE=\"2025-07-27 11:30:15\" git commit -m \"add graph metrics: in-degree out-degree centrality scores\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-27 11:30:15\" GIT_COMMITTER_DATE=\"2025-07-27 11:30:15\" git commit -m \"add graph metrics: in-degree out-degree centrality scores\""
+        },
+        {
+          "step_id": "3.14",
+          "title": "Dependency Depth & Critical Path",
+          "description": "Implement getDependencyDepth(apiId): max depth of upstream callers. Implement getCriticalPath(): chain of highest-centrality nodes, longest path in graph. These are highlighted specially in dashboard.",
+          "files_to_create_or_modify": [
+            "packages/core/src/graph/algorithms/criticalPath.ts",
+            "packages/core/src/graph/DependencyGraph.ts"
+          ],
+          "commit_message": "add critical path analysis for high-dependency apis",
+          "commit_datetime": "2025-07-27 16:00:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-27 16:00:22\" GIT_COMMITTER_DATE=\"2025-07-27 16:00:22\" git commit -m \"add critical path analysis for high-dependency apis\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-27 16:00:22\" GIT_COMMITTER_DATE=\"2025-07-27 16:00:22\" git commit -m \"add critical path analysis for high-dependency apis\""
+        },
+        {
+          "step_id": "3.15",
+          "title": "GraphService",
+          "description": "Create packages/core/src/graph/GraphService.ts as the main service layer. Loads full graph from DB on startup, keeps in memory, processes updates incrementally. Exposes all graph operations. Singleton with lazy initialization.",
+          "files_to_create_or_modify": [
+            "packages/core/src/graph/GraphService.ts"
+          ],
+          "commit_message": "create GraphService for server-side graph queries",
+          "commit_datetime": "2025-07-28 10:15:40",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-28 10:15:40\" GIT_COMMITTER_DATE=\"2025-07-28 10:15:40\" git commit -m \"create GraphService for server-side graph queries\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-28 10:15:40\" GIT_COMMITTER_DATE=\"2025-07-28 10:15:40\" git commit -m \"create GraphService for server-side graph queries\""
+        },
+        {
+          "step_id": "3.16",
+          "title": "Graph REST API - Dependents",
+          "description": "Create packages/core/src/routes/graph.routes.ts. Register: GET /api/graph/:apiId/dependents (with depth param), GET /api/graph/:apiId/dependencies, GET /api/graph/:apiId/critical-path. All responses validated with Zod output schemas.",
+          "files_to_create_or_modify": [
+            "packages/core/src/routes/graph.routes.ts",
+            "packages/core/src/graph/GraphService.ts"
+          ],
+          "commit_message": "add REST endpoints: GET /graph/:apiId/dependents",
+          "commit_datetime": "2025-07-28 14:45:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-28 14:45:08\" GIT_COMMITTER_DATE=\"2025-07-28 14:45:08\" git commit -m \"add REST endpoints: GET /graph/:apiId/dependents\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-28 14:45:08\" GIT_COMMITTER_DATE=\"2025-07-28 14:45:08\" git commit -m \"add REST endpoints: GET /graph/:apiId/dependents\""
+        },
+        {
+          "step_id": "3.17",
+          "title": "Graph REST API - Full & Team",
+          "description": "Add: GET /api/graph/full (paginated, cursor-based), GET /api/graph/team/:teamId (team subgraph), GET /api/graph/stats (counts, cycles), GET /api/graph/export?format=dot|csv. Implement cursor pagination for large graphs.",
+          "files_to_create_or_modify": [
+            "packages/core/src/routes/graph.routes.ts"
+          ],
+          "commit_message": "add REST endpoints: GET /graph/full for complete org graph",
+          "commit_datetime": "2025-07-29 11:20:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-29 11:20:15\" GIT_COMMITTER_DATE=\"2025-07-29 11:20:15\" git commit -m \"add REST endpoints: GET /graph/full for complete org graph\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-29 11:20:15\" GIT_COMMITTER_DATE=\"2025-07-29 11:20:15\" git commit -m \"add REST endpoints: GET /graph/full for complete org graph\""
+        },
+        {
+          "step_id": "3.18",
+          "title": "Redis Graph Caching",
+          "description": "Cache all graph endpoint responses in Redis with 5-minute TTL. Cache key = hash of (endpoint + params). Invalidate on: new edge added, edge removed, node updated. Use Redis MULTI for atomic cache invalidation.",
+          "files_to_create_or_modify": [
+            "packages/core/src/graph/GraphService.ts",
+            "packages/core/src/cache/graphCache.ts"
+          ],
+          "commit_message": "implement graph caching with redis (5 min TTL)",
+          "commit_datetime": "2025-07-29 16:00:33",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-29 16:00:33\" GIT_COMMITTER_DATE=\"2025-07-29 16:00:33\" git commit -m \"implement graph caching with redis (5 min TTL)\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-29 16:00:33\" GIT_COMMITTER_DATE=\"2025-07-29 16:00:33\" git commit -m \"implement graph caching with redis (5 min TTL)\""
+        },
+        {
+          "step_id": "3.19",
+          "title": "Graph Update Webhooks",
+          "description": "Emit graph:updated WebSocket event to connected dashboard clients when edges are added/removed. Payload includes diff: { addedNodes, removedNodes, addedEdges, removedEdges }. Dashboard updates graph in real-time without refresh.",
+          "files_to_create_or_modify": [
+            "packages/core/src/graph/GraphService.ts",
+            "packages/core/src/websocket/graphEvents.ts"
+          ],
+          "commit_message": "add webhook for real-time graph updates on new api discovery",
+          "commit_datetime": "2025-07-30 10:30:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-30 10:30:22\" GIT_COMMITTER_DATE=\"2025-07-30 10:30:22\" git commit -m \"add webhook for real-time graph updates on new api discovery\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-30 10:30:22\" GIT_COMMITTER_DATE=\"2025-07-30 10:30:22\" git commit -m \"add webhook for real-time graph updates on new api discovery\""
+        },
+        {
+          "step_id": "3.20",
+          "title": "Team & Location Metadata",
+          "description": "Add team_id, squad_id, office_location_id to GraphNode. Create teams and locations tables. Add team isolation: GET /api/graph/team/:teamId returns only nodes owned by or directly connected to that team. Add cross-team edge highlighting.",
+          "files_to_create_or_modify": [
+            "packages/core/src/graph/DependencyGraph.ts",
+            "packages/core/src/db/schema.ts"
+          ],
+          "commit_message": "implement team and squad metadata on graph nodes",
+          "commit_datetime": "2025-07-30 14:45:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-30 14:45:15\" GIT_COMMITTER_DATE=\"2025-07-30 14:45:15\" git commit -m \"implement team and squad metadata on graph nodes\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-30 14:45:15\" GIT_COMMITTER_DATE=\"2025-07-30 14:45:15\" git commit -m \"implement team and squad metadata on graph nodes\""
+        },
+        {
+          "step_id": "3.21",
+          "title": "Cross-Location Dependencies",
+          "description": "Tag each API with office location. Detect and highlight cross-location dependencies (London API depending on Mumbai API). Add location filter to graph queries. Show location distribution in API detail analytics.",
+          "files_to_create_or_modify": [
+            "packages/core/src/graph/DependencyGraph.ts",
+            "packages/core/src/routes/graph.routes.ts"
+          ],
+          "commit_message": "add office location tagging for cross-location dependencies",
+          "commit_datetime": "2025-07-31 11:00:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-31 11:00:08\" GIT_COMMITTER_DATE=\"2025-07-31 11:00:08\" git commit -m \"add office location tagging for cross-location dependencies\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-31 11:00:08\" GIT_COMMITTER_DATE=\"2025-07-31 11:00:08\" git commit -m \"add office location tagging for cross-location dependencies\""
+        },
+        {
+          "step_id": "3.22",
+          "title": "Graph Diff",
+          "description": "Implement DependencyGraph.diff(other): compare two graph states, return GraphDiff { addedNodes, removedNodes, addedEdges, removedEdges, modifiedEdges }. Create graph snapshots weekly. GET /api/graph/diff?from=DATE returns weekly diff.",
+          "files_to_create_or_modify": [
+            "packages/core/src/graph/DependencyGraph.ts",
+            "packages/core/src/graph/graphSnapshot.ts"
+          ],
+          "commit_message": "implement graph diff: what changed in dependencies since last week",
+          "commit_datetime": "2025-07-31 16:15:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-07-31 16:15:30\" GIT_COMMITTER_DATE=\"2025-07-31 16:15:30\" git commit -m \"implement graph diff: what changed in dependencies since last week\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-07-31 16:15:30\" GIT_COMMITTER_DATE=\"2025-07-31 16:15:30\" git commit -m \"implement graph diff: what changed in dependencies since last week\""
+        },
+        {
+          "step_id": "3.23",
+          "title": "Graph Pagination",
+          "description": "Implement cursor-based pagination for /api/graph/full. Cursor = base64(lastNodeId + sortField). Default page size 100 nodes + edges. Support sorting by: centrality, name, threatLevel, lastUpdated.",
+          "files_to_create_or_modify": [
+            "packages/core/src/routes/graph.routes.ts",
+            "packages/core/src/graph/GraphService.ts"
+          ],
+          "commit_message": "add pagination to large graph queries",
+          "commit_datetime": "2025-08-01 10:20:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-01 10:20:15\" GIT_COMMITTER_DATE=\"2025-08-01 10:20:15\" git commit -m \"add pagination to large graph queries\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-01 10:20:15\" GIT_COMMITTER_DATE=\"2025-08-01 10:20:15\" git commit -m \"add pagination to large graph queries\""
+        },
+        {
+          "step_id": "3.24",
+          "title": "DB Index Optimization",
+          "description": "Add database indexes for common graph queries: composite index on dependency_edges(sourceApiId, targetApiId), index on apis(repoId), index on apis(teamId), partial index on apis(deprecated=false). Run EXPLAIN ANALYZE to verify.",
+          "files_to_create_or_modify": [
+            "packages/core/src/db/migrations/0003_indexes.sql"
+          ],
+          "commit_message": "add database indexes on dependency_edges for fast lookups",
+          "commit_datetime": "2025-08-01 14:30:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-01 14:30:22\" GIT_COMMITTER_DATE=\"2025-08-01 14:30:22\" git commit -m \"add database indexes on dependency_edges for fast lookups\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-01 14:30:22\" GIT_COMMITTER_DATE=\"2025-08-01 14:30:22\" git commit -m \"add database indexes on dependency_edges for fast lookups\""
+        },
+        {
+          "step_id": "3.25",
+          "title": "Graph Unit Tests",
+          "description": "Write comprehensive unit tests for DependencyGraph: addNode/addEdge, getDependents BFS, detectCycles (with cycle and without), centrality computation, serialize/deserialize, diff two graphs.",
+          "files_to_create_or_modify": [
+            "packages/core/src/graph/DependencyGraph.test.ts"
+          ],
+          "commit_message": "write unit tests for DependencyGraph class",
+          "commit_datetime": "2025-08-02 11:15:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-02 11:15:08\" GIT_COMMITTER_DATE=\"2025-08-02 11:15:08\" git commit -m \"write unit tests for DependencyGraph class\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-02 11:15:08\" GIT_COMMITTER_DATE=\"2025-08-02 11:15:08\" git commit -m \"write unit tests for DependencyGraph class\""
+        },
+        {
+          "step_id": "3.26",
+          "title": "Graph Integration Tests",
+          "description": "Write integration tests for graph REST endpoints: create repos, register APIs, record usage, verify edges appear, test /dependents and /dependencies responses, test pagination, test Redis cache invalidation.",
+          "files_to_create_or_modify": [
+            "packages/core/tests/integration/graph.test.ts"
+          ],
+          "commit_message": "write integration tests for graph REST endpoints",
+          "commit_datetime": "2025-08-02 15:45:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-02 15:45:30\" GIT_COMMITTER_DATE=\"2025-08-02 15:45:30\" git commit -m \"write integration tests for graph REST endpoints\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-02 15:45:30\" GIT_COMMITTER_DATE=\"2025-08-02 15:45:30\" git commit -m \"write integration tests for graph REST endpoints\""
+        },
+        {
+          "step_id": "3.27",
+          "title": "Graph Export - DOT Format",
+          "description": "Implement DOT format export: digraph G { A -> B [label='2000 calls'] }. Include node styling (color by threat level, size by centrality). Export via GET /api/graph/export?format=dot. Can be fed to graphviz for offline rendering.",
+          "files_to_create_or_modify": [
+            "packages/core/src/graph/exporters/DotExporter.ts"
+          ],
+          "commit_message": "add graph export: download as DOT format for graphviz",
+          "commit_datetime": "2025-08-03 10:00:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-03 10:00:15\" GIT_COMMITTER_DATE=\"2025-08-03 10:00:15\" git commit -m \"add graph export: download as DOT format for graphviz\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-03 10:00:15\" GIT_COMMITTER_DATE=\"2025-08-03 10:00:15\" git commit -m \"add graph export: download as DOT format for graphviz\""
+        },
+        {
+          "step_id": "3.28",
+          "title": "Graph Export - CSV",
+          "description": "Implement CSV export: nodes.csv (id, label, team, threatLevel, centrality) and edges.csv (source, target, callCount, avgLatency, errorRate). Zip together as graph-export.zip. GET /api/graph/export?format=csv.",
+          "files_to_create_or_modify": [
+            "packages/core/src/graph/exporters/CsvExporter.ts"
+          ],
+          "commit_message": "add graph export: download as CSV edge list",
+          "commit_datetime": "2025-08-03 14:20:33",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-03 14:20:33\" GIT_COMMITTER_DATE=\"2025-08-03 14:20:33\" git commit -m \"add graph export: download as CSV edge list\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-03 14:20:33\" GIT_COMMITTER_DATE=\"2025-08-03 14:20:33\" git commit -m \"add graph export: download as CSV edge list\""
+        },
+        {
+          "step_id": "3.29",
+          "title": "API Deregistration & Cleanup",
+          "description": "Handle API deregistration: when an endpoint is removed from a repo scan, soft-delete with tombstone record. Remove its edges from graph. Notify all former dependents that the API was removed (CRITICAL threat). Cleanup stale nodes after 30 days.",
+          "files_to_create_or_modify": [
+            "packages/core/src/registry/RepoService.ts",
+            "packages/core/src/graph/GraphService.ts"
+          ],
+          "commit_message": "fix: handle api deregistration and edge cleanup",
+          "commit_datetime": "2025-08-04 10:45:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-04 10:45:15\" GIT_COMMITTER_DATE=\"2025-08-04 10:45:15\" git commit -m \"fix: handle api deregistration and edge cleanup\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-04 10:45:15\" GIT_COMMITTER_DATE=\"2025-08-04 10:45:15\" git commit -m \"fix: handle api deregistration and edge cleanup\""
+        },
+        {
+          "step_id": "3.30",
+          "title": "Duplicate Edge Prevention",
+          "description": "Add upsert logic for dependency_edges: use ON CONFLICT DO UPDATE with (sourceApiId, targetApiId) unique constraint. Update callCount, lastCalledAt, avgLatencyMs atomically. Handle concurrent requests without creating duplicate edges.",
+          "files_to_create_or_modify": [
+            "packages/core/src/analytics/UsageTracker.ts",
+            "packages/core/src/db/migrations/0004_unique_edges.sql"
+          ],
+          "commit_message": "fix: prevent duplicate edges in concurrent requests",
+          "commit_datetime": "2025-08-04 15:30:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-04 15:30:22\" GIT_COMMITTER_DATE=\"2025-08-04 15:30:22\" git commit -m \"fix: prevent duplicate edges in concurrent requests\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-04 15:30:22\" GIT_COMMITTER_DATE=\"2025-08-04 15:30:22\" git commit -m \"fix: prevent duplicate edges in concurrent requests\""
+        },
+        {
+          "step_id": "3.31",
+          "title": "Graph Versioning & Snapshots",
+          "description": "Create graph_snapshots table. Capture weekly snapshots of full serialized graph. Store snapshot as compressed JSONB. Support querying historical graph state. Used for graph diff and trend analysis.",
+          "files_to_create_or_modify": [
+            "packages/core/src/graph/graphSnapshot.ts",
+            "packages/core/src/db/migrations/0005_graph_snapshots.sql"
+          ],
+          "commit_message": "implement graph versioning with snapshots",
+          "commit_datetime": "2025-08-05 11:00:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-05 11:00:08\" GIT_COMMITTER_DATE=\"2025-08-05 11:00:08\" git commit -m \"implement graph versioning with snapshots\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-05 11:00:08\" GIT_COMMITTER_DATE=\"2025-08-05 11:00:08\" git commit -m \"implement graph versioning with snapshots\""
+        },
+        {
+          "step_id": "3.32",
+          "title": "Graph Engine Package",
+          "description": "Refactor: move DependencyGraph, all algorithms (tarjan, centrality, criticalPath), exporters into dedicated packages/graph-engine package. Update imports in core. Makes graph engine independently testable and publishable.",
+          "files_to_create_or_modify": [
+            "packages/graph-engine/src/index.ts",
+            "packages/graph-engine/package.json",
+            "packages/graph-engine/tsconfig.json"
+          ],
+          "commit_message": "refactor: move graph logic to dedicated graph-engine package",
+          "commit_datetime": "2025-08-05 15:45:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-05 15:45:30\" GIT_COMMITTER_DATE=\"2025-08-05 15:45:30\" git commit -m \"refactor: move graph logic to dedicated graph-engine package\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-05 15:45:30\" GIT_COMMITTER_DATE=\"2025-08-05 15:45:30\" git commit -m \"refactor: move graph logic to dedicated graph-engine package\""
+        },
+        {
+          "step_id": "3.33",
+          "title": "Graph Statistics Endpoint",
+          "description": "GET /api/graph/stats returns: { totalNodes, totalEdges, avgDegree, maxDegree, cycleCount, criticalNodes (count), crossTeamEdges, crossLocationEdges, lastUpdated, graphDensity }. Cache for 1 hour.",
+          "files_to_create_or_modify": [
+            "packages/core/src/routes/graph.routes.ts",
+            "packages/core/src/graph/GraphService.ts"
+          ],
+          "commit_message": "add graph statistics endpoint for dashboard metrics",
+          "commit_datetime": "2025-08-06 10:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-06 10:30:15\" GIT_COMMITTER_DATE=\"2025-08-06 10:30:15\" git commit -m \"add graph statistics endpoint for dashboard metrics\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-06 10:30:15\" GIT_COMMITTER_DATE=\"2025-08-06 10:30:15\" git commit -m \"add graph statistics endpoint for dashboard metrics\""
+        },
+        {
+          "step_id": "3.34",
+          "title": "API Ownership Lookup",
+          "description": "Add ownership resolution: given an apiId, return team name, squad name, team lead contact, Slack channel, GitHub repo link, office location. Stored in api_ownership table (FK to teams). Used in notification fan-out to find who to notify.",
+          "files_to_create_or_modify": [
+            "packages/core/src/registry/OwnershipService.ts",
+            "packages/core/src/db/schema.ts"
+          ],
+          "commit_message": "implement api ownership lookup from repo metadata",
+          "commit_datetime": "2025-08-06 14:20:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-06 14:20:22\" GIT_COMMITTER_DATE=\"2025-08-06 14:20:22\" git commit -m \"implement api ownership lookup from repo metadata\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-06 14:20:22\" GIT_COMMITTER_DATE=\"2025-08-06 14:20:22\" git commit -m \"implement api ownership lookup from repo metadata\""
+        }
+      ]
+    },
+    "phase_4": {
+      "phase_number": 4,
+      "phase_name": "Change Detection & Threat Classification",
+      "steps": [
+        {
+          "step_id": "4.1",
+          "title": "API Snapshot Model",
+          "description": "Create api_snapshots table: id, apiEndpointId (FK), version (auto-increment per endpoint), schema (JSONB - full ApiEndpoint snapshot), capturedAt, capturedBy (repoId), fingerprintHash. On every scan sync: compare incoming fingerprint against latest snapshot.",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/ApiSnapshot.ts",
+            "packages/core/src/db/migrations/0006_api_snapshots.sql"
+          ],
+          "commit_message": "implement ApiSnapshot model to store api schema at each version",
+          "commit_datetime": "2025-08-11 09:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-11 09:30:15\" GIT_COMMITTER_DATE=\"2025-08-11 09:30:15\" git commit -m \"implement ApiSnapshot model to store api schema at each version\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-11 09:30:15\" GIT_COMMITTER_DATE=\"2025-08-11 09:30:15\" git commit -m \"implement ApiSnapshot model to store api schema at each version\""
+        },
+        {
+          "step_id": "4.2",
+          "title": "Schema Versioning",
+          "description": "Implement version auto-increment per endpoint. When fingerprint changes: create new snapshot with version+1. Store both before and after states. Add GET /api/snapshots/:apiId to list all versions. Add GET /api/snapshots/:apiId/:version for specific snapshot.",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/SnapshotService.ts",
+            "packages/core/src/routes/snapshots.routes.ts"
+          ],
+          "commit_message": "add schema versioning with semver-style tracking",
+          "commit_datetime": "2025-08-11 14:45:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-11 14:45:22\" GIT_COMMITTER_DATE=\"2025-08-11 14:45:22\" git commit -m \"add schema versioning with semver-style tracking\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-11 14:45:22\" GIT_COMMITTER_DATE=\"2025-08-11 14:45:22\" git commit -m \"add schema versioning with semver-style tracking\""
+        },
+        {
+          "step_id": "4.3",
+          "title": "SchemaDiff Engine",
+          "description": "Create packages/core/src/diff/SchemaDiff.ts. Core diff function: diff(before: ApiEndpoint, after: ApiEndpoint) \u2192 SchemaDiff. Deep-compare: params array, requestBody JSON Schema, response schemas, method, path. Return structured list of SchemaChange objects.",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/SchemaDiff.ts",
+            "packages/core/src/diff/SchemaDiff.test.ts"
+          ],
+          "commit_message": "implement SchemaDiff engine comparing two ApiSnapshot objects",
+          "commit_datetime": "2025-08-12 10:15:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-12 10:15:08\" GIT_COMMITTER_DATE=\"2025-08-12 10:15:08\" git commit -m \"implement SchemaDiff engine comparing two ApiSnapshot objects\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-12 10:15:08\" GIT_COMMITTER_DATE=\"2025-08-12 10:15:08\" git commit -m \"implement SchemaDiff engine comparing two ApiSnapshot objects\""
+        },
+        {
+          "step_id": "4.4",
+          "title": "Detect Required Param Added",
+          "description": "SchemaDiff rule: if a param exists in after but not in before AND param.required === true \u2192 SchemaChange type=PARAM_REQUIRED_ADDED. This is the most common breaking change. Include: param name, type, which API affected, which dependents will break.",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/SchemaDiff.ts"
+          ],
+          "commit_message": "detect added required parameters (breaking change)",
+          "commit_datetime": "2025-08-12 14:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-12 14:30:15\" GIT_COMMITTER_DATE=\"2025-08-12 14:30:15\" git commit -m \"detect added required parameters (breaking change)\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-12 14:30:15\" GIT_COMMITTER_DATE=\"2025-08-12 14:30:15\" git commit -m \"detect added required parameters (breaking change)\""
+        },
+        {
+          "step_id": "4.5",
+          "title": "Detect Removed Parameters",
+          "description": "SchemaDiff rule: param exists in before but not in after \u2192 PARAM_REMOVED (CRITICAL if it was required). Also detect: response field removed (may break consumers relying on that field), path param removed, query param removed.",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/SchemaDiff.ts"
+          ],
+          "commit_message": "detect removed parameters (breaking change)",
+          "commit_datetime": "2025-08-13 10:00:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-13 10:00:22\" GIT_COMMITTER_DATE=\"2025-08-13 10:00:22\" git commit -m \"detect removed parameters (breaking change)\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-13 10:00:22\" GIT_COMMITTER_DATE=\"2025-08-13 10:00:22\" git commit -m \"detect removed parameters (breaking change)\""
+        },
+        {
+          "step_id": "4.6",
+          "title": "Detect Type Changes",
+          "description": "SchemaDiff rule: param type changed (string\u2192number, array\u2192object, etc.) \u2192 PARAM_TYPE_CHANGED. Compare JSON Schema deeply: type, format, enum values, pattern, min/max. Even narrowing (adding enum constraint to free string) is CRITICAL.",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/SchemaDiff.ts",
+            "packages/core/src/diff/schemaComparator.ts"
+          ],
+          "commit_message": "detect changed parameter types (breaking change)",
+          "commit_datetime": "2025-08-13 14:45:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-13 14:45:30\" GIT_COMMITTER_DATE=\"2025-08-13 14:45:30\" git commit -m \"detect changed parameter types (breaking change)\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-13 14:45:30\" GIT_COMMITTER_DATE=\"2025-08-13 14:45:30\" git commit -m \"detect changed parameter types (breaking change)\""
+        },
+        {
+          "step_id": "4.7",
+          "title": "Detect Optional Param Added",
+          "description": "SchemaDiff rule: param added with required=false \u2192 PARAM_OPTIONAL_ADDED (NEUTRAL). This is non-breaking as existing callers don't need to send it. But still notify as NEUTRAL: dependent teams may want to start using the new feature.",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/SchemaDiff.ts"
+          ],
+          "commit_message": "detect added optional parameters (non-breaking)",
+          "commit_datetime": "2025-08-14 10:30:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-14 10:30:08\" GIT_COMMITTER_DATE=\"2025-08-14 10:30:08\" git commit -m \"detect added optional parameters (non-breaking)\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-14 10:30:08\" GIT_COMMITTER_DATE=\"2025-08-14 10:30:08\" git commit -m \"detect added optional parameters (non-breaking)\""
+        },
+        {
+          "step_id": "4.8",
+          "title": "Detect Response Schema Changes",
+          "description": "Compare response schemas. CRITICAL: required response field removed, response type changed. NEUTRAL: new optional field added to response (consumers can ignore). LOW: description changed, example changed.",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/SchemaDiff.ts"
+          ],
+          "commit_message": "detect response schema changes",
+          "commit_datetime": "2025-08-14 15:00:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-14 15:00:15\" GIT_COMMITTER_DATE=\"2025-08-14 15:00:15\" git commit -m \"detect response schema changes\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-14 15:00:15\" GIT_COMMITTER_DATE=\"2025-08-14 15:00:15\" git commit -m \"detect response schema changes\""
+        },
+        {
+          "step_id": "4.9",
+          "title": "Detect Method Changes",
+          "description": "SchemaDiff rule: HTTP method changed (GET\u2192POST, etc.) \u2192 METHOD_CHANGED (CRITICAL). All callers use hardcoded methods. Also detect: path changed (PATH_CHANGED, CRITICAL), endpoint completely removed (ENDPOINT_REMOVED, CRITICAL).",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/SchemaDiff.ts"
+          ],
+          "commit_message": "detect http method changes for an endpoint",
+          "commit_datetime": "2025-08-15 10:15:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-15 10:15:22\" GIT_COMMITTER_DATE=\"2025-08-15 10:15:22\" git commit -m \"detect http method changes for an endpoint\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-15 10:15:22\" GIT_COMMITTER_DATE=\"2025-08-15 10:15:22\" git commit -m \"detect http method changes for an endpoint\""
+        },
+        {
+          "step_id": "4.10",
+          "title": "Detect Path Changes",
+          "description": "Detect path renames: match endpoints by fingerprint hash to track renames vs new additions. Path changed = CRITICAL (all callers use hardcoded URLs). Generate migration hint: rename from /users/:id to /users/{userId}.",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/SchemaDiff.ts"
+          ],
+          "commit_message": "detect path changes and route renames",
+          "commit_datetime": "2025-08-15 14:30:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-15 14:30:08\" GIT_COMMITTER_DATE=\"2025-08-15 14:30:08\" git commit -m \"detect path changes and route renames\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-15 14:30:08\" GIT_COMMITTER_DATE=\"2025-08-15 14:30:08\" git commit -m \"detect path changes and route renames\""
+        },
+        {
+          "step_id": "4.11",
+          "title": "ThreatClassifier",
+          "description": "Create packages/core/src/diff/ThreatClassifier.ts. classify(diff: SchemaDiff): ThreatLevel. Rules: any CRITICAL ChangeType \u2192 CRITICAL, any NEUTRAL (no CRITICAL) \u2192 NEUTRAL, all LOW \u2192 LOW. Allow config overrides. computeRiskScore(diff, graph): 0-100.",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/ThreatClassifier.ts",
+            "packages/core/src/diff/ThreatClassifier.test.ts"
+          ],
+          "commit_message": "implement ThreatClassifier: input diff output LOW/NEUTRAL/CRITICAL",
+          "commit_datetime": "2025-08-16 10:00:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-16 10:00:30\" GIT_COMMITTER_DATE=\"2025-08-16 10:00:30\" git commit -m \"implement ThreatClassifier: input diff output LOW/NEUTRAL/CRITICAL\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-16 10:00:30\" GIT_COMMITTER_DATE=\"2025-08-16 10:00:30\" git commit -m \"implement ThreatClassifier: input diff output LOW/NEUTRAL/CRITICAL\""
+        },
+        {
+          "step_id": "4.12",
+          "title": "CRITICAL: Required Param",
+          "description": "ThreatClassifier: required param added/removed \u2192 always CRITICAL regardless of other changes. Add risk amplifier: if apiCentralityScore > 0.8 \u2192 multiply risk score by 1.5. CRITICAL + high centrality = immediate escalation.",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/ThreatClassifier.ts"
+          ],
+          "commit_message": "CRITICAL: required param added or removed -> CRITICAL threat",
+          "commit_datetime": "2025-08-16 14:45:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-16 14:45:15\" GIT_COMMITTER_DATE=\"2025-08-16 14:45:15\" git commit -m \"CRITICAL: required param added or removed -> CRITICAL threat\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-16 14:45:15\" GIT_COMMITTER_DATE=\"2025-08-16 14:45:15\" git commit -m \"CRITICAL: required param added or removed -> CRITICAL threat\""
+        },
+        {
+          "step_id": "4.13",
+          "title": "CRITICAL: Endpoint Removed",
+          "description": "ThreatClassifier: ENDPOINT_REMOVED, METHOD_CHANGED, PATH_CHANGED, AUTH_SCHEME_CHANGED \u2192 always CRITICAL. Count affected dependents from graph. Risk score formula: baseScore * sqrt(dependentCount) * centralityMultiplier.",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/ThreatClassifier.ts"
+          ],
+          "commit_message": "CRITICAL: endpoint removed or method changed -> CRITICAL threat",
+          "commit_datetime": "2025-08-17 10:15:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-17 10:15:08\" GIT_COMMITTER_DATE=\"2025-08-17 10:15:08\" git commit -m \"CRITICAL: endpoint removed or method changed -> CRITICAL threat\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-17 10:15:08\" GIT_COMMITTER_DATE=\"2025-08-17 10:15:08\" git commit -m \"CRITICAL: endpoint removed or method changed -> CRITICAL threat\""
+        },
+        {
+          "step_id": "4.14",
+          "title": "NEUTRAL Classification",
+          "description": "ThreatClassifier: PARAM_OPTIONAL_ADDED, RESPONSE_SCHEMA_EXTENDED, RATE_LIMIT_CHANGED, DEPRECATION_ADDED \u2192 NEUTRAL. These don't break existing callers but are still worth communicating to dependents.",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/ThreatClassifier.ts"
+          ],
+          "commit_message": "NEUTRAL: optional param added, response schema extended -> NEUTRAL",
+          "commit_datetime": "2025-08-17 14:30:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-17 14:30:22\" GIT_COMMITTER_DATE=\"2025-08-17 14:30:22\" git commit -m \"NEUTRAL: optional param added, response schema extended -> NEUTRAL\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-17 14:30:22\" GIT_COMMITTER_DATE=\"2025-08-17 14:30:22\" git commit -m \"NEUTRAL: optional param added, response schema extended -> NEUTRAL\""
+        },
+        {
+          "step_id": "4.15",
+          "title": "LOW Classification",
+          "description": "ThreatClassifier: DESCRIPTION_CHANGED, EXAMPLE_CHANGED, DOC_ONLY_CHANGES \u2192 LOW. Still notify developers (lightweight notification) but don't create tickets. Include in daily digest only, not immediate push.",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/ThreatClassifier.ts"
+          ],
+          "commit_message": "LOW: description changes, documentation only changes -> LOW",
+          "commit_datetime": "2025-08-18 10:00:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-18 10:00:15\" GIT_COMMITTER_DATE=\"2025-08-18 10:00:15\" git commit -m \"LOW: description changes, documentation only changes -> LOW\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-18 10:00:15\" GIT_COMMITTER_DATE=\"2025-08-18 10:00:15\" git commit -m \"LOW: description changes, documentation only changes -> LOW\""
+        },
+        {
+          "step_id": "4.16",
+          "title": "Custom Threat Rules Config",
+          "description": "Add threatRules.overrides to apiwatch.config.ts schema. Allows teams to reclassify specific change types. Example: { changeType: 'RATE_LIMIT_CHANGED', threatLevel: 'CRITICAL' }. Override rules are applied after default classification.",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/ThreatClassifier.ts",
+            "packages/plugin/src/config.schema.ts"
+          ],
+          "commit_message": "add custom threat rules config in apiwatch.config.ts",
+          "commit_datetime": "2025-08-18 14:45:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-18 14:45:30\" GIT_COMMITTER_DATE=\"2025-08-18 14:45:30\" git commit -m \"add custom threat rules config in apiwatch.config.ts\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-18 14:45:30\" GIT_COMMITTER_DATE=\"2025-08-18 14:45:30\" git commit -m \"add custom threat rules config in apiwatch.config.ts\""
+        },
+        {
+          "step_id": "4.17",
+          "title": "Change Event System",
+          "description": "Create packages/core/src/diff/ChangeEventEmitter.ts (extends EventEmitter). Events: change:detected (diff, threatLevel), change:critical (immediate), change:acknowledged (notificationId, userId). Other services subscribe to these events.",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/ChangeEventEmitter.ts",
+            "packages/core/src/diff/ChangeEventEmitter.test.ts"
+          ],
+          "commit_message": "implement change event system with EventEmitter",
+          "commit_datetime": "2025-08-19 10:30:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-19 10:30:08\" GIT_COMMITTER_DATE=\"2025-08-19 10:30:08\" git commit -m \"implement change event system with EventEmitter\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-19 10:30:08\" GIT_COMMITTER_DATE=\"2025-08-19 10:30:08\" git commit -m \"implement change event system with EventEmitter\""
+        },
+        {
+          "step_id": "4.18",
+          "title": "Change Events DB Storage",
+          "description": "Create change_events table: id, apiEndpointId, fromSnapshotId, toSnapshotId, diffPayload (JSONB), threatLevel, riskScore, detectedAt, acknowledgedAt, acknowledgedBy. Store every detected diff permanently for audit trail.",
+          "files_to_create_or_modify": [
+            "packages/core/src/db/migrations/0007_change_events.sql",
+            "packages/core/src/diff/ChangeService.ts"
+          ],
+          "commit_message": "store change events in database with timestamp and diff payload",
+          "commit_datetime": "2025-08-19 14:15:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-19 14:15:22\" GIT_COMMITTER_DATE=\"2025-08-19 14:15:22\" git commit -m \"store change events in database with timestamp and diff payload\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-19 14:15:22\" GIT_COMMITTER_DATE=\"2025-08-19 14:15:22\" git commit -m \"store change events in database with timestamp and diff payload\""
+        },
+        {
+          "step_id": "4.19",
+          "title": "Change History Endpoint",
+          "description": "GET /api/changes/:apiId returns paginated change history for one API: list of change events with diffs, threat levels, acknowledgement status, timeline. Supports date range filtering.",
+          "files_to_create_or_modify": [
+            "packages/core/src/routes/changes.routes.ts",
+            "packages/core/src/diff/ChangeService.ts"
+          ],
+          "commit_message": "add REST endpoint: GET /changes/:apiId for change history",
+          "commit_datetime": "2025-08-20 10:00:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-20 10:00:15\" GIT_COMMITTER_DATE=\"2025-08-20 10:00:15\" git commit -m \"add REST endpoint: GET /changes/:apiId for change history\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-20 10:00:15\" GIT_COMMITTER_DATE=\"2025-08-20 10:00:15\" git commit -m \"add REST endpoint: GET /changes/:apiId for change history\""
+        },
+        {
+          "step_id": "4.20",
+          "title": "Org-wide Change Feed",
+          "description": "GET /api/changes/recent?limit=50&threatLevel=CRITICAL returns org-wide change feed sorted by detectedAt desc. Supports cursor pagination. Includes: apiName, teamName, change summary, affected count, threat badge.",
+          "files_to_create_or_modify": [
+            "packages/core/src/routes/changes.routes.ts"
+          ],
+          "commit_message": "add REST endpoint: GET /changes/recent for org-wide feed",
+          "commit_datetime": "2025-08-20 14:30:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-20 14:30:08\" GIT_COMMITTER_DATE=\"2025-08-20 14:30:08\" git commit -m \"add REST endpoint: GET /changes/recent for org-wide feed\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-20 14:30:08\" GIT_COMMITTER_DATE=\"2025-08-20 14:30:08\" git commit -m \"add REST endpoint: GET /changes/recent for org-wide feed\""
+        },
+        {
+          "step_id": "4.21",
+          "title": "Change Feed Pagination",
+          "description": "Implement cursor-based pagination for change feed. Cursor encodes (detectedAt, changeEventId). Default page size 20. Support filters: threatLevel, teamId, dateRange, acknowledged (bool). Return next/prev cursor tokens.",
+          "files_to_create_or_modify": [
+            "packages/core/src/routes/changes.routes.ts",
+            "packages/core/src/diff/ChangeService.ts"
+          ],
+          "commit_message": "implement change feed with cursor-based pagination",
+          "commit_datetime": "2025-08-21 10:15:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-21 10:15:30\" GIT_COMMITTER_DATE=\"2025-08-21 10:15:30\" git commit -m \"implement change feed with cursor-based pagination\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-21 10:15:30\" GIT_COMMITTER_DATE=\"2025-08-21 10:15:30\" git commit -m \"implement change feed with cursor-based pagination\""
+        },
+        {
+          "step_id": "4.22",
+          "title": "CRITICAL Webhook Trigger",
+          "description": "On CRITICAL threat detected with riskScore > 75: immediately fire webhook to configured URL. Payload: { apiName, changeType, affectedDependents, migrationGuide, dashboardLink }. Max 3 retries with 5s backoff.",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/ChangeEventEmitter.ts",
+            "packages/core/src/notifications/WebhookService.ts"
+          ],
+          "commit_message": "add webhook trigger on CRITICAL changes for immediate alerts",
+          "commit_datetime": "2025-08-21 14:45:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-21 14:45:15\" GIT_COMMITTER_DATE=\"2025-08-21 14:45:15\" git commit -m \"add webhook trigger on CRITICAL changes for immediate alerts\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-21 14:45:15\" GIT_COMMITTER_DATE=\"2025-08-21 14:45:15\" git commit -m \"add webhook trigger on CRITICAL changes for immediate alerts\""
+        },
+        {
+          "step_id": "4.23",
+          "title": "Change Event Debounce",
+          "description": "Debounce rapid changes: if same API gets multiple changes within 60s (e.g. developer iterating quickly), batch them into single change event. Use Redis to track pending changes per apiId with 60s TTL.",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/ChangeService.ts",
+            "packages/core/src/cache/changeDebounce.ts"
+          ],
+          "commit_message": "implement debounce: batch changes within 60s window",
+          "commit_datetime": "2025-08-22 10:00:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-22 10:00:22\" GIT_COMMITTER_DATE=\"2025-08-22 10:00:22\" git commit -m \"implement debounce: batch changes within 60s window\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-22 10:00:22\" GIT_COMMITTER_DATE=\"2025-08-22 10:00:22\" git commit -m \"implement debounce: batch changes within 60s window\""
+        },
+        {
+          "step_id": "4.24",
+          "title": "SchemaDiff Unit Tests",
+          "description": "Comprehensive unit tests for SchemaDiff engine: required param added, optional param added, param removed, type changed, method changed, path changed, no changes. Test with complex nested schemas. Assert correct SchemaChange types.",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/SchemaDiff.test.ts"
+          ],
+          "commit_message": "write unit tests for SchemaDiff engine",
+          "commit_datetime": "2025-08-22 14:15:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-22 14:15:08\" GIT_COMMITTER_DATE=\"2025-08-22 14:15:08\" git commit -m \"write unit tests for SchemaDiff engine\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-22 14:15:08\" GIT_COMMITTER_DATE=\"2025-08-22 14:15:08\" git commit -m \"write unit tests for SchemaDiff engine\""
+        },
+        {
+          "step_id": "4.25",
+          "title": "ThreatClassifier Tests",
+          "description": "Unit tests for ThreatClassifier: verify CRITICAL for required param, NEUTRAL for optional param, LOW for description. Test custom rule overrides. Test risk score computation with mock graph data. Snapshot test for migration guide output.",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/ThreatClassifier.test.ts"
+          ],
+          "commit_message": "write unit tests for ThreatClassifier",
+          "commit_datetime": "2025-08-23 10:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-23 10:30:15\" GIT_COMMITTER_DATE=\"2025-08-23 10:30:15\" git commit -m \"write unit tests for ThreatClassifier\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-23 10:30:15\" GIT_COMMITTER_DATE=\"2025-08-23 10:30:15\" git commit -m \"write unit tests for ThreatClassifier\""
+        },
+        {
+          "step_id": "4.26",
+          "title": "CRITICAL Classification Test",
+          "description": "Specific integration test: register an API, record dependent usage, update API to add required param, assert: new snapshot created, CRITICAL threat level, all dependent team subscribers notified, JIRA ticket created (mocked).",
+          "files_to_create_or_modify": [
+            "packages/core/tests/integration/breakingChange.test.ts"
+          ],
+          "commit_message": "test: verify CRITICAL classification for required param addition",
+          "commit_datetime": "2025-08-23 14:45:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-23 14:45:30\" GIT_COMMITTER_DATE=\"2025-08-23 14:45:30\" git commit -m \"test: verify CRITICAL classification for required param addition\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-23 14:45:30\" GIT_COMMITTER_DATE=\"2025-08-23 14:45:30\" git commit -m \"test: verify CRITICAL classification for required param addition\""
+        },
+        {
+          "step_id": "4.27",
+          "title": "LOW Classification Test",
+          "description": "Integration test for LOW classification: update API description only, assert: new snapshot created but with LOW threat, no immediate notifications sent (queued for daily digest), no JIRA ticket created.",
+          "files_to_create_or_modify": [
+            "packages/core/tests/integration/lowThreat.test.ts"
+          ],
+          "commit_message": "test: verify LOW classification for description-only changes",
+          "commit_datetime": "2025-08-24 10:00:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-24 10:00:08\" GIT_COMMITTER_DATE=\"2025-08-24 10:00:08\" git commit -m \"test: verify LOW classification for description-only changes\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-24 10:00:08\" GIT_COMMITTER_DATE=\"2025-08-24 10:00:08\" git commit -m \"test: verify LOW classification for description-only changes\""
+        },
+        {
+          "step_id": "4.28",
+          "title": "Change Summary Generator",
+          "description": "Create packages/core/src/diff/changeSummary.ts. generateSummary(diff): returns 1-2 sentence plain English description. Example: 'Required parameter organizationId was added to POST /users/create. This will break 7 dependent APIs that don't include this parameter.'",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/changeSummary.ts",
+            "packages/core/src/diff/changeSummary.test.ts"
+          ],
+          "commit_message": "add change summary generator: human readable diff description",
+          "commit_datetime": "2025-08-24 14:30:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-24 14:30:22\" GIT_COMMITTER_DATE=\"2025-08-24 14:30:22\" git commit -m \"add change summary generator: human readable diff description\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-24 14:30:22\" GIT_COMMITTER_DATE=\"2025-08-24 14:30:22\" git commit -m \"add change summary generator: human readable diff description\""
+        },
+        {
+          "step_id": "4.29",
+          "title": "Breaking Change Risk Score",
+          "description": "computeRiskScore(diff, graph): 0-100 integer. Formula: base (40 for CRITICAL, 20 for NEUTRAL, 5 for LOW) + dependentCount*2 (cap 30) + centralityScore*20 + crossTeam*10. Score displayed in dashboard and included in notifications.",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/ThreatClassifier.ts"
+          ],
+          "commit_message": "implement breaking change score (0-100) for risk assessment",
+          "commit_datetime": "2025-08-25 10:15:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-25 10:15:15\" GIT_COMMITTER_DATE=\"2025-08-25 10:15:15\" git commit -m \"implement breaking change score (0-100) for risk assessment\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-25 10:15:15\" GIT_COMMITTER_DATE=\"2025-08-25 10:15:15\" git commit -m \"implement breaking change score (0-100) for risk assessment\""
+        },
+        {
+          "step_id": "4.30",
+          "title": "Migration Guide Generator",
+          "description": "generateMigrationGuide(diff): returns markdown guide. For PARAM_REQUIRED_ADDED: shows before/after request example, explains what to add. For ENDPOINT_REMOVED: suggests replacement. For TYPE_CHANGED: shows type conversion. Attached to notifications.",
+          "files_to_create_or_modify": [
+            "packages/core/src/diff/migrationGuide.ts",
+            "packages/core/src/diff/migrationGuide.test.ts"
+          ],
+          "commit_message": "add migration guide auto-generator for breaking changes",
+          "commit_datetime": "2025-08-25 14:45:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-25 14:45:08\" GIT_COMMITTER_DATE=\"2025-08-25 14:45:08\" git commit -m \"add migration guide auto-generator for breaking changes\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-25 14:45:08\" GIT_COMMITTER_DATE=\"2025-08-25 14:45:08\" git commit -m \"add migration guide auto-generator for breaking changes\""
+        }
+      ]
+    },
+    "phase_5": {
+      "phase_number": 5,
+      "phase_name": "Notification System",
+      "steps": [
+        {
+          "step_id": "5.1",
+          "title": "NotificationService Core",
+          "description": "Create packages/core/src/notifications/NotificationService.ts. notify(changeEvent) orchestrates: get diff, get dependents from graph, get subscribers, fan-out to channels. fanOut(event, subscribers): parallel sends with Promise.allSettled. Track delivery receipts.",
+          "files_to_create_or_modify": [
+            "packages/core/src/notifications/NotificationService.ts",
+            "packages/core/src/notifications/NotificationService.test.ts"
+          ],
+          "commit_message": "implement NotificationService with pluggable channels",
+          "commit_datetime": "2025-08-26 09:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-26 09:30:15\" GIT_COMMITTER_DATE=\"2025-08-26 09:30:15\" git commit -m \"implement NotificationService with pluggable channels\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-26 09:30:15\" GIT_COMMITTER_DATE=\"2025-08-26 09:30:15\" git commit -m \"implement NotificationService with pluggable channels\""
+        },
+        {
+          "step_id": "5.2",
+          "title": "Notification Store DB",
+          "description": "Create notifications table: id, userId, changeEventId, channelType, subject, body, threatLevel, read (bool), acknowledged (bool), readAt, createdAt. Store all notifications for in-app notification center. Support bulk mark-as-read.",
+          "files_to_create_or_modify": [
+            "packages/core/src/db/migrations/0008_notifications.sql",
+            "packages/core/src/notifications/NotificationStore.ts"
+          ],
+          "commit_message": "add in-app notification store with read/unread status",
+          "commit_datetime": "2025-08-26 14:45:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-26 14:45:22\" GIT_COMMITTER_DATE=\"2025-08-26 14:45:22\" git commit -m \"add in-app notification store with read/unread status\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-26 14:45:22\" GIT_COMMITTER_DATE=\"2025-08-26 14:45:22\" git commit -m \"add in-app notification store with read/unread status\""
+        },
+        {
+          "step_id": "5.3",
+          "title": "Subscriber Management",
+          "description": "Create subscribers table: userId, apiEndpointId, subscriptionType (OWNER|DEPENDENT|MANUAL), channels (jsonb array), quietHours. CRUD endpoints: POST /api/subscriptions, GET /api/subscriptions/:userId, DELETE. Allow subscribe/unsubscribe to any API.",
+          "files_to_create_or_modify": [
+            "packages/core/src/notifications/SubscriberService.ts",
+            "packages/core/src/routes/subscriptions.routes.ts"
+          ],
+          "commit_message": "implement subscriber management: team subscribes to api changes",
+          "commit_datetime": "2025-08-27 10:00:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-27 10:00:08\" GIT_COMMITTER_DATE=\"2025-08-27 10:00:08\" git commit -m \"implement subscriber management: team subscribes to api changes\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-27 10:00:08\" GIT_COMMITTER_DATE=\"2025-08-27 10:00:08\" git commit -m \"implement subscriber management: team subscribes to api changes\""
+        },
+        {
+          "step_id": "5.4",
+          "title": "Auto-subscription",
+          "description": "When a dependency edge is created (API A calls API B): auto-subscribe API A team members to change notifications for API B. subscriptionType=DEPENDENT. On edge removal: optionally keep subscription (user can manually unsubscribe). Notify team of auto-subscription.",
+          "files_to_create_or_modify": [
+            "packages/core/src/notifications/SubscriberService.ts",
+            "packages/core/src/graph/GraphService.ts"
+          ],
+          "commit_message": "add auto-subscription: if your api depends on X subscribe to X changes",
+          "commit_datetime": "2025-08-27 14:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-27 14:30:15\" GIT_COMMITTER_DATE=\"2025-08-27 14:30:15\" git commit -m \"add auto-subscription: if your api depends on X subscribe to X changes\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-27 14:30:15\" GIT_COMMITTER_DATE=\"2025-08-27 14:30:15\" git commit -m \"add auto-subscription: if your api depends on X subscribe to X changes\""
+        },
+        {
+          "step_id": "5.5",
+          "title": "Notification Preferences",
+          "description": "Add notification preferences per user: preferredChannels (email/slack/teams), quietHours { start, end, timezone }, digestFrequency (immediate/daily/weekly), minThreatLevel (only notify if >= LOW/NEUTRAL/CRITICAL). Stored in user_preferences table.",
+          "files_to_create_or_modify": [
+            "packages/core/src/notifications/PreferencesService.ts",
+            "packages/core/src/db/schema.ts"
+          ],
+          "commit_message": "implement notification preference settings per developer",
+          "commit_datetime": "2025-08-28 10:15:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-28 10:15:30\" GIT_COMMITTER_DATE=\"2025-08-28 10:15:30\" git commit -m \"implement notification preference settings per developer\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-28 10:15:30\" GIT_COMMITTER_DATE=\"2025-08-28 10:15:30\" git commit -m \"implement notification preference settings per developer\""
+        },
+        {
+          "step_id": "5.6",
+          "title": "Quiet Hours",
+          "description": "Before sending notifications: check user's quietHours. If current time (in user's timezone) is within quiet hours \u2192 queue notification for delivery after quiet hours end. Immediate exception for CRITICAL + riskScore > 90 (emergency override).",
+          "files_to_create_or_modify": [
+            "packages/core/src/notifications/NotificationService.ts",
+            "packages/core/src/notifications/quietHours.ts"
+          ],
+          "commit_message": "add quiet hours configuration: no alerts during off hours",
+          "commit_datetime": "2025-08-28 14:45:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-28 14:45:08\" GIT_COMMITTER_DATE=\"2025-08-28 14:45:08\" git commit -m \"add quiet hours configuration: no alerts during off hours\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-28 14:45:08\" GIT_COMMITTER_DATE=\"2025-08-28 14:45:08\" git commit -m \"add quiet hours configuration: no alerts during off hours\""
+        },
+        {
+          "step_id": "5.7",
+          "title": "Daily Digest",
+          "description": "Create digest scheduler using node-cron (runs at 9am per timezone). Collects all unread notifications from past 24h, groups by threat level. Renders digest email template: summary table + per-change details. Send via email channel. Mark notifications as digested.",
+          "files_to_create_or_modify": [
+            "packages/core/src/notifications/DigestScheduler.ts",
+            "packages/core/src/notifications/DigestScheduler.test.ts"
+          ],
+          "commit_message": "implement notification digest: daily summary email",
+          "commit_datetime": "2025-08-29 10:00:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-29 10:00:22\" GIT_COMMITTER_DATE=\"2025-08-29 10:00:22\" git commit -m \"implement notification digest: daily summary email\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-29 10:00:22\" GIT_COMMITTER_DATE=\"2025-08-29 10:00:22\" git commit -m \"implement notification digest: daily summary email\""
+        },
+        {
+          "step_id": "5.8",
+          "title": "Notification Priority Queue",
+          "description": "Use Redis sorted set as priority queue. Priority score: CRITICAL=3, NEUTRAL=2, LOW=1. CRITICAL notifications always sent first regardless of queue position. Workers pull from queue and send to channels. Max 100 notifications/second rate limit.",
+          "files_to_create_or_modify": [
+            "packages/core/src/notifications/NotificationQueue.ts"
+          ],
+          "commit_message": "add notification priority queue: CRITICAL goes first",
+          "commit_datetime": "2025-08-29 14:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-29 14:30:15\" GIT_COMMITTER_DATE=\"2025-08-29 14:30:15\" git commit -m \"add notification priority queue: CRITICAL goes first\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-29 14:30:15\" GIT_COMMITTER_DATE=\"2025-08-29 14:30:15\" git commit -m \"add notification priority queue: CRITICAL goes first\""
+        },
+        {
+          "step_id": "5.9",
+          "title": "Notification Deduplication",
+          "description": "Within 1hr window: if same user would receive multiple notifications about same apiId change \u2192 merge into single notification with combined diff. Use Redis SET to track (userId, apiId) pairs with 1hr TTL. Append new changes to existing pending notification.",
+          "files_to_create_or_modify": [
+            "packages/core/src/notifications/deduplication.ts",
+            "packages/core/src/notifications/NotificationService.ts"
+          ],
+          "commit_message": "implement notification deduplication within 1hr window",
+          "commit_datetime": "2025-08-30 10:15:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-30 10:15:08\" GIT_COMMITTER_DATE=\"2025-08-30 10:15:08\" git commit -m \"implement notification deduplication within 1hr window\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-30 10:15:08\" GIT_COMMITTER_DATE=\"2025-08-30 10:15:08\" git commit -m \"implement notification deduplication within 1hr window\""
+        },
+        {
+          "step_id": "5.10",
+          "title": "Acknowledgement Flow",
+          "description": "POST /api/notifications/:id/acknowledge. Marks notification as acknowledged, records userId and timestamp. PATCH /api/notifications/bulk-acknowledge. Emits acknowledged event. Acknowledged CRITICAL notifications stop escalation timer.",
+          "files_to_create_or_modify": [
+            "packages/core/src/routes/notifications.routes.ts",
+            "packages/core/src/notifications/NotificationService.ts"
+          ],
+          "commit_message": "add acknowledgement flow: mark change as reviewed",
+          "commit_datetime": "2025-08-30 14:45:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-30 14:45:22\" GIT_COMMITTER_DATE=\"2025-08-30 14:45:22\" git commit -m \"add acknowledgement flow: mark change as reviewed\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-30 14:45:22\" GIT_COMMITTER_DATE=\"2025-08-30 14:45:22\" git commit -m \"add acknowledgement flow: mark change as reviewed\""
+        },
+        {
+          "step_id": "5.11",
+          "title": "Escalation System",
+          "description": "If CRITICAL notification unacknowledged after 2h: escalate to team lead (add to CC). After 4h: escalate to manager. After 8h: create JIRA P1 ticket automatically. Escalation stops when notification acknowledged. Track escalation level in notifications table.",
+          "files_to_create_or_modify": [
+            "packages/core/src/notifications/EscalationService.ts",
+            "packages/core/src/notifications/EscalationService.test.ts"
+          ],
+          "commit_message": "implement escalation: if unacknowledged CRITICAL escalate to lead",
+          "commit_datetime": "2025-08-31 10:00:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-31 10:00:15\" GIT_COMMITTER_DATE=\"2025-08-31 10:00:15\" git commit -m \"implement escalation: if unacknowledged CRITICAL escalate to lead\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-31 10:00:15\" GIT_COMMITTER_DATE=\"2025-08-31 10:00:15\" git commit -m \"implement escalation: if unacknowledged CRITICAL escalate to lead\""
+        },
+        {
+          "step_id": "5.12",
+          "title": "Notification History Endpoint",
+          "description": "GET /api/notifications?userId=&read=&threatLevel=&from=&to= returns paginated notification history. Includes: full change details, acknowledgement status, channel delivery status, escalation history. Supports mark-all-read.",
+          "files_to_create_or_modify": [
+            "packages/core/src/routes/notifications.routes.ts"
+          ],
+          "commit_message": "add notification history endpoint: GET /notifications",
+          "commit_datetime": "2025-08-31 14:30:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-08-31 14:30:08\" GIT_COMMITTER_DATE=\"2025-08-31 14:30:08\" git commit -m \"add notification history endpoint: GET /notifications\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-08-31 14:30:08\" GIT_COMMITTER_DATE=\"2025-08-31 14:30:08\" git commit -m \"add notification history endpoint: GET /notifications\""
+        },
+        {
+          "step_id": "5.13",
+          "title": "Server-Sent Events",
+          "description": "Create GET /api/notifications/stream SSE endpoint. Auth via JWT in query param or cookie. Sends: notification:new, notification:updated, graph:changed events. Clients reconnect with Last-Event-ID header. Redis pub/sub feeds the SSE stream.",
+          "files_to_create_or_modify": [
+            "packages/core/src/routes/sse.routes.ts",
+            "packages/core/src/sse/SseManager.ts"
+          ],
+          "commit_message": "implement push notifications via Server-Sent Events",
+          "commit_datetime": "2025-09-01 10:15:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-01 10:15:22\" GIT_COMMITTER_DATE=\"2025-09-01 10:15:22\" git commit -m \"implement push notifications via Server-Sent Events\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-01 10:15:22\" GIT_COMMITTER_DATE=\"2025-09-01 10:15:22\" git commit -m \"implement push notifications via Server-Sent Events\""
+        },
+        {
+          "step_id": "5.14",
+          "title": "WebSocket Support",
+          "description": "Add WebSocket endpoint via @fastify/websocket. Events: graph:nodeUpdated, graph:edgeAdded, notification:critical (immediate, bypasses SSE), dashboard:refresh. JWT auth on WS upgrade. Dashboard uses WS for live graph updates.",
+          "files_to_create_or_modify": [
+            "packages/core/src/websocket/WebSocketManager.ts",
+            "packages/core/src/websocket/events.ts"
+          ],
+          "commit_message": "add websocket support for real-time dashboard alerts",
+          "commit_datetime": "2025-09-01 14:45:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-01 14:45:30\" GIT_COMMITTER_DATE=\"2025-09-01 14:45:30\" git commit -m \"add websocket support for real-time dashboard alerts\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-01 14:45:30\" GIT_COMMITTER_DATE=\"2025-09-01 14:45:30\" git commit -m \"add websocket support for real-time dashboard alerts\""
+        },
+        {
+          "step_id": "5.15",
+          "title": "Email Channel",
+          "description": "Create EmailChannel.ts using nodemailer. Support SMTP, SendGrid, AWS SES. Create MJML email templates for CRITICAL (red header, params table, migration guide, acknowledge button), NEUTRAL (amber header), DAILY DIGEST (summary table). Test with Ethereal mail in CI.",
+          "files_to_create_or_modify": [
+            "packages/core/src/notifications/channels/EmailChannel.ts",
+            "packages/core/src/notifications/templates/critical.mjml",
+            "packages/core/src/notifications/templates/neutral.mjml",
+            "packages/core/src/notifications/templates/digest.mjml"
+          ],
+          "commit_message": "add email notification channel using nodemailer",
+          "commit_datetime": "2025-09-02 10:00:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-02 10:00:08\" GIT_COMMITTER_DATE=\"2025-09-02 10:00:08\" git commit -m \"add email notification channel using nodemailer\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-02 10:00:08\" GIT_COMMITTER_DATE=\"2025-09-02 10:00:08\" git commit -m \"add email notification channel using nodemailer\""
+        },
+        {
+          "step_id": "5.16",
+          "title": "Email Templates",
+          "description": "Complete all email templates using MJML + Handlebars. CRITICAL template: red gradient header, affected API details, before/after parameter table, migration guide section, big CTA Acknowledge button, list of all affected dependent APIs.",
+          "files_to_create_or_modify": [
+            "packages/core/src/notifications/templates/critical.mjml",
+            "packages/core/src/notifications/templates/neutral.mjml",
+            "packages/core/src/notifications/templates/low.mjml",
+            "packages/core/src/notifications/templates/digest.mjml",
+            "packages/core/src/notifications/templates/renderer.ts"
+          ],
+          "commit_message": "create email templates for LOW NEUTRAL CRITICAL threats",
+          "commit_datetime": "2025-09-02 14:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-02 14:30:15\" GIT_COMMITTER_DATE=\"2025-09-02 14:30:15\" git commit -m \"create email templates for LOW NEUTRAL CRITICAL threats\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-02 14:30:15\" GIT_COMMITTER_DATE=\"2025-09-02 14:30:15\" git commit -m \"create email templates for LOW NEUTRAL CRITICAL threats\""
+        },
+        {
+          "step_id": "5.17",
+          "title": "Slack Channel",
+          "description": "Create SlackChannel.ts using @slack/bolt. Block Kit message layout: header with threat emoji, API name/team section, change summary, affected dependents list, migration guide (collapsed), action buttons (View Diff, Acknowledge, Open Dashboard). Sends to team's configured Slack channel.",
+          "files_to_create_or_modify": [
+            "packages/core/src/notifications/channels/SlackChannel.ts",
+            "packages/core/src/notifications/channels/SlackChannel.test.ts"
+          ],
+          "commit_message": "implement Slack notification channel with block kit UI",
+          "commit_datetime": "2025-09-03 10:15:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-03 10:15:30\" GIT_COMMITTER_DATE=\"2025-09-03 10:15:30\" git commit -m \"implement Slack notification channel with block kit UI\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-03 10:15:30\" GIT_COMMITTER_DATE=\"2025-09-03 10:15:30\" git commit -m \"implement Slack notification channel with block kit UI\""
+        },
+        {
+          "step_id": "5.18",
+          "title": "Slack Slash Command",
+          "description": "Register /apiwatch slash command: /apiwatch status <api-name|path> \u2192 returns current health, threat level, last change, dependent count. /apiwatch subscribe <api-name> \u2192 subscribe current channel. /apiwatch unsubscribe <api-name>.",
+          "files_to_create_or_modify": [
+            "packages/core/src/notifications/channels/SlackChannel.ts",
+            "packages/core/src/slack/slashCommands.ts"
+          ],
+          "commit_message": "add Slack slash command /apiwatch status <api-name>",
+          "commit_datetime": "2025-09-03 14:45:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-03 14:45:22\" GIT_COMMITTER_DATE=\"2025-09-03 14:45:22\" git commit -m \"add Slack slash command /apiwatch status <api-name>\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-03 14:45:22\" GIT_COMMITTER_DATE=\"2025-09-03 14:45:22\" git commit -m \"add Slack slash command /apiwatch status <api-name>\""
+        },
+        {
+          "step_id": "5.19",
+          "title": "Microsoft Teams Channel",
+          "description": "Create TeamsChannel.ts using incoming webhook. Adaptive Card format. Layout mirrors Slack: threat level header, change details, action buttons. Configure via teams.webhookUrl in apiwatch.config.ts.",
+          "files_to_create_or_modify": [
+            "packages/core/src/notifications/channels/TeamsChannel.ts",
+            "packages/core/src/notifications/channels/TeamsChannel.test.ts"
+          ],
+          "commit_message": "implement Microsoft Teams webhook notification channel",
+          "commit_datetime": "2025-09-04 10:00:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-04 10:00:08\" GIT_COMMITTER_DATE=\"2025-09-04 10:00:08\" git commit -m \"implement Microsoft Teams webhook notification channel\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-04 10:00:08\" GIT_COMMITTER_DATE=\"2025-09-04 10:00:08\" git commit -m \"implement Microsoft Teams webhook notification channel\""
+        },
+        {
+          "step_id": "5.20",
+          "title": "Notification Tests",
+          "description": "Unit tests for NotificationService: mock email/slack/teams channels, verify fan-out reaches all subscribers, deduplication prevents duplicates, quiet hours delay delivery, CRITICAL bypasses quiet hours.",
+          "files_to_create_or_modify": [
+            "packages/core/src/notifications/NotificationService.test.ts"
+          ],
+          "commit_message": "write unit tests for NotificationService",
+          "commit_datetime": "2025-09-04 14:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-04 14:30:15\" GIT_COMMITTER_DATE=\"2025-09-04 14:30:15\" git commit -m \"write unit tests for NotificationService\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-04 14:30:15\" GIT_COMMITTER_DATE=\"2025-09-04 14:30:15\" git commit -m \"write unit tests for NotificationService\""
+        },
+        {
+          "step_id": "5.21",
+          "title": "Email Integration Tests",
+          "description": "Integration tests for email channel: sends via Ethereal (test SMTP), verify delivery, assert template renders correctly for CRITICAL/NEUTRAL/LOW, test acknowledge link in email triggers API call.",
+          "files_to_create_or_modify": [
+            "packages/core/tests/integration/emailChannel.test.ts"
+          ],
+          "commit_message": "write integration tests for email channel",
+          "commit_datetime": "2025-09-05 10:15:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-05 10:15:22\" GIT_COMMITTER_DATE=\"2025-09-05 10:15:22\" git commit -m \"write integration tests for email channel\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-05 10:15:22\" GIT_COMMITTER_DATE=\"2025-09-05 10:15:22\" git commit -m \"write integration tests for email channel\""
+        },
+        {
+          "step_id": "5.22",
+          "title": "Slack Integration Tests",
+          "description": "Integration tests for Slack channel: mock Slack API, verify Block Kit message structure for each threat level, test slash command handlers, assert acknowledge button triggers correct API endpoint.",
+          "files_to_create_or_modify": [
+            "packages/core/tests/integration/slackChannel.test.ts"
+          ],
+          "commit_message": "write integration tests for Slack channel",
+          "commit_datetime": "2025-09-05 14:45:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-05 14:45:08\" GIT_COMMITTER_DATE=\"2025-09-05 14:45:08\" git commit -m \"write integration tests for Slack channel\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-05 14:45:08\" GIT_COMMITTER_DATE=\"2025-09-05 14:45:08\" git commit -m \"write integration tests for Slack channel\""
+        },
+        {
+          "step_id": "5.23",
+          "title": "Fan-out Verification Test",
+          "description": "Integration test: create 10 repos all depending on API X. Change API X. Assert all 10 teams received notifications. Test that team isolation works: team 11 (not dependent) does NOT receive notification.",
+          "files_to_create_or_modify": [
+            "packages/core/tests/integration/fanout.test.ts"
+          ],
+          "commit_message": "test: verify fan-out to all dependent team subscribers",
+          "commit_datetime": "2025-09-06 10:00:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-06 10:00:30\" GIT_COMMITTER_DATE=\"2025-09-06 10:00:30\" git commit -m \"test: verify fan-out to all dependent team subscribers\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-06 10:00:30\" GIT_COMMITTER_DATE=\"2025-09-06 10:00:30\" git commit -m \"test: verify fan-out to all dependent team subscribers\""
+        },
+        {
+          "step_id": "5.24",
+          "title": "Deduplication Test",
+          "description": "Integration test: send same API change twice within 1hr window to same user. Assert user received exactly 1 notification (not 2). Assert the merged notification contains both changes. Test the Redis TTL expiry resets the dedup window.",
+          "files_to_create_or_modify": [
+            "packages/core/tests/integration/deduplication.test.ts"
+          ],
+          "commit_message": "test: verify deduplication prevents duplicate notifications",
+          "commit_datetime": "2025-09-06 14:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-06 14:30:15\" GIT_COMMITTER_DATE=\"2025-09-06 14:30:15\" git commit -m \"test: verify deduplication prevents duplicate notifications\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-06 14:30:15\" GIT_COMMITTER_DATE=\"2025-09-06 14:30:15\" git commit -m \"test: verify deduplication prevents duplicate notifications\""
+        },
+        {
+          "step_id": "5.25",
+          "title": "JIRA Integration",
+          "description": "Create JiraIntegration.ts. On CRITICAL change: POST to Jira API to create issue. Fields: summary (API name + change), description (migration guide), priority (P1), labels ([apiwatch, breaking-change]), assignee (API owner), components. Store jiraIssueKey in change_events.",
+          "files_to_create_or_modify": [
+            "packages/core/src/integrations/JiraIntegration.ts",
+            "packages/core/src/integrations/JiraIntegration.test.ts"
+          ],
+          "commit_message": "add JIRA integration: auto-create ticket on CRITICAL change",
+          "commit_datetime": "2025-09-07 10:15:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-07 10:15:08\" GIT_COMMITTER_DATE=\"2025-09-07 10:15:08\" git commit -m \"add JIRA integration: auto-create ticket on CRITICAL change\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-07 10:15:08\" GIT_COMMITTER_DATE=\"2025-09-07 10:15:08\" git commit -m \"add JIRA integration: auto-create ticket on CRITICAL change\""
+        },
+        {
+          "step_id": "5.26",
+          "title": "GitHub Issues Integration",
+          "description": "Create GitHubIntegration.ts. For each dependent repo on CRITICAL change: create GitHub issue in that repo (if github.token configured). Issue body: migration guide + link to dashboard diff. Title: [APIWatch] Breaking change in POST /api/name.",
+          "files_to_create_or_modify": [
+            "packages/core/src/integrations/GitHubIntegration.ts",
+            "packages/core/src/integrations/GitHubIntegration.test.ts"
+          ],
+          "commit_message": "add GitHub issue auto-creation on CRITICAL breaking change",
+          "commit_datetime": "2025-09-07 14:45:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-07 14:45:22\" GIT_COMMITTER_DATE=\"2025-09-07 14:45:22\" git commit -m \"add GitHub issue auto-creation on CRITICAL breaking change\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-07 14:45:22\" GIT_COMMITTER_DATE=\"2025-09-07 14:45:22\" git commit -m \"add GitHub issue auto-creation on CRITICAL breaking change\""
+        },
+        {
+          "step_id": "5.27",
+          "title": "Notification Analytics",
+          "description": "Track notification metrics: delivery rate (sent/failed), open rate (clicks on dashboard link), acknowledge rate, time-to-acknowledge per team. Store in notification_analytics table. Expose via GET /api/analytics/notifications.",
+          "files_to_create_or_modify": [
+            "packages/core/src/analytics/NotificationAnalytics.ts",
+            "packages/core/src/routes/analytics.routes.ts"
+          ],
+          "commit_message": "implement notification analytics: open rate click rate",
+          "commit_datetime": "2025-09-08 10:00:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-08 10:00:08\" GIT_COMMITTER_DATE=\"2025-09-08 10:00:08\" git commit -m \"implement notification analytics: open rate click rate\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-08 10:00:08\" GIT_COMMITTER_DATE=\"2025-09-08 10:00:08\" git commit -m \"implement notification analytics: open rate click rate\""
+        },
+        {
+          "step_id": "5.28",
+          "title": "Custom Notification Templates",
+          "description": "Allow orgs to provide custom Handlebars templates for each notification type. Store template overrides in org_settings table. Fall back to default templates if custom not provided. Add template preview endpoint for testing.",
+          "files_to_create_or_modify": [
+            "packages/core/src/notifications/TemplateService.ts",
+            "packages/core/src/routes/templates.routes.ts"
+          ],
+          "commit_message": "add custom notification templates per organization",
+          "commit_datetime": "2025-09-08 14:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-08 14:30:15\" GIT_COMMITTER_DATE=\"2025-09-08 14:30:15\" git commit -m \"add custom notification templates per organization\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-08 14:30:15\" GIT_COMMITTER_DATE=\"2025-09-08 14:30:15\" git commit -m \"add custom notification templates per organization\""
+        },
+        {
+          "step_id": "5.29",
+          "title": "Fix Notification Context",
+          "description": "Fix: notification body was missing list of affected dependent APIs. Add graph query to notification fan-out: fetch all dependents, include their names/teams in notification body. Test that Slack message shows correct affected count.",
+          "files_to_create_or_modify": [
+            "packages/core/src/notifications/NotificationService.ts"
+          ],
+          "commit_message": "fix: notification should include affected dependent apis list",
+          "commit_datetime": "2025-09-09 10:15:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-09 10:15:22\" GIT_COMMITTER_DATE=\"2025-09-09 10:15:22\" git commit -m \"fix: notification should include affected dependent apis list\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-09 10:15:22\" GIT_COMMITTER_DATE=\"2025-09-09 10:15:22\" git commit -m \"fix: notification should include affected dependent apis list\""
+        },
+        {
+          "step_id": "5.30",
+          "title": "Notification Suppression",
+          "description": "Add maintenance windows: POST /api/maintenance { apiId, startAt, endAt, reason }. During maintenance window: suppress all notifications for that API. Show maintenance banner in dashboard. Useful for planned migrations.",
+          "files_to_create_or_modify": [
+            "packages/core/src/notifications/MaintenanceService.ts",
+            "packages/core/src/routes/maintenance.routes.ts"
+          ],
+          "commit_message": "add notification suppression rules for planned maintenance",
+          "commit_datetime": "2025-09-09 14:45:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-09 14:45:08\" GIT_COMMITTER_DATE=\"2025-09-09 14:45:08\" git commit -m \"add notification suppression rules for planned maintenance\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-09 14:45:08\" GIT_COMMITTER_DATE=\"2025-09-09 14:45:08\" git commit -m \"add notification suppression rules for planned maintenance\""
+        },
+        {
+          "step_id": "5.31",
+          "title": "Notification Templates Handlebars",
+          "description": "Refactor all notification templates to use Handlebars. Allows custom template overrides per org. Template variables: {{apiName}}, {{teamName}}, {{threatLevel}}, {{changes}}, {{migrationGuide}}, {{affectedCount}}, {{dashboardUrl}}, {{acknowledgeUrl}}.",
+          "files_to_create_or_modify": [
+            "packages/core/src/notifications/templates/"
+          ],
+          "commit_message": "refactor: notification templates to use handlebars",
+          "commit_datetime": "2025-09-10 10:00:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-10 10:00:30\" GIT_COMMITTER_DATE=\"2025-09-10 10:00:30\" git commit -m \"refactor: notification templates to use handlebars\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-10 10:00:30\" GIT_COMMITTER_DATE=\"2025-09-10 10:00:30\" git commit -m \"refactor: notification templates to use handlebars\""
+        }
+      ]
+    },
+    "phase_6": {
+      "phase_number": 6,
+      "phase_name": "Dashboard UI",
+      "steps": [
+        {
+          "step_id": "6.1",
+          "title": "React Router Setup",
+          "description": "Setup React Router v6 with createBrowserRouter. Routes: /login, /, /dashboard, /graph, /graph/:apiId, /apis/:apiId, /notifications, /team/:teamId, /settings. Protected route HOC redirects to /login. Layout component with sidebar.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/App.tsx",
+            "packages/dashboard/src/router.tsx",
+            "packages/dashboard/src/layouts/AppLayout.tsx",
+            "packages/dashboard/src/components/ProtectedRoute.tsx"
+          ],
+          "commit_message": "setup React router with layout and auth routes",
+          "commit_datetime": "2025-09-11 09:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-11 09:30:15\" GIT_COMMITTER_DATE=\"2025-09-11 09:30:15\" git commit -m \"setup React router with layout and auth routes\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-11 09:30:15\" GIT_COMMITTER_DATE=\"2025-09-11 09:30:15\" git commit -m \"setup React router with layout and auth routes\""
+        },
+        {
+          "step_id": "6.2",
+          "title": "Authentication UI",
+          "description": "Create /login page: company logo, email+password form, JWT stored in memory (Zustand store, NOT localStorage). Auth context provides useAuth() hook. Axios instance with auth header interceptor. Auto-refresh token 5min before expiry.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/pages/Login.tsx",
+            "packages/dashboard/src/store/authStore.ts",
+            "packages/dashboard/src/api/client.ts"
+          ],
+          "commit_message": "implement authentication UI with JWT login flow",
+          "commit_datetime": "2025-09-11 14:45:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-11 14:45:22\" GIT_COMMITTER_DATE=\"2025-09-11 14:45:22\" git commit -m \"implement authentication UI with JWT login flow\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-11 14:45:22\" GIT_COMMITTER_DATE=\"2025-09-11 14:45:22\" git commit -m \"implement authentication UI with JWT login flow\""
+        },
+        {
+          "step_id": "6.3",
+          "title": "Org Selector",
+          "description": "If user belongs to multiple orgs: show org selector after login. Store selected orgId in Zustand. All API calls include X-Org-Id header. Org selector accessible from sidebar header for switching.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/components/OrgSelector.tsx",
+            "packages/dashboard/src/store/orgStore.ts"
+          ],
+          "commit_message": "add org selector for multi-organization support",
+          "commit_datetime": "2025-09-12 10:00:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-12 10:00:08\" GIT_COMMITTER_DATE=\"2025-09-12 10:00:08\" git commit -m \"add org selector for multi-organization support\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-12 10:00:08\" GIT_COMMITTER_DATE=\"2025-09-12 10:00:08\" git commit -m \"add org selector for multi-organization support\""
+        },
+        {
+          "step_id": "6.4",
+          "title": "Main Layout & Sidebar",
+          "description": "Dark industrial design. Sidebar: deep charcoal (#1a1a2e), amber accent (#ff9500) for active items, JetBrains Mono font. Nav items: Dashboard, Graph, APIs, Notifications (with badge), Teams, Settings. Collapsible sidebar. Header shows org name + user avatar.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/layouts/AppLayout.tsx",
+            "packages/dashboard/src/components/Sidebar.tsx",
+            "packages/dashboard/src/components/TopBar.tsx"
+          ],
+          "commit_message": "create main dashboard layout with sidebar navigation",
+          "commit_datetime": "2025-09-12 14:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-12 14:30:15\" GIT_COMMITTER_DATE=\"2025-09-12 14:30:15\" git commit -m \"create main dashboard layout with sidebar navigation\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-12 14:30:15\" GIT_COMMITTER_DATE=\"2025-09-12 14:30:15\" git commit -m \"create main dashboard layout with sidebar navigation\""
+        },
+        {
+          "step_id": "6.5",
+          "title": "Force Graph Component",
+          "description": "Create ForceGraph.tsx using react-force-graph-2d. Node: size=centralityScore, color=threatLevel (green/amber/red), pulsing CSS animation for CRITICAL. Edge: width=callFrequency, directional arrows. Click node \u2192 navigate. Hover \u2192 tooltip with stats.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/components/ForceGraph.tsx",
+            "packages/dashboard/src/components/GraphTooltip.tsx"
+          ],
+          "commit_message": "implement API graph visualization using react-force-graph",
+          "commit_datetime": "2025-09-13 10:15:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-13 10:15:30\" GIT_COMMITTER_DATE=\"2025-09-13 10:15:30\" git commit -m \"implement API graph visualization using react-force-graph\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-13 10:15:30\" GIT_COMMITTER_DATE=\"2025-09-13 10:15:30\" git commit -m \"implement API graph visualization using react-force-graph\""
+        },
+        {
+          "step_id": "6.6",
+          "title": "Graph Interactions",
+          "description": "Implement: scroll to zoom, drag to pan, click node \u2192 navigate to /apis/:id, hover \u2192 tooltip, Ctrl+click \u2192 multi-select for subgraph isolation, right-click context menu (View Details, Notify Team, View Diff), double-click background \u2192 reset zoom.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/components/ForceGraph.tsx",
+            "packages/dashboard/src/components/GraphContextMenu.tsx"
+          ],
+          "commit_message": "add zoom pan and node click interactions to graph",
+          "commit_datetime": "2025-09-13 14:45:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-13 14:45:08\" GIT_COMMITTER_DATE=\"2025-09-13 14:45:08\" git commit -m \"add zoom pan and node click interactions to graph\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-13 14:45:08\" GIT_COMMITTER_DATE=\"2025-09-13 14:45:08\" git commit -m \"add zoom pan and node click interactions to graph\""
+        },
+        {
+          "step_id": "6.7",
+          "title": "Graph Node Coloring",
+          "description": "Node colors: CRITICAL=#ef4444 with glow effect, NEUTRAL=#f59e0b, LOW=healthy=#22c55e, unknown=#6b7280. Nodes with active maintenance window have dashed border. Deprecated nodes have gray overlay. CRITICAL nodes pulse with CSS animation.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/components/ForceGraph.tsx",
+            "packages/dashboard/src/utils/graphColors.ts"
+          ],
+          "commit_message": "color code graph nodes by threat level (green/yellow/red)",
+          "commit_datetime": "2025-09-14 10:00:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-14 10:00:22\" GIT_COMMITTER_DATE=\"2025-09-14 10:00:22\" git commit -m \"color code graph nodes by threat level (green/yellow/red)\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-14 10:00:22\" GIT_COMMITTER_DATE=\"2025-09-14 10:00:22\" git commit -m \"color code graph nodes by threat level (green/yellow/red)\""
+        },
+        {
+          "step_id": "6.8",
+          "title": "Node Size Scaling",
+          "description": "Node radius = 4 + centralityScore * 20 (min 4, max 24). Edge width = 0.5 + log(callCount) * 2. Edge color: green (errorRate<1%) \u2192 amber (1-5%) \u2192 red (>5%). Very high centrality nodes (>0.8) have outer ring/halo.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/components/ForceGraph.tsx"
+          ],
+          "commit_message": "add node size scaling based on dependency count",
+          "commit_datetime": "2025-09-14 14:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-14 14:30:15\" GIT_COMMITTER_DATE=\"2025-09-14 14:30:15\" git commit -m \"add node size scaling based on dependency count\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-14 14:30:15\" GIT_COMMITTER_DATE=\"2025-09-14 14:30:15\" git commit -m \"add node size scaling based on dependency count\""
+        },
+        {
+          "step_id": "6.9",
+          "title": "Graph Filter Panel",
+          "description": "Right-side filter panel: filter by team (multi-select), by threat level (checkboxes), by office location (select), by framework (Express/Fastify/NestJS). Live filtering updates force graph without full reload. Save filter presets.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/components/GraphFilters.tsx",
+            "packages/dashboard/src/store/graphFilterStore.ts"
+          ],
+          "commit_message": "implement graph filter panel: by team squad threat level",
+          "commit_datetime": "2025-09-15 10:15:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-15 10:15:08\" GIT_COMMITTER_DATE=\"2025-09-15 10:15:08\" git commit -m \"implement graph filter panel: by team squad threat level\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-15 10:15:08\" GIT_COMMITTER_DATE=\"2025-09-15 10:15:08\" git commit -m \"implement graph filter panel: by team squad threat level\""
+        },
+        {
+          "step_id": "6.10",
+          "title": "Graph Search",
+          "description": "Search bar above graph: type API name or path, matching nodes highlighted (glow + zoom), non-matching nodes dimmed. Debounce 300ms. Keyboard: Enter \u2192 navigate to first result, Escape \u2192 clear. Show result count.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/components/GraphSearch.tsx"
+          ],
+          "commit_message": "add graph search: highlight node by api name",
+          "commit_datetime": "2025-09-15 14:45:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-15 14:45:22\" GIT_COMMITTER_DATE=\"2025-09-15 14:45:22\" git commit -m \"add graph search: highlight node by api name\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-15 14:45:22\" GIT_COMMITTER_DATE=\"2025-09-15 14:45:22\" git commit -m \"add graph search: highlight node by api name\""
+        },
+        {
+          "step_id": "6.11",
+          "title": "API Detail Page",
+          "description": "Create /apis/:apiId page. Tabs: Overview (schema, health status), Dependencies (graph subview), Changes (timeline), Analytics (usage charts), Settings (ownership, notifications). Header shows: method badge, path, team, threat level, last changed.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/pages/ApiDetail.tsx",
+            "packages/dashboard/src/pages/ApiDetail/OverviewTab.tsx",
+            "packages/dashboard/src/pages/ApiDetail/DependenciesTab.tsx"
+          ],
+          "commit_message": "create API detail page with full schema view",
+          "commit_datetime": "2025-09-16 10:00:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-16 10:00:08\" GIT_COMMITTER_DATE=\"2025-09-16 10:00:08\" git commit -m \"create API detail page with full schema view\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-16 10:00:08\" GIT_COMMITTER_DATE=\"2025-09-16 10:00:08\" git commit -m \"create API detail page with full schema view\""
+        },
+        {
+          "step_id": "6.12",
+          "title": "Change History Timeline",
+          "description": "Visual timeline component for API change history. Each entry: version badge, date, threat level dot, summary text, expand button \u2192 shows full diff (before/after JSON). Diff rendered with syntax highlighting. Download migration guide button.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/components/ChangeTimeline.tsx",
+            "packages/dashboard/src/components/DiffViewer.tsx"
+          ],
+          "commit_message": "add change history timeline on API detail page",
+          "commit_datetime": "2025-09-16 14:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-16 14:30:15\" GIT_COMMITTER_DATE=\"2025-09-16 14:30:15\" git commit -m \"add change history timeline on API detail page\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-16 14:30:15\" GIT_COMMITTER_DATE=\"2025-09-16 14:30:15\" git commit -m \"add change history timeline on API detail page\""
+        },
+        {
+          "step_id": "6.13",
+          "title": "Dependency List View",
+          "description": "Alternate to graph: table view of dependencies. Two tables side by side: Callers (who calls this API) and Dependencies (what this API calls). Columns: API name, team, call frequency, error rate, latency, threat level badge. Clickable rows.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/components/DependencyTable.tsx"
+          ],
+          "commit_message": "implement dependency list view as alternative to graph",
+          "commit_datetime": "2025-09-17 10:15:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-17 10:15:30\" GIT_COMMITTER_DATE=\"2025-09-17 10:15:30\" git commit -m \"implement dependency list view as alternative to graph\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-17 10:15:30\" GIT_COMMITTER_DATE=\"2025-09-17 10:15:30\" git commit -m \"implement dependency list view as alternative to graph\""
+        },
+        {
+          "step_id": "6.14",
+          "title": "Breadcrumb Navigation",
+          "description": "Breadcrumb for dependency chains: API A > depends on API B > depends on API C. Clickable. Show at most 5 levels with ... truncation. Used in graph focused-subgraph view to show selected node's lineage.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/components/DependencyBreadcrumb.tsx"
+          ],
+          "commit_message": "add breadcrumb navigation for api->dependent->dependent chains",
+          "commit_datetime": "2025-09-17 14:45:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-17 14:45:08\" GIT_COMMITTER_DATE=\"2025-09-17 14:45:08\" git commit -m \"add breadcrumb navigation for api->dependent->dependent chains\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-17 14:45:08\" GIT_COMMITTER_DATE=\"2025-09-17 14:45:08\" git commit -m \"add breadcrumb navigation for api->dependent->dependent chains\""
+        },
+        {
+          "step_id": "6.15",
+          "title": "Notifications Center",
+          "description": "Create /notifications page. Tabs: ALL / CRITICAL / NEUTRAL / LOW / UNREAD. Notification card: threat badge, API name, change summary, affected count, time ago, Acknowledge button. Bulk select + bulk acknowledge. Sort by date/threat.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/pages/Notifications.tsx",
+            "packages/dashboard/src/components/NotificationCard.tsx"
+          ],
+          "commit_message": "create notifications center page with filter tabs",
+          "commit_datetime": "2025-09-18 10:00:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-18 10:00:22\" GIT_COMMITTER_DATE=\"2025-09-18 10:00:22\" git commit -m \"create notifications center page with filter tabs\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-18 10:00:22\" GIT_COMMITTER_DATE=\"2025-09-18 10:00:22\" git commit -m \"create notifications center page with filter tabs\""
+        },
+        {
+          "step_id": "6.16",
+          "title": "Notification Badge",
+          "description": "Sidebar notifications icon shows unread count badge (red dot for any unread, red circle with number if > 0, bright red if any CRITICAL). Updates in real-time via SSE. Badge disappears when all read. Animate on new notification.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/components/Sidebar.tsx",
+            "packages/dashboard/src/store/notificationStore.ts"
+          ],
+          "commit_message": "add notification badge on sidebar with unread count",
+          "commit_datetime": "2025-09-18 14:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-18 14:30:15\" GIT_COMMITTER_DATE=\"2025-09-18 14:30:15\" git commit -m \"add notification badge on sidebar with unread count\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-18 14:30:15\" GIT_COMMITTER_DATE=\"2025-09-18 14:30:15\" git commit -m \"add notification badge on sidebar with unread count\""
+        },
+        {
+          "step_id": "6.17",
+          "title": "Real-time Alert Toast",
+          "description": "On receiving critical:notification SSE event: show toast overlay (top-right). Toast shows: \ud83d\udea8 red background, API name, change type, affected count, View button \u2192 navigate to API. Auto-dismiss after 10s unless CRITICAL (stays until dismissed). Stack multiple.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/components/AlertToast.tsx",
+            "packages/dashboard/src/store/toastStore.ts"
+          ],
+          "commit_message": "implement real-time alert toast on CRITICAL changes via SSE",
+          "commit_datetime": "2025-09-19 10:15:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-19 10:15:08\" GIT_COMMITTER_DATE=\"2025-09-19 10:15:08\" git commit -m \"implement real-time alert toast on CRITICAL changes via SSE\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-19 10:15:08\" GIT_COMMITTER_DATE=\"2025-09-19 10:15:08\" git commit -m \"implement real-time alert toast on CRITICAL changes via SSE\""
+        },
+        {
+          "step_id": "6.18",
+          "title": "Team Dashboard",
+          "description": "Create /team/:teamId page. Shows: team name/squad, member list, owned APIs (with health status), dependencies on other teams (with threat level), recent change feed for team's APIs, team health score, outstanding unacknowledged changes.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/pages/TeamView.tsx",
+            "packages/dashboard/src/pages/TeamView/OwnedApis.tsx",
+            "packages/dashboard/src/pages/TeamView/TeamDependencies.tsx"
+          ],
+          "commit_message": "create team dashboard: shows your team's apis and their health",
+          "commit_datetime": "2025-09-19 14:45:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-19 14:45:22\" GIT_COMMITTER_DATE=\"2025-09-19 14:45:22\" git commit -m \"create team dashboard: shows your team's apis and their health\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-19 14:45:22\" GIT_COMMITTER_DATE=\"2025-09-19 14:45:22\" git commit -m \"create team dashboard: shows your team's apis and their health\""
+        },
+        {
+          "step_id": "6.19",
+          "title": "KPI Widgets",
+          "description": "Dashboard KPI widgets: TotalAPIs (count + trend), ActiveDependencies (edge count + weekly delta), CriticalAlerts (count + CRITICAL badge if > 0), TeamsCount, OrgHealthScore (0-100 gauge), ChangeVelocity (changes/day this week vs last week).",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/components/KpiWidget.tsx",
+            "packages/dashboard/src/pages/Dashboard.tsx"
+          ],
+          "commit_message": "add KPI widgets: total apis, active dependencies, critical alerts",
+          "commit_datetime": "2025-09-20 10:00:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-20 10:00:08\" GIT_COMMITTER_DATE=\"2025-09-20 10:00:08\" git commit -m \"add KPI widgets: total apis, active dependencies, critical alerts\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-20 10:00:08\" GIT_COMMITTER_DATE=\"2025-09-20 10:00:08\" git commit -m \"add KPI widgets: total apis, active dependencies, critical alerts\""
+        },
+        {
+          "step_id": "6.20",
+          "title": "Usage Analytics Chart",
+          "description": "Line chart (Recharts) on API detail: calls per hour/day/week. Two lines: total calls (blue) + error calls (red). Date range picker. Toggle granularity. Zoom on chart. Show P50/P95/P99 latency as area chart below.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/components/UsageChart.tsx",
+            "packages/dashboard/src/components/LatencyChart.tsx"
+          ],
+          "commit_message": "implement usage analytics chart: calls per api over time",
+          "commit_datetime": "2025-09-20 14:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-20 14:30:15\" GIT_COMMITTER_DATE=\"2025-09-20 14:30:15\" git commit -m \"implement usage analytics chart: calls per api over time\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-20 14:30:15\" GIT_COMMITTER_DATE=\"2025-09-20 14:30:15\" git commit -m \"implement usage analytics chart: calls per api over time\""
+        },
+        {
+          "step_id": "6.21",
+          "title": "Top Callers Table",
+          "description": "On API detail: Top Callers table sorted by call frequency. Columns: API Name, Team, Calls (30d), Error Rate, Avg Latency, Last Call. Click row \u2192 navigate to caller API. Show warning icon if caller's error rate > 5%.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/components/TopCallersTable.tsx"
+          ],
+          "commit_message": "add top callers table: which apis call this api most",
+          "commit_datetime": "2025-09-21 10:15:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-21 10:15:30\" GIT_COMMITTER_DATE=\"2025-09-21 10:15:30\" git commit -m \"add top callers table: which apis call this api most\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-21 10:15:30\" GIT_COMMITTER_DATE=\"2025-09-21 10:15:30\" git commit -m \"add top callers table: which apis call this api most\""
+        },
+        {
+          "step_id": "6.22",
+          "title": "Error Rate Widget",
+          "description": "Error rate percentage widget: shows % of calls returning 5xx. Color: green (< 1%), amber (1-5%), red (> 5%). Sparkline chart showing 7-day trend. Click \u2192 expand to see error breakdown by status code (500, 502, 503, 504).",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/components/ErrorRateWidget.tsx"
+          ],
+          "commit_message": "add error rate widget: % of calls returning 5xx",
+          "commit_datetime": "2025-09-21 14:45:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-21 14:45:08\" GIT_COMMITTER_DATE=\"2025-09-21 14:45:08\" git commit -m \"add error rate widget: % of calls returning 5xx\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-21 14:45:08\" GIT_COMMITTER_DATE=\"2025-09-21 14:45:08\" git commit -m \"add error rate widget: % of calls returning 5xx\""
+        },
+        {
+          "step_id": "6.23",
+          "title": "Latency Percentile Chart",
+          "description": "Latency chart with P50/P95/P99 lines (Recharts AreaChart). Toggle lines on/off. Show SLA threshold line (configurable). Highlight breaches in red. Time range: 24h/7d/30d selector. Export chart as PNG.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/components/LatencyChart.tsx"
+          ],
+          "commit_message": "implement latency percentile chart (p50 p95 p99)",
+          "commit_datetime": "2025-09-22 10:00:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-22 10:00:22\" GIT_COMMITTER_DATE=\"2025-09-22 10:00:22\" git commit -m \"implement latency percentile chart (p50 p95 p99)\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-22 10:00:22\" GIT_COMMITTER_DATE=\"2025-09-22 10:00:22\" git commit -m \"implement latency percentile chart (p50 p95 p99)\""
+        },
+        {
+          "step_id": "6.24",
+          "title": "Geographic Usage Map",
+          "description": "World map (react-simple-maps) showing call volume by office location. Circle size = call volume. Hover \u2192 tooltip with location name and stats. Helps identify cross-location dependency performance issues.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/components/GeographicMap.tsx"
+          ],
+          "commit_message": "add geographic usage map: calls by office location",
+          "commit_datetime": "2025-09-22 14:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-22 14:30:15\" GIT_COMMITTER_DATE=\"2025-09-22 14:30:15\" git commit -m \"add geographic usage map: calls by office location\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-22 14:30:15\" GIT_COMMITTER_DATE=\"2025-09-22 14:30:15\" git commit -m \"add geographic usage map: calls by office location\""
+        },
+        {
+          "step_id": "6.25",
+          "title": "Org Health Score Dashboard",
+          "description": "Main dashboard health score: weighted average of all API health scores. Formula: 100 - (CRITICAL_count * 15 + NEUTRAL_count * 5 + errorRate * 20 + unacknowledgedCritical * 10). Show historical trend. Color gauge from red (0) to green (100).",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/pages/Dashboard.tsx",
+            "packages/dashboard/src/components/HealthGauge.tsx"
+          ],
+          "commit_message": "create org-wide health score dashboard",
+          "commit_datetime": "2025-09-23 10:15:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-23 10:15:08\" GIT_COMMITTER_DATE=\"2025-09-23 10:15:08\" git commit -m \"create org-wide health score dashboard\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-23 10:15:08\" GIT_COMMITTER_DATE=\"2025-09-23 10:15:08\" git commit -m \"create org-wide health score dashboard\""
+        },
+        {
+          "step_id": "6.26",
+          "title": "Dark Mode",
+          "description": "Already using dark theme by default. Add theme toggle for light mode: white background, dark text, same accent colors. Persist preference in localStorage. System preference detection. Smooth transition with CSS custom properties.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/store/themeStore.ts",
+            "packages/dashboard/src/components/ThemeToggle.tsx"
+          ],
+          "commit_message": "add dark mode support",
+          "commit_datetime": "2025-09-23 14:45:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-23 14:45:22\" GIT_COMMITTER_DATE=\"2025-09-23 14:45:22\" git commit -m \"add dark mode support\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-23 14:45:22\" GIT_COMMITTER_DATE=\"2025-09-23 14:45:22\" git commit -m \"add dark mode support\""
+        },
+        {
+          "step_id": "6.27",
+          "title": "Responsive Layout",
+          "description": "Make dashboard work on tablets (768px+). Sidebar collapses to icon-only on tablet. Graph component adjusts canvas size. Tables scroll horizontally on smaller screens. KPI widgets stack to 2 columns on tablet. Dashboard still usable on 1024px monitors.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/layouts/AppLayout.tsx",
+            "packages/dashboard/tailwind.config.ts"
+          ],
+          "commit_message": "implement responsive layout for tablet screens",
+          "commit_datetime": "2025-09-24 10:00:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-24 10:00:08\" GIT_COMMITTER_DATE=\"2025-09-24 10:00:08\" git commit -m \"implement responsive layout for tablet screens\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-24 10:00:08\" GIT_COMMITTER_DATE=\"2025-09-24 10:00:08\" git commit -m \"implement responsive layout for tablet screens\""
+        },
+        {
+          "step_id": "6.28",
+          "title": "PDF Export",
+          "description": "Export dependency report as PDF: uses html2canvas + jsPDF. Report includes: org health score, critical alerts summary, top 20 APIs by centrality, dependency graph screenshot, change history last 30 days. Styled PDF matching dashboard design.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/utils/pdfExport.ts",
+            "packages/dashboard/src/components/ExportButton.tsx"
+          ],
+          "commit_message": "add export button: download dependency report as PDF",
+          "commit_datetime": "2025-09-24 14:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-24 14:30:15\" GIT_COMMITTER_DATE=\"2025-09-24 14:30:15\" git commit -m \"add export button: download dependency report as PDF\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-24 14:30:15\" GIT_COMMITTER_DATE=\"2025-09-24 14:30:15\" git commit -m \"add export button: download dependency report as PDF\""
+        },
+        {
+          "step_id": "6.29",
+          "title": "Onboarding Wizard",
+          "description": "First-time setup wizard (multi-step modal): step 1 (add first repo with install command), step 2 (configure notifications), step 3 (invite team members), step 4 (set up Slack/Teams). Track completion in user_onboarding table. Skip option.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/components/OnboardingWizard.tsx",
+            "packages/dashboard/src/store/onboardingStore.ts"
+          ],
+          "commit_message": "implement onboarding wizard for first-time setup",
+          "commit_datetime": "2025-09-25 10:15:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-25 10:15:30\" GIT_COMMITTER_DATE=\"2025-09-25 10:15:30\" git commit -m \"implement onboarding wizard for first-time setup\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-25 10:15:30\" GIT_COMMITTER_DATE=\"2025-09-25 10:15:30\" git commit -m \"implement onboarding wizard for first-time setup\""
+        },
+        {
+          "step_id": "6.30",
+          "title": "Help Tooltips & Docs Links",
+          "description": "Add help tooltips to all complex features: centrality score explanation, risk score formula, threat level definitions. Tooltip component with ? icon trigger. Each tooltip has Learn More link to docs. Don't show again option.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/src/components/HelpTooltip.tsx"
+          ],
+          "commit_message": "add inline help tooltips and documentation links",
+          "commit_datetime": "2025-09-25 14:45:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-25 14:45:08\" GIT_COMMITTER_DATE=\"2025-09-25 14:45:08\" git commit -m \"add inline help tooltips and documentation links\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-25 14:45:08\" GIT_COMMITTER_DATE=\"2025-09-25 14:45:08\" git commit -m \"add inline help tooltips and documentation links\""
+        },
+        {
+          "step_id": "6.31",
+          "title": "Cypress E2E Tests",
+          "description": "Write Playwright e2e tests for critical flows: login \u2192 dashboard renders \u2192 click on critical API \u2192 API detail page \u2192 view change history \u2192 acknowledge notification \u2192 assert notification disappears from unread count.",
+          "files_to_create_or_modify": [
+            "packages/dashboard/e2e/dashboard.spec.ts",
+            "packages/dashboard/e2e/notifications.spec.ts",
+            "packages/dashboard/playwright.config.ts"
+          ],
+          "commit_message": "write cypress e2e tests for critical dashboard flows",
+          "commit_datetime": "2025-09-25 10:00:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-25 10:00:22\" GIT_COMMITTER_DATE=\"2025-09-25 10:00:22\" git commit -m \"write cypress e2e tests for critical dashboard flows\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-25 10:00:22\" GIT_COMMITTER_DATE=\"2025-09-25 10:00:22\" git commit -m \"write cypress e2e tests for critical dashboard flows\""
+        }
+      ]
+    },
+    "phase_7": {
+      "phase_number": 7,
+      "phase_name": "Analytics, Hardening & Release",
+      "steps": [
+        {
+          "step_id": "7.1",
+          "title": "Analytics Aggregation Pipeline",
+          "description": "Create background job (node-cron, runs hourly): reads raw usage_events, aggregates into api_hourly_stats (apiId, hour, callCount, errorCount, p50Latency, p95Latency, p99Latency, uniqueCallerCount). Prune raw events older than 7 days.",
+          "files_to_create_or_modify": [
+            "packages/core/src/analytics/AggregationJob.ts",
+            "packages/core/src/db/migrations/0009_hourly_stats.sql"
+          ],
+          "commit_message": "implement usage analytics aggregation pipeline",
+          "commit_datetime": "2025-09-26 09:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-26 09:30:15\" GIT_COMMITTER_DATE=\"2025-09-26 09:30:15\" git commit -m \"implement usage analytics aggregation pipeline\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-26 09:30:15\" GIT_COMMITTER_DATE=\"2025-09-26 09:30:15\" git commit -m \"implement usage analytics aggregation pipeline\""
+        },
+        {
+          "step_id": "7.2",
+          "title": "Call Frequency Tracking",
+          "description": "Track: calls per hour/day/week per (sourceApiId, targetApiId) pair. Most active callers ranking. Peak traffic detection (flag if current > 2x rolling average). Usage trend: is call frequency increasing or decreasing week-over-week?",
+          "files_to_create_or_modify": [
+            "packages/core/src/analytics/UsageTracker.ts",
+            "packages/core/src/analytics/FrequencyAnalyzer.ts"
+          ],
+          "commit_message": "add call frequency tracking per api per caller",
+          "commit_datetime": "2025-09-26 14:45:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-26 14:45:22\" GIT_COMMITTER_DATE=\"2025-09-26 14:45:22\" git commit -m \"add call frequency tracking per api per caller\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-26 14:45:22\" GIT_COMMITTER_DATE=\"2025-09-26 14:45:22\" git commit -m \"add call frequency tracking per api per caller\""
+        },
+        {
+          "step_id": "7.3",
+          "title": "Dependency Health Score",
+          "description": "Compute per-API health score (0-100): 100 - (threatLevelPenalty + errorRatePenalty + latencyPenalty + unacknowledgedChangePenalty). Update hourly. Store in api_health_scores table. Feed into org health score calculation.",
+          "files_to_create_or_modify": [
+            "packages/core/src/analytics/HealthScoreCalculator.ts",
+            "packages/core/src/db/migrations/0010_health_scores.sql"
+          ],
+          "commit_message": "compute dependency health score per api",
+          "commit_datetime": "2025-09-26 16:00:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-26 16:00:08\" GIT_COMMITTER_DATE=\"2025-09-26 16:00:08\" git commit -m \"compute dependency health score per api\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-26 16:00:08\" GIT_COMMITTER_DATE=\"2025-09-26 16:00:08\" git commit -m \"compute dependency health score per api\""
+        },
+        {
+          "step_id": "7.4",
+          "title": "API Stability Index",
+          "description": "Stability Index = 1 - (changeCount / totalDays). Updated weekly. Scale 0-1 (1 = never changed, 0 = changes daily). Show trend: stable \u2194 volatile. Flag APIs with stability < 0.5 as high-volatility (notify dependents to be careful).",
+          "files_to_create_or_modify": [
+            "packages/core/src/analytics/StabilityAnalyzer.ts"
+          ],
+          "commit_message": "add api stability index based on change frequency",
+          "commit_datetime": "2025-09-27 10:00:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-27 10:00:15\" GIT_COMMITTER_DATE=\"2025-09-27 10:00:15\" git commit -m \"add api stability index based on change frequency\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-27 10:00:15\" GIT_COMMITTER_DATE=\"2025-09-27 10:00:15\" git commit -m \"add api stability index based on change frequency\""
+        },
+        {
+          "step_id": "7.5",
+          "title": "SLA Breach Detection",
+          "description": "Allow teams to configure SLA thresholds: maxErrorRate (e.g. 1%), maxP95Latency (e.g. 500ms). Background monitor checks every 5min. On breach: emit sla:breach event, send immediate CRITICAL notification, create JIRA P1 ticket.",
+          "files_to_create_or_modify": [
+            "packages/core/src/analytics/SlaMonitor.ts",
+            "packages/core/src/analytics/SlaMonitor.test.ts"
+          ],
+          "commit_message": "implement SLA breach detection for critical apis",
+          "commit_datetime": "2025-09-27 14:30:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-27 14:30:22\" GIT_COMMITTER_DATE=\"2025-09-27 14:30:22\" git commit -m \"implement SLA breach detection for critical apis\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-27 14:30:22\" GIT_COMMITTER_DATE=\"2025-09-27 14:30:22\" git commit -m \"implement SLA breach detection for critical apis\""
+        },
+        {
+          "step_id": "7.6",
+          "title": "Analytics REST Endpoints",
+          "description": "GET /api/analytics/api/:id/usage, GET /api/analytics/api/:id/health-history, GET /api/analytics/api/:id/stability, GET /api/analytics/org/summary, GET /api/analytics/org/top-apis, GET /api/analytics/org/change-velocity. All with date range support.",
+          "files_to_create_or_modify": [
+            "packages/core/src/routes/analytics.routes.ts"
+          ],
+          "commit_message": "add analytics REST endpoints for dashboard consumption",
+          "commit_datetime": "2025-09-27 16:15:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-27 16:15:08\" GIT_COMMITTER_DATE=\"2025-09-27 16:15:08\" git commit -m \"add analytics REST endpoints for dashboard consumption\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-27 16:15:08\" GIT_COMMITTER_DATE=\"2025-09-27 16:15:08\" git commit -m \"add analytics REST endpoints for dashboard consumption\""
+        },
+        {
+          "step_id": "7.7",
+          "title": "Full E2E Integration Tests",
+          "description": "Comprehensive integration test suite: install plugin in mock Express repo, scan routes, sync to server, record usage calls, trigger breaking change, assert: snapshot created, CRITICAL detected, notifications sent (mocked), JIRA ticket created (mocked).",
+          "files_to_create_or_modify": [
+            "tests/e2e/fullWorkflow.test.ts"
+          ],
+          "commit_message": "write end-to-end integration tests for full plugin workflow",
+          "commit_datetime": "2025-09-27 10:00:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-27 10:00:30\" GIT_COMMITTER_DATE=\"2025-09-27 10:00:30\" git commit -m \"write end-to-end integration tests for full plugin workflow\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-27 10:00:30\" GIT_COMMITTER_DATE=\"2025-09-27 10:00:30\" git commit -m \"write end-to-end integration tests for full plugin workflow\""
+        },
+        {
+          "step_id": "7.8",
+          "title": "Load Testing",
+          "description": "Write k6 load test scripts: 1000 concurrent users hitting /api/graph/full, 500 concurrent usage event recording, notification fan-out under 100 simultaneous breaking changes. Assert: p95 latency < 500ms, 0 errors under normal load.",
+          "files_to_create_or_modify": [
+            "tests/load/graphLoad.js",
+            "tests/load/usageLoad.js",
+            "tests/load/notificationLoad.js"
+          ],
+          "commit_message": "add load tests for graph endpoint under 1000 concurrent users",
+          "commit_datetime": "2025-09-28 09:30:15",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-28 09:30:15\" GIT_COMMITTER_DATE=\"2025-09-28 09:30:15\" git commit -m \"add load tests for graph endpoint under 1000 concurrent users\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-28 09:30:15\" GIT_COMMITTER_DATE=\"2025-09-28 09:30:15\" git commit -m \"add load tests for graph endpoint under 1000 concurrent users\""
+        },
+        {
+          "step_id": "7.9",
+          "title": "Docker Image",
+          "description": "Create optimized Dockerfile for apiwatch-server: multi-stage build (build stage with pnpm, runtime stage with node:20-alpine). Image size < 200MB. Run as non-root user. Health check CMD. Publish to Docker Hub as apiwatch/server:v1.0.0.",
+          "files_to_create_or_modify": [
+            "Dockerfile",
+            "Dockerfile.plugin",
+            ".dockerignore"
+          ],
+          "commit_message": "create docker image for apiwatch server",
+          "commit_datetime": "2025-09-28 11:30:22",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-28 11:30:22\" GIT_COMMITTER_DATE=\"2025-09-28 11:30:22\" git commit -m \"create docker image for apiwatch server\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-28 11:30:22\" GIT_COMMITTER_DATE=\"2025-09-28 11:30:22\" git commit -m \"create docker image for apiwatch server\""
+        },
+        {
+          "step_id": "7.10",
+          "title": "Helm Chart",
+          "description": "Create helm/apiwatch/ chart. Templates: Deployment (with readiness/liveness probes), Service, Ingress (with TLS), ConfigMap (non-secret config), Secret (DB password, API keys, SMTP creds), HPA (cpu:70%, memory:80%), PDB (minAvailable:1).",
+          "files_to_create_or_modify": [
+            "helm/apiwatch/Chart.yaml",
+            "helm/apiwatch/values.yaml",
+            "helm/apiwatch/templates/"
+          ],
+          "commit_message": "add kubernetes helm chart for self-hosted deployment",
+          "commit_datetime": "2025-09-28 14:00:08",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-28 14:00:08\" GIT_COMMITTER_DATE=\"2025-09-28 14:00:08\" git commit -m \"add kubernetes helm chart for self-hosted deployment\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-28 14:00:08\" GIT_COMMITTER_DATE=\"2025-09-28 14:00:08\" git commit -m \"add kubernetes helm chart for self-hosted deployment\""
+        },
+        {
+          "step_id": "7.11",
+          "title": "Documentation Site",
+          "description": "Create docs/ using Astro + Starlight. Pages: Getting Started, Plugin Installation, Configuration Reference, Notification Setup (per channel), Dashboard Guide, API Reference (auto from Typedoc), Architecture, Enterprise Deployment, Changelog.",
+          "files_to_create_or_modify": [
+            "docs/astro.config.mjs",
+            "docs/src/content/docs/getting-started.md",
+            "docs/src/content/docs/plugin-installation.md",
+            "docs/src/content/docs/architecture.md"
+          ],
+          "commit_message": "write comprehensive API documentation with examples",
+          "commit_datetime": "2025-09-28 10:00:30",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-28 10:00:30\" GIT_COMMITTER_DATE=\"2025-09-28 10:00:30\" git commit -m \"write comprehensive API documentation with examples\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-28 10:00:30\" GIT_COMMITTER_DATE=\"2025-09-28 10:00:30\" git commit -m \"write comprehensive API documentation with examples\""
+        },
+        {
+          "step_id": "7.12",
+          "title": "Changelog & Release",
+          "description": "Write CHANGELOG.md for v1.0.0. Update README with badges, quick start, feature list, architecture diagram. Bump all package versions to 1.0.0. Tag git v1.0.0. Publish @apiwatch/plugin and @apiwatch/cli to npm. Write release notes.",
+          "files_to_create_or_modify": [
+            "CHANGELOG.md",
+            "README.md",
+            "packages/plugin/package.json",
+            "packages/cli/package.json"
+          ],
+          "commit_message": "v1.0.0 release: APIWatch - API Dependency Management Framework",
+          "commit_datetime": "2025-09-28 18:00:00",
+          "git_command": "GIT_AUTHOR_DATE=\"2025-09-28 18:00:00\" GIT_COMMITTER_DATE=\"2025-09-28 18:00:00\" git commit -m \"v1.0.0 release: APIWatch - API Dependency Management Framework\"",
+          "full_command_with_stage": "git add -A && GIT_AUTHOR_DATE=\"2025-09-28 18:00:00\" GIT_COMMITTER_DATE=\"2025-09-28 18:00:00\" git commit -m \"v1.0.0 release: APIWatch - API Dependency Management Framework\""
+        }
+      ]
+    }
+  }
+}

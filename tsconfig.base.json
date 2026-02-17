@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2022"],
+    "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "baseUrl": ".",
+    "paths": {
+      "@apiwatch/core": ["packages/core/src/index.ts"],
+      "@apiwatch/core/*": ["packages/core/src/*"],
+      "@apiwatch/plugin": ["packages/plugin/src/index.ts"],
+      "@apiwatch/plugin/*": ["packages/plugin/src/*"],
+      "@apiwatch/cli": ["packages/cli/src/index.ts"],
+      "@apiwatch/cli/*": ["packages/cli/src/*"],
+      "@apiwatch/dashboard": ["packages/dashboard/src/index.ts"],
+      "@apiwatch/dashboard/*": ["packages/dashboard/src/*"],
+      "@apiwatch/shared": ["packages/shared/src/index.ts"],
+      "@apiwatch/shared/*": ["packages/shared/src/*"],
+      "@apiwatch/graph-engine": ["packages/graph-engine/src/index.ts"],
+      "@apiwatch/graph-engine/*": ["packages/graph-engine/src/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
+}
