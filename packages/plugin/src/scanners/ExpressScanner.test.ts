@@ -26,7 +26,15 @@ describe('ExpressScanner', () => {
 
   it('handles empty directory', async () => {
     const scanner = new ExpressScanner();
+    const results = await scanner.scan(__dirname + '/__nonexistent__');
+    expect(results).toEqual([]);
+  });
+
+  it('extracts routes from fixture file', async () => {
+    const scanner = new ExpressScanner();
     const results = await scanner.scan(__dirname + '/__fixtures__');
     expect(Array.isArray(results)).toBe(true);
+    const paths = results.map((r) => r.path);
+    expect(paths.some((p) => p.includes('users'))).toBe(true);
   });
 });

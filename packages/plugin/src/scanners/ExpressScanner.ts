@@ -5,6 +5,7 @@
 
 import { Project, type SourceFile, SyntaxKind } from 'ts-morph';
 import type { ApiEndpoint, ApiParam, HttpMethod } from '@apiwatch/shared';
+import { normalizePath } from './pathNormalizer.js';
 
 const HTTP_METHODS = ['get', 'post', 'put', 'patch', 'delete', 'options'] as const;
 
@@ -37,7 +38,9 @@ export class ExpressScanner {
       for (const r of rawRoutes) {
         const method = r.method.toUpperCase() as HttpMethod;
         if (!HTTP_METHODS.includes(r.method.toLowerCase() as (typeof HTTP_METHODS)[number])) continue;
-        endpoints.push({
+        const raw = sourceFile.getText();
+          const deprecated = /@deprecated/i.test(raw);
+          endpoints.push({
           id: `express-${r.path}-${method}-${now.getTime()}`,
           repoId: '',
           path: r.path,
@@ -45,7 +48,7 @@ export class ExpressScanner {
           params: [],
           responses: {},
           tags: [],
-          deprecated: false,
+          deprecated,
           teamId: '',
           squadId: '',
           locationId: '',
@@ -71,7 +74,8 @@ export class ExpressScanner {
       const args = call.getArguments();
       if (args.length === 0) continue;
       const firstArg = args[0];
-      const path = firstArg.getText().replace(/^['`"]|['`"]$/g, '');
+      const rawPath = firstArg.getText().replace(/^['`"]|['`"]$/g, '');
+      const path = normalizePath(rawPath);
       if (method === 'use') {
         routes.push({ path: path || '/', method: 'use', handlerName: undefined });
       } else if (method === 'route') {
