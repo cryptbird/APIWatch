@@ -4,6 +4,7 @@
   "private": true,
   "description": "APIWatch - API Dependency Management Framework",
   "scripts": {
+    "prepare": "husky",
     "dev": "turbo run dev",
     "build": "turbo run build",
     "test": "turbo run test",
