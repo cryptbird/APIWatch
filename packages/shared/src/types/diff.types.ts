@@ -14,6 +14,7 @@ export type ChangeType =
   | 'RATE_LIMIT_CHANGED'
   | 'AUTH_SCHEME_CHANGED'
   | 'DESCRIPTION_CHANGED'
+  | 'EXAMPLE_CHANGED'
   | 'DEPRECATION_ADDED';
 
 export interface SchemaChange {

@@ -102,6 +102,7 @@ export const apiSnapshots = pgTable(
     schema: jsonb('schema').notNull(),
     capturedAt: timestamp('captured_at').defaultNow().notNull(),
     capturedBy: varchar('captured_by', { length: 255 }).notNull(),
+    fingerprintHash: varchar('fingerprint_hash', { length: 64 }),
   },
   (t) => ({ indexes: [index('api_snapshots_api_id_idx').on(t.apiEndpointId)] })
 );
@@ -117,9 +118,12 @@ export const changeEvents = pgTable(
     toVersion: integer('to_version').notNull(),
     diffPayload: jsonb('diff_payload').notNull(),
     threatLevel: varchar('threat_level', { length: 32 }).notNull(),
+    riskScore: integer('risk_score'),
     createdAt: timestamp('created_at').defaultNow().notNull(),
+    acknowledgedAt: timestamp('acknowledged_at'),
+    acknowledgedBy: varchar('acknowledged_by', { length: 255 }),
   },
-  (t) => ({ indexes: [index('change_events_api_id_idx').on(t.apiEndpointId)] })
+  (t) => ({ indexes: [index('change_events_api_id_idx').on(t.apiEndpointId), index('change_events_created_idx').on(t.createdAt)] })
 );
 
 export const notifications = pgTable('notifications', {
@@ -131,6 +135,29 @@ export const notifications = pgTable('notifications', {
   acknowledgedAt: timestamp('acknowledged_at'),
   payload: jsonb('payload').default({}),
 });
+
+export const inAppNotifications = pgTable(
+  'in_app_notifications',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    userId: varchar('user_id', { length: 255 }).notNull(),
+    changeEventId: uuid('change_event_id').notNull(),
+    channelType: varchar('channel_type', { length: 32 }).notNull(),
+    subject: varchar('subject', { length: 512 }).notNull(),
+    body: text('body'),
+    threatLevel: varchar('threat_level', { length: 32 }).notNull(),
+    read: boolean('read').default(false),
+    acknowledged: boolean('acknowledged').default(false),
+    readAt: timestamp('read_at'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+  },
+  (t) => ({
+    indexes: [
+      index('in_app_notifications_user_id_idx').on(t.userId),
+      index('in_app_notifications_read_idx').on(t.read),
+    ],
+  })
+);
 
 export const teams = pgTable('teams', {
   id: uuid('id').primaryKey().defaultRandom(),

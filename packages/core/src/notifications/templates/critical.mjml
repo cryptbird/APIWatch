@@ -1,0 +1,15 @@
+<mjml>
+  <mj-body>
+    <mj-section background-color="#dc2626">
+      <mj-column>
+        <mj-text color="#fff" font-size="20px">CRITICAL: API Breaking Change</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text>{{changeSummary}}</mj-text>
+        <mj-button href="{{dashboardLink}}">View in Dashboard</mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
