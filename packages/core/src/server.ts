@@ -11,14 +11,6 @@ import { apisRoutes } from './routes/apis.routes.js';
 import { registryRoutes } from './registry/registry.routes.js';
 import { usageRoutes } from './routes/usage.routes.js';
 import { graphRoutes } from './routes/graph.routes.js';
-import { snapshotsRoutes } from './routes/snapshots.routes.js';
-import { changesRoutes } from './routes/changes.routes.js';
-import { subscriptionsRoutes } from './routes/subscriptions.routes.js';
-import { notificationsRoutes } from './routes/notifications.routes.js';
-import { sseRoutes } from './routes/sse.routes.js';
-import { maintenanceRoutes } from './routes/maintenance.routes.js';
-import { analyticsRoutes } from './routes/analytics.routes.js';
-import { templatesRoutes } from './routes/templates.routes.js';
 
 const env = getEnv();
 
@@ -37,14 +29,6 @@ export async function start(): Promise<void> {
   await app.register(registryRoutes);
   await app.register(usageRoutes);
   await app.register(graphRoutes);
-  await app.register(snapshotsRoutes);
-  await app.register(changesRoutes);
-  await app.register(subscriptionsRoutes);
-  await app.register(notificationsRoutes);
-  await app.register(sseRoutes);
-  await app.register(maintenanceRoutes);
-  await app.register(analyticsRoutes);
-  await app.register(templatesRoutes);
 
   app.get('/', async (_req, reply) => {
     return reply.send({ name: 'APIWatch', version: '1.0.0' });
